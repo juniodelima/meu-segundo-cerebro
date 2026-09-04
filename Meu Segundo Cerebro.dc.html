@@ -278,6 +278,16 @@
         <!-- ============ FINANÇAS ============ -->
         <sc-if value="{{isFinPanel}}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-direction: column; gap: 26px;">
+            <!-- filtro de períodos e meses -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 2px;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">período:</span>
+                <sc-for list="{{ monthFilters }}" as="mf" hint-placeholder-count="5">
+                  <div onClick="{{mf.onClick}}" style="cursor: pointer; padding: 6px 14px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.08em; border: 1px solid {{mf.bd}}; background: {{mf.bg}}; color: {{mf.fg}}; transition: all 160ms ease;" style-hover="border-color: rgba(196,166,255,0.6); color: #e4d5ff;">{{ mf.label }}</div>
+                </sc-for>
+              </div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #c4a6ff;">{{ finPeriodSummary }}</div>
+            </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 14px;">
               <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
@@ -289,7 +299,7 @@
                 <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: #f2eefb;">{{ finOut }}</div>
               </div>
               <div style="border: 1px solid rgba(169,123,255,0.4); border-radius: 14px; padding: 20px; background: rgba(169,123,255,0.1); display: flex; flex-direction: column; gap: 8px;">
-                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #a99ec2;">saldo do mês</div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #a99ec2;">{{ finBalanceLabel }}</div>
                 <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">{{ finBalance }}</div>
               </div>
               <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
@@ -361,13 +371,13 @@
               </div>
               <div style="display: flex; align-items: flex-end; gap: 3%; height: 190px;">
                 <sc-for list="{{ months }}" as="m" hint-placeholder-count="6">
-                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; justify-content: flex-end;">
+                  <div onClick="{{m.onSelect}}" style="cursor: pointer; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; justify-content: flex-end; border-radius: 8px; padding: 6px 0; background: {{m.bg}};">
                     <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: {{m.netColor}};">{{ m.net }}</div>
                     <div style="display: flex; align-items: flex-end; gap: 4px; width: 100%; justify-content: center; height: 100%;">
                       <div style="width: 26%; min-width: 8px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, #c4a6ff, #7c4dff); height: {{m.hIn}};"></div>
                       <div style="width: 26%; min-width: 8px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.14); height: {{m.hOut}};"></div>
                     </div>
-                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a7096;">{{ m.label }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: {{m.labelColor}};">{{ m.label }}</div>
                   </div>
                 </sc-for>
               </div>
@@ -375,28 +385,64 @@
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px;">
               <div style="display: flex; flex-direction: column; gap: 14px;">
-                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">lançamentos</div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">lançamentos</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8f83ab;">{{ finPeriodSummary }}</div>
+                </div>
                 <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden;">
                   <sc-for list="{{ txs }}" as="x" hint-placeholder-count="5">
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                      <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1;">
-                        <div style="font-size: 14.5px; font-weight: 500;">{{ x.d }}</div>
-                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #7a7096; letter-spacing: 0.08em;">{{ x.c }}</div>
+                    <div style="display: flex; flex-direction: column; padding: 14px 18px; border-bottom: 1px solid rgba(255,255,255,0.06); gap: 8px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;">
+                          <div style="font-size: 14.5px; font-weight: 500; word-break: break-word;">{{ x.d }}</div>
+                          <div style="display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #7a7096;">
+                            <span>{{ x.dateDisplay }}</span>
+                            <span>·</span>
+                            <span style="color: #a99ec2;">{{ x.c }}</span>
+                          </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; white-space: nowrap; color: {{x.color}};">{{ x.amount }}</div>
+                          <div onClick="{{x.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
+                        </div>
                       </div>
-                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; white-space: nowrap; color: {{x.color}};">{{ x.amount }}</div>
-                      <div onClick="{{x.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
+
+                      <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                        <sc-for list="{{ x.tagChips }}" as="tg" hint-placeholder-count="2">
+                          <div style="display: flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; background: rgba(169,123,255,0.12); border: 1px solid rgba(169,123,255,0.3); font-size: 10.5px; font-family: 'IBM Plex Mono', monospace; color: #d6c4ff;">
+                            <span>#{{ tg.name }}</span>
+                            <span onClick="{{tg.onRemove}}" style="cursor: pointer; color: #7a7096; padding-left: 2px;" style-hover="color: #ffb4b4;">×</span>
+                          </div>
+                        </sc-for>
+                        <div onClick="{{x.onStartEditTags}}" style="cursor: pointer; padding: 2px 8px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px dashed rgba(255,255,255,0.18); font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: #8f83ab;" style-hover="color: #e4d5ff; border-color: rgba(196,166,255,0.5);">+ tag</div>
+                      </div>
+
+                      <sc-if value="{{x.isEditingTags}}" hint-placeholder-val="{{ false }}">
+                        <div style="display: flex; gap: 8px; margin-top: 4px; align-items: center;">
+                          <input value="{{ editingTxTags }}" onChange="{{onEditingTxTagsChange}}" onKeyDown="{{x.onEditTagsKey}}" placeholder="tags separadas por vírgula (ex: Outback, Almoço)..." style="flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(169,123,255,0.4); border-radius: 8px; padding: 6px 10px; color: #f2eefb; font-size: 12px; font-family: 'IBM Plex Mono', monospace;" />
+                          <div onClick="{{x.onSaveTags}}" style="cursor: pointer; padding: 6px 12px; border-radius: 8px; background: rgba(169,123,255,0.22); border: 1px solid rgba(169,123,255,0.5); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase;">salvar</div>
+                          <div onClick="{{cancelEditTxTags}}" style="cursor: pointer; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); color: #7a7096; font-family: 'IBM Plex Mono', monospace; font-size: 10px; text-transform: uppercase;">cancelar</div>
+                        </div>
+                      </sc-if>
                     </div>
                   </sc-for>
                   <sc-if value="{{noTxs}}" hint-placeholder-val="{{ false }}">
                     <div style="padding: 24px 18px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.06em;">nenhum lançamento registrado ainda</div>
                   </sc-if>
                 </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px; border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 16px;">
-                  <input value="{{ nf.d }}" onChange="{{onFinDesc}}" placeholder="descrição" style="flex: 2 1 140px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px;" />
-                  <input value="{{ nf.v }}" onChange="{{onFinVal}}" placeholder="valor" style="flex: 0 1 80px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
-                  <input value="{{ nf.c }}" onChange="{{onFinCat}}" placeholder="categoria (opcional)" style="flex: 1 1 120px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #c4a6ff; font-size: 13px; font-family: 'IBM Plex Mono', monospace;" />
-                  <div onClick="{{toggleFinType}}" style="cursor: pointer; padding: 11px 16px; border-radius: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid {{finTypeBd}}; color: {{finTypeFg}}; background: {{finTypeBg}};">{{ finTypeLabel }}</div>
-                  <div onClick="{{addTx}}" style="cursor: pointer; padding: 11px 20px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">lançar</div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 16px;">
+                  <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <input value="{{ nf.d }}" onChange="{{onFinDesc}}" placeholder="descrição" style="flex: 2 1 140px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px;" />
+                    <input value="{{ nf.v }}" onChange="{{onFinVal}}" placeholder="valor" style="flex: 0 1 80px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
+                    <input value="{{ nf.c }}" onChange="{{onFinCat}}" placeholder="categoria (opcional)" style="flex: 1 1 120px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #c4a6ff; font-size: 13px; font-family: 'IBM Plex Mono', monospace;" />
+                  </div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                    <input value="{{ nfTags }}" onChange="{{onFinTags}}" placeholder="tags (ex: Outback, Almoço)" style="flex: 2 1 140px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #d6c4ff; font-size: 13px; font-family: 'IBM Plex Mono', monospace;" />
+                    <input type="date" value="{{ nfDate }}" onChange="{{onFinDate}}" style="flex: 1 1 110px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 9px 12px; color: #f2eefb; font-size: 12.5px; font-family: 'IBM Plex Mono', monospace;" />
+                    <div onClick="{{toggleFinType}}" style="cursor: pointer; padding: 11px 16px; border-radius: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid {{finTypeBd}}; color: {{finTypeFg}}; background: {{finTypeBg}};">{{ finTypeLabel }}</div>
+                    <div onClick="{{addTx}}" style="cursor: pointer; padding: 11px 20px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">lançar</div>
+                  </div>
                 </div>
               </div>
 
@@ -463,6 +509,20 @@
                     </sc-if>
                   </div>
                 </div>
+
+                <sc-if value="{{hasTagTotals}}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">destinos frequentes · tags</div>
+                    <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; background: rgba(255,255,255,0.022);">
+                      <sc-for list="{{ topTags }}" as="tt" hint-placeholder-count="3">
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
+                          <span style="color: #e4d5ff; font-family: 'IBM Plex Mono', monospace;">#{{ tt.name }}</span>
+                          <span style="font-family: 'IBM Plex Mono', monospace; color: #a99ec2;">{{ tt.amount }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
 
                 <div style="display: flex; flex-direction: column; gap: 14px;">
                   <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -732,7 +792,7 @@
 
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
 const STORE_KEY = "msc.state.v2";
-const PERSIST = ["notes", "ideas", "flows", "txs", "bills", "goals", "months", "tasks", "chat", "categories"];
+const PERSIST = ["notes", "ideas", "flows", "txs", "bills", "goals", "months", "tasks", "chat", "categories", "finMonth"];
 const NODE_W = 240;
 const NODE_H = 58;
 const NODE_H_NOTE = 78;
@@ -812,6 +872,63 @@ class Component extends DCLogic {
     if (isNaN(d)) return "sem data";
     return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + "/" + d.getFullYear();
   }
+  todayIso() {
+    const d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  txDate(t) {
+    if (t && t.date) return t.date;
+    if (t && t.at) {
+      const d = new Date(t.at);
+      if (!isNaN(d)) return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+    }
+    return this.todayIso();
+  }
+  txMonth(t) {
+    return this.txDate(t).slice(0, 7);
+  }
+  formatDateShort(iso) {
+    if (!iso) return "";
+    const p = iso.split("-");
+    if (p.length === 3) return p[2] + "/" + p[1];
+    return iso;
+  }
+  monthLabel(yyyyMm) {
+    if (!yyyyMm || yyyyMm === "all") return "todos";
+    const p = yyyyMm.split("-");
+    const mNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    const mi = parseInt(p[1], 10) - 1;
+    const name = mNames[mi] || p[1];
+    const yr = (p[0] || "").slice(2);
+    return name + "/" + yr;
+  }
+  monthNameFull(yyyyMm) {
+    if (!yyyyMm || yyyyMm === "all") return "Todos os períodos";
+    const p = yyyyMm.split("-");
+    const mNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    const mi = parseInt(p[1], 10) - 1;
+    const name = mNames[mi] || p[1];
+    return name + " de " + p[0];
+  }
+  saveTxTags(id, rawTags) {
+    const tagsArr = typeof rawTags === "string"
+      ? rawTags.split(",").map((s) => s.trim().replace(/^#/, "")).filter(Boolean)
+      : (Array.isArray(rawTags) ? rawTags : []);
+    this.setState((st) => ({
+      txs: st.txs.map((t) => (t.id === id ? Object.assign({}, t, { tags: tagsArr }) : t)),
+      editingTxId: null,
+      editingTxTags: ""
+    }));
+  }
+  removeTxTag(id, tagToRemove) {
+    this.setState((st) => ({
+      txs: st.txs.map((t) => {
+        if (t.id !== id) return t;
+        const current = t.tags || [];
+        return Object.assign({}, t, { tags: current.filter((x) => x !== tagToRemove) });
+      })
+    }));
+  }
 
   // ---------- monta um grafo em cadeia a partir de uma lista de passos ----------
   chain(steps, colorKey) {
@@ -842,7 +959,8 @@ class Component extends DCLogic {
     const months = [];
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      months.push({ label: monthNames[d.getMonth()], in: 0, out: 0 });
+      const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+      months.push({ key, label: monthNames[d.getMonth()], in: 0, out: 0 });
     }
 
     return {
@@ -860,7 +978,10 @@ class Component extends DCLogic {
       flows: [],
       nfl: "",
       ed: null,
-      nf: { d: "", v: "", t: "out", c: "" },
+      nf: { d: "", v: "", t: "out", c: "", tags: "", date: "" },
+      finMonth: "all",
+      editingTxId: null,
+      editingTxTags: "",
       categories: [
         "Alimentação", "Moradia", "Transporte", "Saúde",
         "Ferramentas", "Lazer", "Educação", "Impostos",
@@ -2052,26 +2173,39 @@ class Component extends DCLogic {
     const s = this.sums(st.txs);
     const open = this.openBills();
     const openSum = open.reduce((a, b) => a + b.v, 0);
+    const today = this.todayIso();
+    const curM = today.slice(0, 7);
+    const tagMapAll = {};
+    st.txs.forEach((t) => {
+      (t.tags || []).forEach((tg) => {
+        tagMapAll[tg] = (tagMapAll[tg] || 0) + (t.t === "out" ? t.v : 0);
+      });
+    });
+    const tagSummary = Object.keys(tagMapAll).map((tg) => `#${tg}: R$ ${tagMapAll[tg].toFixed(2)}`).join(", ");
 
     const systemPrompt = `Você é a Ana, assessora financeira pessoal do usuário no aplicativo "Meu Segundo Cérebro".
 Você é amigável, direta, analítica e prática. Sempre responde em português do Brasil com boa formatação (use markdown e emojis de forma moderada).
 
+Data atual: ${today} (mês atual: ${curM}).
 DADOS ATUAIS DAS FINANÇAS DO USUÁRIO:
-- Saldo atual do mês: R$ ${s.n.toFixed(2)} (Entradas: R$ ${s.i.toFixed(2)} | Saídas: R$ ${s.o.toFixed(2)})
+- Saldo total acumulado: R$ ${s.n.toFixed(2)} (Entradas: R$ ${s.i.toFixed(2)} | Saídas: R$ ${s.o.toFixed(2)})
+- Tags de destino / gastos por tag: ${tagSummary || "nenhuma tag cadastrada ainda"}
 - Contas abertas a pagar: ${open.length} contas totalizando R$ ${openSum.toFixed(2)}
 - Metas de economia: ${st.goals.map((g) => `${g.name} (guardado: R$ ${g.saved} / alvo: R$ ${g.target})`).join("; ") || "nenhuma"}
 - Categorias cadastradas: ${(st.categories || []).join(", ") || "Alimentação, Moradia, Transporte, Saúde, Ferramentas, Lazer, Educação, Impostos, Trabalho, Outros"}
 - Contas a pagar cadastradas: ${st.bills.map((b) => `${b.d}: R$ ${b.v} (vence dia ${b.due}, paga: ${b.paid ? "sim" : "não"})`).join("; ") || "nenhuma"}
-- Lançamentos recentes: ${st.txs.slice(0, 10).map((t) => `${t.t === "in" ? "+" : "-"}${t.d} R$ ${t.v} [${t.c}]`).join("; ") || "nenhum"}
+- Lançamentos registrados (com data e tags):
+${st.txs.slice(0, 15).map((t) => `  · [${this.txDate(t)}] ${t.t === "in" ? "+" : "-"}${t.d} R$ ${t.v} (cat: ${t.c}${t.tags && t.tags.length ? ", tags: #" + t.tags.join(" #") : ""})`).join("\n") || "  nenhum"}
 
 INSTRUÇÕES:
-1. Quando o usuário disser que gastou, comprou, pagou, recebeu, ganhou ou vendeu algo, CHAME a ferramenta 'add_transaction'. Se a categoria informada não estiver na lista, você pode criá-la ou usar uma categoria apropriada.
-2. Se disser que uma conta vence em tal dia, chame 'add_bill'.
-3. Se disser que pagou uma conta existente, chame 'pay_bill'.
-4. Se pedir para criar uma meta, chame 'add_goal'. Se guardou dinheiro em uma meta, chame 'save_to_goal'.
-5. Se pedir para criar uma categoria, chame 'add_category'.
-6. Se pedir para desfazer ou remover um lançamento, chame 'delete_transaction'.
-7. Se o usuário fizer perguntas, pedir relatórios, conselhos ou diagnósticos ("como estão minhas finanças?", "faça um relatório detalhado", "quanto posso gastar?"), responda detalhadamente com cálculos, percentuais e dicas personalizadas com base nos dados reais acima.
+1. Quando o usuário disser que gastou, comprou, pagou, recebeu, ganhou ou vendeu algo, CHAME a ferramenta 'add_transaction'. Se ele mencionar local, destino, restaurante ou tag específica (ex: Outback, Uber, iFood), preencha o parâmetro 'tags'. Se for de uma data passada ou de meses anteriores (ex: mês passado, semana passada, dia 10 de agosto), calcule e passe o parâmetro 'date' em formato YYYY-MM-DD.
+2. Se pedir para colocar ou alterar tags em um lançamento que já existe, chame 'edit_transaction_tags'.
+3. Se disser que uma conta vence em tal dia, chame 'add_bill'.
+4. Se disser que pagou uma conta existente, chame 'pay_bill'.
+5. Se pedir para criar uma meta, chame 'add_goal'. Se guardou dinheiro em uma meta, chame 'save_to_goal'.
+6. Se pedir para criar uma categoria, chame 'add_category'.
+7. Se pedir para desfazer ou remover um lançamento, chame 'delete_transaction'.
+8. Se o usuário fizer perguntas ou pedir relatórios específicos (ex: "quanto gastei no restaurante X?", "quanto gastei com a tag tal?", "quanto sobrou no mês passado?", "faça um relatório detalhado"), analise todos os lançamentos acima, faça os cálculos com precisão e responda com percentuais, dicas e comparações relevantes.
 Sempre confirme as ações executadas de forma amigável e clara.`;
 
     const tools = [
@@ -2079,16 +2213,33 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
         type: "function",
         function: {
           name: "add_transaction",
-          description: "Registra uma nova entrada ou saída financeira",
+          description: "Registra uma nova entrada ou saída financeira com categoria, tags de destino e data",
           parameters: {
             type: "object",
             properties: {
-              description: { type: "string", description: "Descrição do lançamento (ex: Mercado, Freela)" },
+              description: { type: "string", description: "Descrição do lançamento (ex: Almoço, Mercado, Freela)" },
               amount: { type: "number", description: "Valor numérico em reais" },
               type: { type: "string", enum: ["in", "out"], description: "in para receita/entrada, out para gasto/saída" },
-              category: { type: "string", description: "Categoria do lançamento" }
+              category: { type: "string", description: "Categoria do lançamento" },
+              tags: { type: "array", items: { type: "string" }, description: "Tags que identificam o destino específico, restaurante, fornecedor, etc. (ex: ['Outback', 'Almoço'])" },
+              date: { type: "string", description: "Data no formato YYYY-MM-DD (ex: 2026-08-15). Se for mês passado ou data retroativa, use a data correta. Padrão: hoje." }
             },
             required: ["description", "amount", "type", "category"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "edit_transaction_tags",
+          description: "Adiciona ou edita tags em um lançamento já existente no sistema",
+          parameters: {
+            type: "object",
+            properties: {
+              search: { type: "string", description: "Nome ou parte da descrição do lançamento já cadastrado" },
+              tags: { type: "array", items: { type: "string" }, description: "Lista de tags a aplicar (ex: ['Outback'])" }
+            },
+            required: ["search", "tags"]
           }
         }
       },
@@ -2217,10 +2368,34 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
           try { args = JSON.parse(tc.function.arguments); } catch (e) {}
 
           if (fnName === "add_transaction") {
-            const tx = { id: this.uid("tx"), d: args.description || "Lançamento", v: Math.abs(Number(args.amount) || 0), t: args.type === "in" ? "in" : "out", c: args.category || "Outros" };
+            const rawTags = Array.isArray(args.tags) ? args.tags : (args.tags ? [String(args.tags)] : []);
+            const date = args.date && /^\d{4}-\d{2}-\d{2}$/.test(args.date) ? args.date : this.todayIso();
+            const tx = {
+              id: this.uid("tx"),
+              d: args.description || "Lançamento",
+              v: Math.abs(Number(args.amount) || 0),
+              t: args.type === "in" ? "in" : "out",
+              c: args.category || "Outros",
+              tags: rawTags,
+              date: date
+            };
             this.setState((prev) => ({ txs: [tx].concat(prev.txs) }));
             this._lastTx = tx.id;
-            actionsDesc.push(`✓ Lançado: ${tx.t === "in" ? "+" : "-"}${this.money(tx.v)} (${tx.d}) em ${tx.c}`);
+            const tagStr = tx.tags.length ? ` [tags: #${tx.tags.join(" #")}]` : "";
+            const dateStr = tx.date !== this.todayIso() ? ` em ${this.formatDateShort(tx.date)}` : "";
+            actionsDesc.push(`✓ Lançado: ${tx.t === "in" ? "+" : "-"}${this.money(tx.v)} (${tx.d}) em ${tx.c}${tagStr}${dateStr}`);
+          } else if (fnName === "edit_transaction_tags") {
+            const search = this.norm(args.search || "");
+            const newTags = Array.isArray(args.tags) ? args.tags : (args.tags ? [String(args.tags)] : []);
+            const hit = this.state.txs.find((t) => this.norm(t.d).indexOf(search) >= 0 || (t.tags || []).some((tg) => this.norm(tg).indexOf(search) >= 0));
+            if (hit) {
+              this.setState((prev) => ({
+                txs: prev.txs.map((t) => (t.id === hit.id ? Object.assign({}, t, { tags: newTags }) : t))
+              }));
+              actionsDesc.push(`✓ Tags de "${hit.d}" atualizadas: ${newTags.map((t) => "#" + t).join(" ") || "(nenhuma)"}`);
+            } else {
+              actionsDesc.push(`⚠️ Não encontrei lançamento correspondente a "${args.search}"`);
+            }
           } else if (fnName === "add_bill") {
             const bill = { id: this.uid("bl"), d: args.description || "Conta", v: Math.abs(Number(args.amount) || 0), due: Math.max(1, Math.min(31, Number(args.due_day) || 10)), paid: false };
             this.setState((prev) => ({ bills: prev.bills.concat([bill]) }));
@@ -2441,6 +2616,17 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
     const open = this.openBills();
     const openSum = open.reduce((a, b) => a + b.v, 0);
 
+    const tagMatch = low.match(/quanto.*(gastei|saiu|gasto).*(com a tag|na tag|no|na|em)\s+([a-z0-9\s-]{2,})/);
+    if (tagMatch) {
+      const qTag = this.norm(tagMatch[3]).trim();
+      const hitTxs = st.txs.filter((t) => (t.tags || []).some((tg) => this.norm(tg).indexOf(qTag) >= 0 || qTag.indexOf(this.norm(tg)) >= 0));
+      if (hitTxs.length) {
+        const totalTag = hitTxs.reduce((a, b) => a + b.v, 0);
+        return "Total com a tag “" + tagMatch[3].trim() + "”: " + this.money(totalTag) + " em " + hitTxs.length + " lançamento(s).\n" +
+          hitTxs.slice(0, 4).map((t) => "· " + t.d + ": " + this.money(t.v) + " (" + this.formatDateShort(t.date || "") + ")").join("\n");
+      }
+    }
+
     if (/(quanto|onde).*(posso gastar|sobra pra gastar|da pra gastar)/.test(low) || /posso gastar/.test(low)) {
       const livre = s.n - openSum;
       if (livre <= 0) return "Hoje eu não liberaria nada. Entrou " + this.money(s.i) + ", saiu " + this.money(s.o) + " e ainda tem " + this.money(openSum) + " em contas abertas — isso deixa " + this.money(livre) + ".\nO caminho é adiar gasto novo ou entrar com receita.";
@@ -2573,15 +2759,65 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
     const noteWordCount = (note.body || "").trim() ? (note.body || "").trim().split(/\s+/).length : 0;
 
     // ---------- finanças ----------
-    const s = this.sums(st.txs);
-    const cats0 = this.catTotals(st.txs);
+    const activeMonth = st.finMonth || "all";
+    const visibleTxs = (activeMonth === "all")
+      ? st.txs
+      : st.txs.filter((t) => this.txMonth(t) === activeMonth);
+
+    const s = this.sums(visibleTxs);
+    const cats0 = this.catTotals(visibleTxs);
     const maxCat = Math.max(1, ...Object.values(cats0), 1);
     const cats = Object.keys(cats0).sort((a, b) => cats0[b] - cats0[a]).map((name) => ({
       name, amount: this.money(cats0[name]), w: Math.round((cats0[name] / maxCat) * 100) + "%"
     }));
-    // o último mês do gráfico espelha os lançamentos reais
-    const monthsLive = st.months.map((m, i) => (i === st.months.length - 1 ? Object.assign({}, m, { in: s.i, out: s.o }) : m));
+
+    const tagMap = {};
+    visibleTxs.filter((t) => t.t === "out").forEach((t) => {
+      (t.tags || []).forEach((tag) => {
+        tagMap[tag] = (tagMap[tag] || 0) + t.v;
+      });
+    });
+    const topTags = Object.keys(tagMap).sort((a, b) => tagMap[b] - tagMap[a]).slice(0, 6).map((name) => ({
+      name, amount: this.money(tagMap[name])
+    }));
+    const hasTagTotals = topTags.length > 0;
+
+    const monthsLive = st.months.map((m) => {
+      const mKey = m.key || "";
+      const txsInMonth = st.txs.filter((t) => this.txMonth(t) === mKey);
+      const inVal = txsInMonth.filter((t) => t.t === "in").reduce((a, b) => a + b.v, 0);
+      const outVal = txsInMonth.filter((t) => t.t === "out").reduce((a, b) => a + b.v, 0);
+      return Object.assign({}, m, {
+        in: inVal || m.in || 0,
+        out: outVal || m.out || 0
+      });
+    });
     const maxMonth = Math.max(1, ...monthsLive.map((m) => Math.max(m.in, m.out)));
+
+    const monthKeySet = new Set(st.months.map((m) => m.key).filter(Boolean));
+    st.txs.forEach((t) => {
+      const k = this.txMonth(t);
+      if (k) monthKeySet.add(k);
+    });
+    const sortedMonthKeys = Array.from(monthKeySet).sort().reverse();
+    const monthFilters = [{ key: "all", label: "todos" }].concat(
+      sortedMonthKeys.map((k) => ({ key: k, label: this.monthLabel(k) }))
+    ).map((mf) => {
+      const active = activeMonth === mf.key;
+      return {
+        label: mf.label,
+        bd: active ? "rgba(196,166,255,0.85)" : "rgba(255,255,255,0.12)",
+        bg: active ? "rgba(169,123,255,0.28)" : "rgba(255,255,255,0.04)",
+        fg: active ? "#f2eefb" : "#a99ec2",
+        onClick: () => this.setState({ finMonth: mf.key })
+      };
+    });
+
+    const finBalanceLabel = activeMonth === "all" ? "saldo acumulado" : "saldo de " + this.monthLabel(activeMonth);
+    const finPeriodSummary = activeMonth === "all"
+      ? "todos os períodos · " + visibleTxs.length + (visibleTxs.length === 1 ? " lançamento" : " lançamentos")
+      : this.monthNameFull(activeMonth) + " · " + visibleTxs.length + (visibleTxs.length === 1 ? " lançamento" : " lançamentos");
+
     const billsOpen = this.openBills().reduce((a, b) => a + b.v, 0);
     const today = new Date().getDate();
 
@@ -2749,28 +2985,62 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
       }),
 
       // ----- finanças -----
+      monthFilters: monthFilters,
+      finPeriodSummary: finPeriodSummary,
+      finBalanceLabel: finBalanceLabel,
       finIn: this.money(s.i),
       finOut: this.money(s.o),
       finBalance: this.money(s.n),
       billsTotal: this.money(billsOpen),
       cats,
       noCats: cats.length === 0,
-      noTxs: st.txs.length === 0,
+      topTags: topTags,
+      hasTagTotals: hasTagTotals,
+      noTxs: visibleTxs.length === 0,
       noBills: st.bills.length === 0,
       noGoals: st.goals.length === 0,
-      txs: st.txs.map((x) => ({
-        d: x.d, c: x.c,
-        amount: (x.t === "in" ? "+" : "−") + this.money(x.v).slice(3),
-        color: x.t === "in" ? "#c4a6ff" : "#f2eefb",
-        onRemove: () => this.setState({ txs: st.txs.filter((y) => y.id !== x.id) })
-      })),
-      months: monthsLive.map((m) => ({
-        label: m.label,
-        hIn: Math.round((m.in / maxMonth) * 100) + "%",
-        hOut: Math.round((m.out / maxMonth) * 100) + "%",
-        net: (m.in - m.out >= 0 ? "+" : "−") + this.short(Math.abs(m.in - m.out)),
-        netColor: m.in - m.out >= 0 ? "#c4a6ff" : "#ffb4b4"
-      })),
+      txs: visibleTxs.map((x) => {
+        const isEditing = st.editingTxId === x.id;
+        const tagsArr = x.tags || [];
+        return {
+          d: x.d,
+          c: x.c,
+          dateDisplay: this.formatDateShort(this.txDate(x)),
+          amount: (x.t === "in" ? "+" : "−") + this.money(x.v).slice(3),
+          color: x.t === "in" ? "#c4a6ff" : "#f2eefb",
+          tagChips: tagsArr.map((tg) => ({
+            name: tg,
+            onRemove: (e) => {
+              if (e && e.stopPropagation) e.stopPropagation();
+              this.removeTxTag(x.id, tg);
+            }
+          })),
+          isEditingTags: isEditing,
+          onStartEditTags: (e) => {
+            if (e && e.stopPropagation) e.stopPropagation();
+            this.setState({ editingTxId: x.id, editingTxTags: tagsArr.join(", ") });
+          },
+          onSaveTags: () => this.saveTxTags(x.id, st.editingTxTags),
+          onEditTagsKey: (e) => {
+            if (e.key === "Enter") this.saveTxTags(x.id, st.editingTxTags);
+            if (e.key === "Escape") this.setState({ editingTxId: null, editingTxTags: "" });
+          },
+          onRemove: () => this.setState({ txs: st.txs.filter((y) => y.id !== x.id) })
+        };
+      }),
+      months: monthsLive.map((m) => {
+        const active = activeMonth === m.key;
+        return {
+          label: m.label,
+          hIn: Math.round((m.in / maxMonth) * 100) + "%",
+          hOut: Math.round((m.out / maxMonth) * 100) + "%",
+          net: (m.in - m.out >= 0 ? "+" : "−") + this.short(Math.abs(m.in - m.out)),
+          netColor: m.in - m.out >= 0 ? "#c4a6ff" : "#ffb4b4",
+          bg: active ? "rgba(169,123,255,0.18)" : "transparent",
+          labelColor: active ? "#e4d5ff" : "#7a7096",
+          onSelect: () => this.setState({ finMonth: active ? "all" : m.key })
+        };
+      }),
       goals: st.goals.map((g) => ({
         name: g.name,
         label: this.money(g.saved) + " / " + this.money(g.target),
@@ -2803,6 +3073,13 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
       onFinDesc: (e) => this.setState({ nf: Object.assign({}, st.nf, { d: e.target.value }) }),
       onFinVal: (e) => this.setState({ nf: Object.assign({}, st.nf, { v: e.target.value }) }),
       onFinCat: (e) => this.setState({ nf: Object.assign({}, st.nf, { c: e.target.value }) }),
+      nfTags: st.nf.tags || "",
+      onFinTags: (e) => this.setState({ nf: Object.assign({}, st.nf, { tags: e.target.value }) }),
+      nfDate: st.nf.date || this.todayIso(),
+      onFinDate: (e) => this.setState({ nf: Object.assign({}, st.nf, { date: e.target.value }) }),
+      editingTxTags: st.editingTxTags || "",
+      onEditingTxTagsChange: (e) => this.setState({ editingTxTags: e.target.value }),
+      cancelEditTxTags: () => this.setState({ editingTxId: null, editingTxTags: "" }),
       toggleFinType: () => this.setState({ nf: Object.assign({}, st.nf, { t: st.nf.t === "in" ? "out" : "in" }) }),
       finTypeLabel: st.nf.t === "in" ? "entrada" : "saída",
       finTypeBd: st.nf.t === "in" ? "rgba(196,166,255,0.55)" : "rgba(255,255,255,0.2)",
@@ -2812,9 +3089,11 @@ Sempre confirme as ações executadas de forma amigável e clara.`;
         const val = parseFloat(String(st.nf.v).replace(",", "."));
         if (!String(st.nf.d).trim() || !val) return;
         const cat = String(st.nf.c || "").trim() || this.catGuess(this.norm(st.nf.d), st.nf.t);
+        const rawTags = (st.nf.tags || "").split(",").map((s) => s.trim().replace(/^#/, "")).filter(Boolean);
+        const date = st.nf.date || this.todayIso();
         this.setState({
-          txs: [{ id: this.uid("tx"), d: st.nf.d, v: val, t: st.nf.t, c: cat }].concat(st.txs),
-          nf: { d: "", v: "", t: st.nf.t, c: "" }
+          txs: [{ id: this.uid("tx"), d: st.nf.d, v: val, t: st.nf.t, c: cat, tags: rawTags, date: date }].concat(st.txs),
+          nf: { d: "", v: "", t: st.nf.t, c: "", tags: "", date: "" }
         });
       },
       ncat: st.ncat,
