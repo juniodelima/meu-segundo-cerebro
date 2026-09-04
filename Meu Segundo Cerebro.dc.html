@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #05030a; }
+  * { box-sizing: border-box; }
+  a { color: #c4a6ff; text-decoration: none; }
+  a:hover { color: #e4d5ff; }
+  input, textarea, button { font-family: inherit; }
+  input:focus, textarea:focus { outline: none; }
+  ::selection { background: rgba(169,123,255,0.35); }
+  @keyframes hubIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
+  @keyframes formIn { from { opacity: 0; filter: blur(14px); transform: translateY(16px) scale(0.985); } to { opacity: 1; filter: blur(0); transform: none; } }
+  @keyframes breathe { 0%,100% { opacity: 0.45; } 50% { opacity: 0.85; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+</style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1b0d36"/><circle cx="50" cy="50" r="11" fill="#c4a6ff"/><ellipse cx="50" cy="50" rx="26" ry="9" fill="none" stroke="#a97bff" stroke-width="1.6"/><ellipse cx="50" cy="50" rx="9" ry="26" fill="none" stroke="#a97bff" stroke-width="1.6"/></svg></template>
+<div style="min-height: 100vh; background: linear-gradient(180deg, #241148 0%, #150a29 40%, #05030a 100%); color: #f2eefb; font-family: 'Space Grotesk', Helvetica, sans-serif; position: relative; overflow-x: hidden;">
+
+  <sc-if value="{{isHub}}" hint-placeholder-val="{{ true }}">
+    <div ref="{{hubRef}}" style="position: relative; height: 100vh; min-height: 620px; width: 100%; transition: opacity 420ms ease-in; animation: hubIn 700ms cubic-bezier(0.16,1,0.3,1) both;">
+      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 46%, rgba(169,123,255,0.26), rgba(96,48,168,0.12) 34%, rgba(5,3,10,0) 66%); animation: breathe 7s ease-in-out infinite;"></div>
+      <canvas ref="{{brainRef}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+
+      <div style="position: absolute; top: 30px; left: 6vw; display: flex; flex-direction: column; gap: 6px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">Meu Segundo Cérebro</div>
+        <div style="font-size: 12px; color: #8f83ab; font-family: 'IBM Plex Mono', monospace;">{{ hubStamp }}</div>
+      </div>
+
+      <div style="position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; width: 80%;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8f83ab; letter-spacing: 0.16em; text-transform: uppercase; text-wrap: pretty;">{{ hubCount }}</div>
+      </div>
+
+      <div onClick="{{openBrain}}" style="position: absolute; left: 50%; top: 8%; transform: translate(-50%,-50%); cursor: pointer; padding: 15px 26px; border: 1px solid rgba(169,123,255,0.5); border-radius: 999px; background: rgba(169,123,255,0.12); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; gap: 3px; transition: all 220ms ease;" style-hover="background: rgba(169,123,255,0.22); border-color: rgba(196,166,255,0.95);">
+        <div style="font-size: 19px; font-weight: 600; letter-spacing: -0.015em; white-space: nowrap;">Segundo Cérebro</div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #c4a6ff;">tudo que eu já aprendi</div>
+      </div>
+
+      <div onClick="{{openFin}}" style="position: absolute; left: 84%; top: 32%; transform: translate(-50%,-50%); cursor: pointer; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; background: rgba(255,255,255,0.045); backdrop-filter: blur(10px); font-size: 15px; font-weight: 500; white-space: nowrap; transition: all 220ms ease;" style-hover="border-color: rgba(196,166,255,0.8); background: rgba(169,123,255,0.18);">Finanças pessoais</div>
+
+      <div onClick="{{openCheck}}" style="position: absolute; left: 78%; top: 83%; transform: translate(-50%,-50%); cursor: pointer; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; background: rgba(255,255,255,0.045); backdrop-filter: blur(10px); font-size: 15px; font-weight: 500; white-space: nowrap; transition: all 220ms ease;" style-hover="border-color: rgba(196,166,255,0.8); background: rgba(169,123,255,0.18);">Checklist</div>
+
+      <div onClick="{{openIdeias}}" style="position: absolute; left: 22%; top: 83%; transform: translate(-50%,-50%); cursor: pointer; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; background: rgba(255,255,255,0.045); backdrop-filter: blur(10px); font-size: 15px; font-weight: 500; white-space: nowrap; transition: all 220ms ease;" style-hover="border-color: rgba(196,166,255,0.8); background: rgba(169,123,255,0.18);">Ideias</div>
+
+      <div onClick="{{openFlows}}" style="position: absolute; left: 16%; top: 32%; transform: translate(-50%,-50%); cursor: pointer; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; background: rgba(255,255,255,0.045); backdrop-filter: blur(10px); font-size: 15px; font-weight: 500; white-space: nowrap; transition: all 220ms ease;" style-hover="border-color: rgba(196,166,255,0.8); background: rgba(169,123,255,0.18);">Workflows</div>
+
+      <div style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.1em;">clique em uma aba para entrar</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isHubMobile}}" hint-placeholder-val="{{ false }}">
+    <div ref="{{hubRef}}" style="position: relative; min-height: 100vh; width: 100%; transition: opacity 420ms ease-in; animation: hubIn 700ms cubic-bezier(0.16,1,0.3,1) both; padding: 24px 20px 40px; display: flex; flex-direction: column;">
+      <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 24%, rgba(169,123,255,0.26), rgba(96,48,168,0.12) 30%, rgba(5,3,10,0) 60%); animation: breathe 7s ease-in-out infinite;"></div>
+      <canvas ref="{{brainRef}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block;"></canvas>
+
+      <div style="position: relative; display: flex; flex-direction: column; gap: 5px; align-items: center;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">Meu Segundo Cérebro</div>
+        <div style="font-size: 11.5px; color: #8f83ab; font-family: 'IBM Plex Mono', monospace;">{{ hubStamp }}</div>
+      </div>
+
+      <div style="height: 34vh;"></div>
+
+      <div style="position: relative; display: flex; flex-direction: column; gap: 11px;">
+        <div onClick="{{openBrain}}" style="cursor: pointer; padding: 17px 22px; border: 1px solid rgba(169,123,255,0.5); border-radius: 16px; background: rgba(169,123,255,0.14); backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 3px;">
+          <div style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em;">Segundo Cérebro</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: #c4a6ff;">tudo que eu já aprendi</div>
+        </div>
+        <div onClick="{{openFin}}" style="cursor: pointer; padding: 16px 22px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); font-size: 16px; font-weight: 500;">Finanças pessoais</div>
+        <div onClick="{{openIdeias}}" style="cursor: pointer; padding: 16px 22px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); font-size: 16px; font-weight: 500;">Ideias</div>
+        <div onClick="{{openCheck}}" style="cursor: pointer; padding: 16px 22px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); font-size: 16px; font-weight: 500;">Checklist</div>
+        <div onClick="{{openFlows}}" style="cursor: pointer; padding: 16px 22px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); font-size: 16px; font-weight: 500;">Workflows</div>
+        <div style="text-align: center; margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288; letter-spacing: 0.08em; text-wrap: pretty;">{{ hubCount }}</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isPanel}}" hint-placeholder-val="{{ false }}">
+    <div style="min-height: 100vh; animation: formIn 620ms cubic-bezier(0.16,1,0.3,1) both; padding: 26px 5vw 90px;">
+      <div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px;">
+
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <div onClick="{{back}}" style="cursor: pointer; padding: 9px 16px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #a99ec2; transition: all 200ms ease; white-space: nowrap;" style-hover="color: #f2eefb; border-color: rgba(196,166,255,0.7);">← sair do cérebro</div>
+          <div style="height: 1px; flex: 1; min-width: 40px; background: linear-gradient(90deg, rgba(169,123,255,0.5), rgba(255,255,255,0.05));"></div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #c4a6ff;">{{ panelKicker }}</div>
+        </div>
+
+        <h1 style="margin: 0; font-size: clamp(28px, 5vw, 42px); font-weight: 600; letter-spacing: -0.03em;">{{ panelTitle }}</h1>
+
+        <!-- SEGUNDO CÉREBRO -->
+        <sc-if value="{{isBrainPanel}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 24px;">
+            <div style="border: 1px solid rgba(169,123,255,0.38); border-radius: 18px; background: rgba(169,123,255,0.07); padding: 6px 6px 6px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #c4a6ff;">/</span>
+              <input value="{{ query }}" onChange="{{onQuery}}" placeholder="pergunte ou pesquise: git, css, contrato, como organizo a semana..." style="flex: 1 1 200px; background: transparent; border: none; color: #f2eefb; font-size: 16px; padding: 15px 0; min-width: 0;" />
+              <div style="padding: 12px 18px; border-radius: 12px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #e4d5ff;">buscar</div>
+            </div>
+
+            <sc-if value="{{hasQuery}}" hint-placeholder-val="{{ false }}">
+              <div style="border: 1px solid rgba(196,166,255,0.28); border-radius: 16px; background: linear-gradient(180deg, rgba(169,123,255,0.14), rgba(169,123,255,0.03)); padding: 22px 24px; display: flex; flex-direction: column; gap: 12px; animation: rise 300ms ease-out both;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">resposta do seu cérebro</div>
+                <div style="font-size: 16.5px; line-height: 1.65; color: #f2eefb; text-wrap: pretty;">{{ aiAnswer }}</div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8f83ab; line-height: 1.6;">{{ aiSources }}</div>
+              </div>
+            </sc-if>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 9px;">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+                <div onClick="{{c.onClick}}" style="cursor: pointer; padding: 9px 15px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; transition: all 180ms ease; border: 1px solid {{c.bd}}; background: {{c.bg}}; color: {{c.fg}};">{{ c.label }}</div>
+              </sc-for>
+            </div>
+
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7a7096; letter-spacing: 0.1em;">{{ resultLabel }}</div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); gap: 16px;">
+              <sc-for list="{{ results }}" as="n" hint-placeholder-count="4">
+                <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.035); padding: 20px; display: flex; flex-direction: column; gap: 12px; animation: rise 320ms ease-out both; transition: border-color 200ms ease;" style-hover="border-color: rgba(196,166,255,0.5);">
+                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em;">{{ n.t }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; padding: 4px 8px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.16); color: #a99ec2; white-space: nowrap;">{{ n.type }}</div>
+                  </div>
+                  <sc-if value="{{n.isImage}}" hint-placeholder-val="{{ false }}">
+                    <div style="height: 116px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.03); background-image: repeating-linear-gradient(135deg, rgba(196,166,255,0.14) 0 8px, rgba(196,166,255,0) 8px 16px); display: flex; align-items: center; justify-content: center;">
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8f83ab;">{{ n.slot }}</span>
+                    </div>
+                  </sc-if>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #b8aed0; word-break: break-word;">{{ n.body }}</div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <sc-for list="{{ n.tags }}" as="tg" hint-placeholder-count="2">
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #c4a6ff; opacity: 0.85;">#{{ tg }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">guardar algo novo</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <input value="{{ nn.t }}" onChange="{{onNoteTitle}}" placeholder="título" style="flex: 1 1 200px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px;" />
+                <input value="{{ nn.body }}" onChange="{{onNoteBody}}" placeholder="conteúdo, código, link, nome do arquivo..." style="flex: 2 1 280px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
+                <input value="{{ nn.tags }}" onChange="{{onNoteTags}}" placeholder="tags" style="flex: 1 1 130px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px;" />
+                <div onClick="{{addNote}}" style="cursor: pointer; padding: 12px 20px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">salvar</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- FINANÇAS -->
+        <sc-if value="{{isFinPanel}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 26px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 14px;">
+              <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7a7096;">entrou</div>
+                <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: #c4a6ff;">{{ finIn }}</div>
+              </div>
+              <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7a7096;">saiu</div>
+                <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em; color: #f2eefb;">{{ finOut }}</div>
+              </div>
+              <div style="border: 1px solid rgba(169,123,255,0.4); border-radius: 14px; padding: 20px; background: rgba(169,123,255,0.1); display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #a99ec2;">saldo do mês</div>
+                <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">{{ finBalance }}</div>
+              </div>
+              <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7a7096;">a pagar</div>
+                <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">{{ billsTotal }}</div>
+              </div>
+            </div>
+
+            <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 20px; background: rgba(255,255,255,0.022);">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">evolução dos últimos 6 meses</div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8f83ab;">barra clara = entrada · escura = saída</div>
+              </div>
+              <div style="display: flex; align-items: flex-end; gap: 3%; height: 190px;">
+                <sc-for list="{{ months }}" as="m" hint-placeholder-count="6">
+                  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; justify-content: flex-end;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: {{m.netColor}};">{{ m.net }}</div>
+                    <div style="display: flex; align-items: flex-end; gap: 4px; width: 100%; justify-content: center; height: 100%;">
+                      <div style="width: 26%; min-width: 8px; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, #c4a6ff, #7c4dff); height: {{m.hIn}};"></div>
+                      <div style="width: 26%; min-width: 8px; border-radius: 4px 4px 0 0; background: rgba(255,255,255,0.14); height: {{m.hOut}};"></div>
+                    </div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a7096;">{{ m.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px;">
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">lançamentos</div>
+                <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden;">
+                  <sc-for list="{{ txs }}" as="x" hint-placeholder-count="5">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 18px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                      <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+                        <div style="font-size: 14.5px; font-weight: 500;">{{ x.d }}</div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #7a7096; letter-spacing: 0.08em;">{{ x.c }}</div>
+                      </div>
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; white-space: nowrap; color: {{x.color}};">{{ x.amount }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 16px;">
+                  <input value="{{ nf.d }}" onChange="{{onFinDesc}}" placeholder="descrição" style="flex: 2 1 160px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px;" />
+                  <input value="{{ nf.v }}" onChange="{{onFinVal}}" placeholder="valor" style="flex: 0 1 100px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
+                  <div onClick="{{toggleFinType}}" style="cursor: pointer; padding: 11px 16px; border-radius: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid {{finTypeBd}}; color: {{finTypeFg}}; background: {{finTypeBg}};">{{ finTypeLabel }}</div>
+                  <div onClick="{{addTx}}" style="cursor: pointer; padding: 11px 20px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">lançar</div>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 22px;">
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">contas a pagar</div>
+                  <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden;">
+                    <sc-for list="{{ bills }}" as="b" hint-placeholder-count="4">
+                      <div onClick="{{b.onToggle}}" style="cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <div style="width: 17px; height: 17px; border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid {{b.boxBd}}; background: {{b.boxBg}}; color: #1a0b33;">{{ b.mark }}</div>
+                        <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;">
+                          <div style="font-size: 14px; font-weight: 500; text-decoration: {{b.deco}}; color: {{b.color}};">{{ b.d }}</div>
+                          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: {{b.dueColor}}; letter-spacing: 0.06em;">{{ b.dueLabel }}</div>
+                        </div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; white-space: nowrap; color: {{b.color}};">{{ b.amount }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">metas de economia</div>
+                  <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
+                    <sc-for list="{{ goals }}" as="g" hint-placeholder-count="3">
+                      <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px;">
+                          <span style="color: #ddd6ec;">{{ g.name }}</span>
+                          <span style="font-family: 'IBM Plex Mono', monospace; color: #a99ec2;">{{ g.label }}</span>
+                        </div>
+                        <div style="height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08);">
+                          <div style="height: 100%; border-radius: 999px; background: linear-gradient(90deg, #7c4dff, #d9c2ff); width: {{g.w}};"></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">para onde vai o dinheiro</div>
+                  <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px;">
+                    <sc-for list="{{ cats }}" as="k" hint-placeholder-count="4">
+                      <div style="display: flex; flex-direction: column; gap: 7px;">
+                        <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 13px;">
+                          <span style="color: #ddd6ec;">{{ k.name }}</span>
+                          <span style="font-family: 'IBM Plex Mono', monospace; color: #a99ec2;">{{ k.amount }}</span>
+                        </div>
+                        <div style="height: 5px; border-radius: 999px; background: rgba(255,255,255,0.08);">
+                          <div style="height: 100%; border-radius: 999px; background: linear-gradient(90deg, #c4a6ff, rgba(255,255,255,0.35)); width: {{k.w}};"></div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- IDEIAS -->
+        <sc-if value="{{isIdeasPanel}}" hint-placeholder-val="{{ false }}">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; align-items: start;">
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; gap: 10px;">
+                <input value="{{ ni }}" onChange="{{onIdeaInput}}" placeholder="nova ideia..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; min-width: 0;" />
+                <div onClick="{{addIdea}}" style="cursor: pointer; padding: 12px 18px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">+</div>
+              </div>
+              <sc-for list="{{ ideas }}" as="i" hint-placeholder-count="4">
+                <div onClick="{{i.onClick}}" style="cursor: pointer; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 7px; transition: all 200ms ease; border: 1px solid {{i.bd}}; background: {{i.bg}};">
+                  <div style="font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em;">{{ i.title }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a7096;">{{ i.meta }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="border: 1px solid rgba(169,123,255,0.3); border-radius: 16px; background: linear-gradient(180deg, rgba(169,123,255,0.1), rgba(169,123,255,0.02)); padding: 24px; display: flex; flex-direction: column; gap: 18px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">brainstorm</div>
+              <div style="font-size: 23px; font-weight: 600; letter-spacing: -0.02em; text-wrap: pretty;">{{ ideaTitle }}</div>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <sc-for list="{{ ideaSteps }}" as="s" hint-placeholder-count="3">
+                  <div style="display: flex; gap: 12px; align-items: flex-start; padding: 13px 15px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #c4a6ff; padding-top: 2px;">{{ s.n }}</div>
+                    <div style="font-size: 14px; line-height: 1.55; color: #ddd6ec;">{{ s.text }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: flex; gap: 10px;">
+                <input value="{{ ns }}" onChange="{{onStepInput}}" placeholder="próximo passo da execução..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; min-width: 0;" />
+                <div onClick="{{addStep}}" style="cursor: pointer; padding: 12px 18px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">add</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- CHECKLIST -->
+        <sc-if value="{{isCheckPanel}}" hint-placeholder-val="{{ false }}">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 18px; align-items: start;">
+            <sc-for list="{{ columns }}" as="col" hint-placeholder-count="3">
+              <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px; background: rgba(255,255,255,0.028);">
+                <div style="display: flex; align-items: baseline; justify-content: space-between;">
+                  <div style="font-size: 17px; font-weight: 600;">{{ col.name }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #c4a6ff;">{{ col.progress }}</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                  <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="4">
+                    <div onClick="{{it.onToggle}}" style="cursor: pointer; display: flex; gap: 12px; align-items: center; padding: 13px 14px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); min-height: 46px;">
+                      <div style="width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid {{it.boxBd}}; background: {{it.boxBg}}; color: #1a0b33;">{{ it.mark }}</div>
+                      <div style="font-size: 14px; line-height: 1.4; text-decoration: {{it.deco}}; color: {{it.color}};">{{ it.text }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <input value="{{ col.draft }}" onChange="{{col.onDraft}}" placeholder="adicionar..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 11px 12px; color: #f2eefb; font-size: 13px; min-width: 0;" />
+                  <div onClick="{{col.onAdd}}" style="cursor: pointer; padding: 11px 15px; border-radius: 9px; border: 1px solid rgba(169,123,255,0.45); background: rgba(169,123,255,0.18); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">+</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- WORKFLOWS -->
+        <sc-if value="{{isFlowPanel}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <sc-for list="{{ flows }}" as="f" hint-placeholder-count="3">
+              <div style="border-radius: 16px; overflow: hidden; border: 1px solid {{f.bd}}; background: {{f.bg}};">
+                <div onClick="{{f.onClick}}" style="cursor: pointer; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
+                  <div style="display: flex; flex-direction: column; gap: 5px; min-width: 0;">
+                    <div style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em;">{{ f.name }}</div>
+                    <div style="font-size: 13.5px; color: #a99ec2;">{{ f.desc }}</div>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #c4a6ff; white-space: nowrap;">{{ f.badge }}</div>
+                </div>
+                <sc-if value="{{f.open}}" hint-placeholder-val="{{ false }}">
+                  <div style="padding: 0 24px 22px; display: flex; flex-direction: column;">
+                    <sc-for list="{{ f.steps }}" as="st" hint-placeholder-count="4">
+                      <div style="display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-top: 1px solid rgba(255,255,255,0.07);">
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #c4a6ff; width: 26px; flex-shrink: 0; padding-top: 2px;">{{ st.n }}</div>
+                        <div style="font-size: 14.5px; line-height: 1.6; color: #ddd6ec;">{{ st.text }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.brainRef = React.createRef();
+    this.hubRef = React.createRef();
+    this.anchorsWide = [[0.5, 0.08], [0.84, 0.32], [0.78, 0.83], [0.22, 0.83], [0.16, 0.32]];
+    this.anchorsNarrow = [[0.5, 0.5], [0.5, 0.605], [0.5, 0.815], [0.5, 0.71], [0.5, 0.92]];
+    this.onResize = () => {
+      const n = window.innerWidth < 760;
+      if (n !== this.state.narrow) this.setState({ narrow: n });
+    };
+    this.state = {
+      narrow: typeof window !== "undefined" && window.innerWidth < 760,
+      view: "hub",
+      query: "",
+      chip: "tudo",
+      nn: { t: "", body: "", tags: "" },
+      notes: [
+        { t: "Atalhos do VS Code que eu uso todo dia", type: "ATALHO", tags: ["vscode", "produtividade"], body: "Cmd+P abrir arquivo · Cmd+Shift+F buscar no projeto · Alt+↑/↓ mover linha · Cmd+D selecionar próxima igual" },
+        { t: "Debounce em JS", type: "CÓDIGO", tags: ["javascript", "snippet"], body: "const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}" },
+        { t: "git: desfazer o último commit", type: "CÓDIGO", tags: ["git", "snippet"], body: "git reset --soft HEAD~1   → mantém as alterações no stage" },
+        { t: "Centralizar qualquer coisa em CSS", type: "CÓDIGO", tags: ["css", "snippet"], body: "display:flex; align-items:center; justify-content:center" },
+        { t: "Contrato modelo — freelance", type: "PDF", tags: ["trabalho", "financeiro"], body: "contrato-freela-v3.pdf · 240 KB · última revisão jan/26" },
+        { t: "Planilha de precificação de projeto", type: "PDF", tags: ["financeiro", "trabalho"], body: "precificacao-2026.xlsx · 88 KB · fórmula de hora/valor na aba 2" },
+        { t: "Curso de tráfego pago — aula 4", type: "LINK", tags: ["marketing", "estudo"], body: "Estrutura de campanha: 1 criativo por dor, orçamento fixo por conjunto" },
+        { t: "Documentação da API que eu sempre esqueço", type: "LINK", tags: ["dev", "referência"], body: "Autenticação por bearer token, limite de 60 req/min" },
+        { t: "Print do painel de anúncios que converteu", type: "IMAGEM", tags: ["marketing", "referência"], body: "CPA de R$ 12 na campanha de setembro — estrutura vale copiar", slot: "print do painel" },
+        { t: "Referência de layout escuro", type: "IMAGEM", tags: ["design", "referência"], body: "Degradê roxo → preto, cartões com borda de 1px", slot: "referência visual" },
+        { t: "Como eu organizo a semana", type: "NOTA", tags: ["rotina", "produtividade"], body: "Domingo à noite: revisar o checklist do mês e puxar 3 prioridades para a semana." },
+        { t: "Regra dos 3 blocos de foco", type: "NOTA", tags: ["produtividade", "rotina"], body: "Manhã: criar. Tarde: reunião e recado. Noite: estudar e guardar no cérebro." }
+      ],
+      nf: { d: "", v: "", t: "out" },
+      txs: [
+        { d: "Salário", v: 5200, t: "in", c: "Trabalho" },
+        { d: "Freela — landing page", v: 2400, t: "in", c: "Trabalho" },
+        { d: "Aluguel", v: 1800, t: "out", c: "Moradia" },
+        { d: "Mercado", v: 740, t: "out", c: "Alimentação" },
+        { d: "Assinaturas (IA, hosting)", v: 210, t: "out", c: "Ferramentas" },
+        { d: "Academia", v: 120, t: "out", c: "Saúde" },
+        { d: "Combustível", v: 320, t: "out", c: "Transporte" }
+      ],
+      bills: [
+        { d: "Cartão de crédito", v: 1240, due: 10, paid: false },
+        { d: "Internet", v: 129, due: 5, paid: true },
+        { d: "Energia", v: 186, due: 12, paid: false },
+        { d: "Faculdade", v: 640, due: 20, paid: false },
+        { d: "Plano de saúde", v: 398, due: 25, paid: false }
+      ],
+      months: [
+        { label: "abr", in: 6100, out: 4300 },
+        { label: "mai", in: 5800, out: 5100 },
+        { label: "jun", in: 7400, out: 4600 },
+        { label: "jul", in: 6900, out: 5900 },
+        { label: "ago", in: 8100, out: 5200 },
+        { label: "set", in: 7600, out: 3190 }
+      ],
+      goals: [
+        { name: "Reserva de emergência", target: 18000, saved: 7400 },
+        { name: "Setup novo (PC + tela)", target: 9000, saved: 5600 },
+        { name: "Viagem em janeiro", target: 6000, saved: 1200 }
+      ],
+      ideas: [
+        { title: "Curso curto de automação", steps: ["Definir o resultado que o aluno leva em 7 dias", "Gravar 5 aulas de 12 minutos", "Vender primeiro para a minha lista"] },
+        { title: "Newsletter semanal de snippets", steps: ["Escolher 3 snippets por semana do segundo cérebro"] },
+        { title: "Template de proposta comercial", steps: [] }
+      ],
+      ideaSel: 0,
+      ni: "",
+      ns: "",
+      tasks: [
+        { text: "Responder orçamentos", done: true, p: "dia" },
+        { text: "1h estudando automação", done: false, p: "dia" },
+        { text: "Registrar os gastos de ontem", done: false, p: "dia" },
+        { text: "Gravar 2 aulas", done: false, p: "semana" },
+        { text: "Revisar notas novas do cérebro", done: true, p: "semana" },
+        { text: "Enviar proposta para o cliente novo", done: false, p: "semana" },
+        { text: "Fechar o mês nas finanças", done: false, p: "mes" },
+        { text: "Backup dos arquivos", done: false, p: "mes" },
+        { text: "Guardar R$ 1.200 na reserva", done: false, p: "mes" }
+      ],
+      draft: { dia: "", semana: "", mes: "" },
+      flows: [
+        { name: "Preparar uma aula", desc: "Do tema em branco até a aula gravada", steps: ["Escrever a promessa da aula em uma frase", "Listar as 3 dúvidas que o aluno tem antes de começar", "Montar o roteiro em blocos de 5 minutos", "Separar exemplos e código pronto do segundo cérebro", "Gravar sem editar no meio", "Cortar, publicar e anotar o que melhorar"] },
+        { name: "Fechar o mês financeiro", desc: "Rotina do último dia do mês", steps: ["Lançar tudo que ficou pendente", "Marcar as contas pagas e conferir vencimentos do mês seguinte", "Comparar saídas por categoria com o mês anterior", "Separar reserva e imposto", "Definir o teto de gasto do próximo mês"] },
+        { name: "Tirar uma ideia do papel", desc: "Da ideia solta ao primeiro entregável", steps: ["Escrever a ideia em uma frase e o problema que resolve", "Definir a menor versão possível", "Marcar uma data de entrega no checklist", "Executar em 3 blocos de foco", "Anotar o aprendizado no segundo cérebro"] }
+      ],
+      flowOpen: 0
+    };
+  }
+
+  componentDidMount() { window.addEventListener("resize", this.onResize); this.startBrain(); }
+  componentDidUpdate() { if (this.state.view === "hub") this.startBrain(); else this.stopBrain(); }
+  componentWillUnmount() { window.removeEventListener("resize", this.onResize); this.stopBrain(); }
+
+  stopBrain() { if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; } this._cv = null; this._diss = 0; }
+
+  startBrain() {
+    const cv = this.brainRef.current;
+    if (!cv || cv === this._cv) return;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    this._cv = cv;
+    this._diss = 0;
+    const ctx = cv.getContext("2d");
+    let s = 20260904;
+    const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
+
+    // núcleo: nuvem densa no centro
+    const core = [];
+    for (let i = 0; i < 90; i++) {
+      const u = rnd() * 2 - 1, th = rnd() * Math.PI * 2, r = 0.28 + Math.cbrt(rnd()) * 0.2;
+      const sx = Math.sqrt(1 - u * u);
+      core.push({ x: r * sx * Math.cos(th), y: r * u, z: r * sx * Math.sin(th), s: 0.7 + rnd() * 1.3, ph: rnd() * 6.28, dx: (rnd() - 0.5), dy: (rnd() - 0.5), dz: (rnd() - 0.5) });
+    }
+    // órbitas: 3 anéis inclinados, com nós viajando
+    const orbits = [
+      { r: 0.78, tilt: 0.28, spin: 0.00035, nodes: 5 },
+      { r: 1.04, tilt: -0.62, spin: -0.00024, nodes: 4 },
+      { r: 1.3, tilt: 1.05, spin: 0.00017, nodes: 3 }
+    ];
+
+    const rot = (p, yaw, pitch) => {
+      const cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+      let x = p.x * cyw + p.z * syw, z = -p.x * syw + p.z * cyw;
+      let y = p.y * cp - z * sp; z = p.y * sp + z * cp;
+      return { x, y, z };
+    };
+
+    const frame = (t) => {
+      const rect = cv.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = Math.max(1, rect.width), h = Math.max(1, rect.height);
+      if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      let e = 0;
+      if (this._diss) e = Math.min(1, (t - this._diss) / 900);
+      const fade = 1 - e;
+      const blow = e * e * 3.4;
+
+      const nar = w < 760;
+      const anchors = nar ? this.anchorsNarrow : this.anchorsWide;
+      const cx = w / 2, cy = h * (nar ? 0.24 : 0.46), sc = Math.min(w * (nar ? 0.86 : 0.6), h) * (nar ? 0.26 : 0.30);
+      const yaw = t * 0.00019, pitch = Math.sin(t * 0.00014) * 0.2;
+
+      // halo do núcleo
+      const hg = ctx.createRadialGradient(cx, cy, 0, cx, cy, sc * (0.62 + e * 1.4));
+      hg.addColorStop(0, "rgba(196,166,255," + (0.34 * fade).toFixed(3) + ")");
+      hg.addColorStop(0.55, "rgba(124,77,255," + (0.14 * fade).toFixed(3) + ")");
+      hg.addColorStop(1, "rgba(124,77,255,0)");
+      ctx.fillStyle = hg;
+      ctx.beginPath(); ctx.arc(cx, cy, sc * (0.62 + e * 1.4), 0, 6.2832); ctx.fill();
+
+      // anéis
+      orbits.forEach((o, oi) => {
+        const ph = t * o.spin;
+        const pts = [];
+        for (let k = 0; k <= 70; k++) {
+          const a = (k / 70) * 6.2832;
+          const base = { x: Math.cos(a) * o.r, y: Math.sin(a) * o.r * 0.34, z: Math.sin(a) * o.r };
+          const tl = { x: base.x, y: base.y * Math.cos(o.tilt) - base.z * Math.sin(o.tilt), z: base.y * Math.sin(o.tilt) + base.z * Math.cos(o.tilt) };
+          const r = rot(tl, yaw + ph, pitch);
+          const k2 = 3.2 / (3.2 - r.z);
+          const push = 1 + blow * 0.5;
+          pts.push({ X: cx + r.x * sc * k2 * push, Y: cy + r.y * sc * k2 * push, k: k2 });
+        }
+        ctx.lineWidth = 1;
+        for (let k = 0; k < pts.length - 1; k++) {
+          const a = pts[k], b = pts[k + 1];
+          const al = Math.max(0, (a.k - 0.82)) * 0.5 * fade;
+          ctx.strokeStyle = "rgba(196,166,255," + al.toFixed(3) + ")";
+          ctx.beginPath(); ctx.moveTo(a.X, a.Y); ctx.lineTo(b.X, b.Y); ctx.stroke();
+        }
+        for (let n = 0; n < o.nodes; n++) {
+          const idx = Math.floor((((t * 0.00006 * (oi + 1)) + n / o.nodes) % 1) * 70);
+          const p = pts[idx];
+          const a = Math.min(1, Math.max(0.1, (p.k - 0.7) * 1.5)) * fade;
+          ctx.beginPath(); ctx.arc(p.X, p.Y, 2.6 * p.k, 0, 6.2832);
+          ctx.fillStyle = "rgba(233,222,255," + a.toFixed(3) + ")";
+          ctx.shadowBlur = 12; ctx.shadowColor = "rgba(169,123,255,0.9)";
+          ctx.fill(); ctx.shadowBlur = 0;
+        }
+      });
+
+      // núcleo
+      for (const p of core) {
+        const q = rot({ x: p.x + p.dx * blow, y: p.y + p.dy * blow, z: p.z + p.dz * blow }, yaw * 1.6, pitch);
+        const k = 3.2 / (3.2 - q.z);
+        const tw = 0.55 + 0.45 * Math.sin(t * 0.0018 + p.ph);
+        const a = Math.min(1, Math.max(0.08, (k - 0.72) * 1.6)) * tw * fade;
+        ctx.beginPath();
+        ctx.arc(cx + q.x * sc * k, cy + q.y * sc * k, p.s * k * (1.3 + e * 0.6), 0, 6.2832);
+        ctx.fillStyle = "rgba(243,238,255," + a.toFixed(3) + ")";
+        ctx.shadowBlur = 9 * k; ctx.shadowColor = "rgba(169,123,255,0.75)";
+        ctx.fill(); ctx.shadowBlur = 0;
+      }
+
+      // conexões com as abas
+      anchors.forEach((an, n) => {
+        const ax = an[0] * w, ay = an[1] * h;
+        const a0 = (n / 5) * 6.2832 + t * 0.00019;
+        const gx = cx + Math.cos(a0) * sc * 0.5, gy = cy + Math.sin(a0) * sc * 0.32;
+        ctx.strokeStyle = "rgba(196,166,255," + (0.09 * fade).toFixed(3) + ")";
+        ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(ax, ay); ctx.stroke();
+        const f = ((t * 0.00026) + n / 5) % 1;
+        ctx.beginPath();
+        ctx.arc(gx + (ax - gx) * f, gy + (ay - gy) * f, 2.2, 0, 6.2832);
+        ctx.fillStyle = "rgba(233,222,255," + ((0.95 - Math.abs(f - 0.5)) * fade).toFixed(2) + ")";
+        ctx.shadowBlur = 10; ctx.shadowColor = "rgba(169,123,255,0.9)";
+        ctx.fill(); ctx.shadowBlur = 0;
+      });
+
+      this._raf = requestAnimationFrame(frame);
+    };
+    this._raf = requestAnimationFrame(frame);
+  }
+
+  enter(view) {
+    this._diss = performance.now();
+    const n = this.hubRef.current;
+    if (n) {
+      n.querySelectorAll("div").forEach(el => {
+        if (el.style.position === "absolute" && el.style.cursor === "pointer") { el.style.transition = "opacity 320ms ease, transform 520ms ease"; }
+      });
+      n.style.opacity = "0";
+    }
+    setTimeout(() => this.setState({ view }), 640);
+  }
+
+  money(v) { return "R$ " + Math.round(v).toLocaleString("pt-BR"); }
+  short(v) { return v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + "k" : String(Math.round(v)); }
+
+  renderVals() {
+    const st = this.state, v = st.view;
+    const titles = {
+      brain: ["arquivo pessoal", "Segundo Cérebro"],
+      fin: ["fluxo do mês", "Finanças pessoais"],
+      ideias: ["captura e execução", "Ideias"],
+      check: ["dia · semana · mês", "Checklist"],
+      flows: ["passo a passo", "Workflows"]
+    };
+    const meta = titles[v] || ["", ""];
+
+    const types = ["tudo", "NOTA", "CÓDIGO", "PDF", "LINK", "IMAGEM", "ATALHO"];
+    const q = st.query.trim().toLowerCase();
+    const matches = st.notes.filter(n => {
+      if (!q) return false;
+      return (n.t + " " + n.body + " " + n.type + " " + n.tags.join(" ")).toLowerCase().includes(q);
+    });
+    const results = st.notes.filter(n => {
+      if (st.chip !== "tudo" && n.type !== st.chip) return false;
+      if (!q) return true;
+      return (n.t + " " + n.body + " " + n.type + " " + n.tags.join(" ")).toLowerCase().includes(q);
+    });
+
+    let aiAnswer = "", aiSources = "";
+    if (q) {
+      if (!matches.length) {
+        aiAnswer = "Não encontrei nada sobre \u201c" + st.query.trim() + "\u201d ainda. Guarde a primeira nota sobre isso no campo abaixo e eu passo a responder por ela.";
+        aiSources = "0 fontes";
+      } else {
+        const top = matches[0];
+        const tagPool = [];
+        matches.forEach(m => m.tags.forEach(t => { if (!tagPool.includes(t)) tagPool.push(t); }));
+        aiAnswer = "Você tem " + matches.length + (matches.length === 1 ? " registro" : " registros") + " sobre \u201c" + st.query.trim() + "\u201d. O mais direto é " + top.t + ": " + top.body + (matches.length > 1 ? " Os outros registros cobrem " + tagPool.slice(0, 4).join(", ") + "." : "");
+        aiSources = "fontes: " + matches.slice(0, 3).map(m => m.t).join(" · ");
+      }
+    }
+
+    const chips = types.map(label => {
+      const on = st.chip === label;
+      return {
+        label: label === "tudo" ? "tudo" : label.toLowerCase(),
+        bd: on ? "rgba(196,166,255,0.7)" : "rgba(255,255,255,0.14)",
+        bg: on ? "rgba(169,123,255,0.2)" : "rgba(255,255,255,0.04)",
+        fg: on ? "#e4d5ff" : "#a99ec2",
+        onClick: () => this.setState({ chip: label })
+      };
+    });
+
+    const inSum = st.txs.filter(t => t.t === "in").reduce((a, b) => a + b.v, 0);
+    const outSum = st.txs.filter(t => t.t === "out").reduce((a, b) => a + b.v, 0);
+    const byCat = {};
+    st.txs.filter(t => t.t === "out").forEach(t => { byCat[t.c] = (byCat[t.c] || 0) + t.v; });
+    const maxCat = Math.max(1, ...Object.values(byCat));
+    const cats = Object.keys(byCat).sort((a, b) => byCat[b] - byCat[a]).map(name => ({
+      name, amount: this.money(byCat[name]), w: Math.round((byCat[name] / maxCat) * 100) + "%"
+    }));
+
+    const today = 4;
+    const billsOpen = st.bills.filter(b => !b.paid).reduce((a, b) => a + b.v, 0);
+    const maxMonth = Math.max(1, ...st.months.map(m => Math.max(m.in, m.out)));
+
+    const idea = st.ideas[st.ideaSel] || { title: "—", steps: [] };
+    const periods = [["dia", "Hoje"], ["semana", "Esta semana"], ["mes", "Este mês"]];
+
+    return {
+      isHub: v === "hub" && !st.narrow,
+      isHubMobile: v === "hub" && st.narrow,
+      isPanel: v !== "hub",
+      isBrainPanel: v === "brain",
+      isFinPanel: v === "fin",
+      isIdeasPanel: v === "ideias",
+      isCheckPanel: v === "check",
+      isFlowPanel: v === "flows",
+      brainRef: this.brainRef,
+      hubRef: this.hubRef,
+      hubStamp: "sexta, 4 de setembro",
+      hubCount: st.notes.length + " registros · " + st.ideas.length + " ideias · " + st.tasks.filter(t => !t.done).length + " afazeres abertos",
+      panelKicker: meta[0],
+      panelTitle: meta[1],
+      openBrain: () => this.enter("brain"),
+      openFin: () => this.enter("fin"),
+      openIdeias: () => this.enter("ideias"),
+      openCheck: () => this.enter("check"),
+      openFlows: () => this.enter("flows"),
+      back: () => this.setState({ view: "hub" }),
+
+      query: st.query,
+      hasQuery: !!q,
+      aiAnswer,
+      aiSources,
+      onQuery: (e) => this.setState({ query: e.target.value }),
+      chips,
+      results: results.map(n => ({ ...n, isImage: n.type === "IMAGEM", slot: n.slot || "imagem" })),
+      resultLabel: results.length + (results.length === 1 ? " registro" : " registros") + (q ? " correspondendo à busca" : " guardados"),
+      nn: st.nn,
+      onNoteTitle: (e) => this.setState({ nn: { ...st.nn, t: e.target.value } }),
+      onNoteBody: (e) => this.setState({ nn: { ...st.nn, body: e.target.value } }),
+      onNoteTags: (e) => this.setState({ nn: { ...st.nn, tags: e.target.value } }),
+      addNote: () => {
+        if (!st.nn.t.trim()) return;
+        const tags = st.nn.tags.split(/[,\s]+/).filter(Boolean);
+        this.setState({ notes: [{ t: st.nn.t, type: "NOTA", tags, body: st.nn.body }, ...st.notes], nn: { t: "", body: "", tags: "" } });
+      },
+
+      finIn: this.money(inSum),
+      finOut: this.money(outSum),
+      finBalance: this.money(inSum - outSum),
+      billsTotal: this.money(billsOpen),
+      txs: st.txs.map(x => ({ ...x, amount: (x.t === "in" ? "+" : "−") + this.money(x.v).slice(3), color: x.t === "in" ? "#c4a6ff" : "#f2eefb" })),
+      cats,
+      months: st.months.map(m => ({
+        label: m.label,
+        hIn: Math.round((m.in / maxMonth) * 100) + "%",
+        hOut: Math.round((m.out / maxMonth) * 100) + "%",
+        net: (m.in - m.out >= 0 ? "+" : "−") + this.short(Math.abs(m.in - m.out)),
+        netColor: m.in - m.out >= 0 ? "#c4a6ff" : "#ffb4b4"
+      })),
+      goals: st.goals.map(g => ({
+        name: g.name,
+        label: this.money(g.saved) + " / " + this.money(g.target),
+        w: Math.min(100, Math.round((g.saved / g.target) * 100)) + "%"
+      })),
+      bills: st.bills.map((b, k) => {
+        const late = !b.paid && b.due < today;
+        return {
+          d: b.d,
+          amount: this.money(b.v),
+          mark: b.paid ? "✓" : "",
+          deco: b.paid ? "line-through" : "none",
+          color: b.paid ? "#7a7096" : "#f2eefb",
+          dueLabel: b.paid ? "pago" : (late ? "venceu dia " + b.due : "vence dia " + b.due),
+          dueColor: b.paid ? "#7a7096" : (late ? "#ffb4b4" : "#a99ec2"),
+          boxBd: b.paid ? "rgba(196,166,255,0.85)" : "rgba(255,255,255,0.24)",
+          boxBg: b.paid ? "#c4a6ff" : "transparent",
+          onToggle: () => this.setState({ bills: st.bills.map((x, i) => i === k ? { ...x, paid: !x.paid } : x) })
+        };
+      }),
+      nf: st.nf,
+      onFinDesc: (e) => this.setState({ nf: { ...st.nf, d: e.target.value } }),
+      onFinVal: (e) => this.setState({ nf: { ...st.nf, v: e.target.value } }),
+      toggleFinType: () => this.setState({ nf: { ...st.nf, t: st.nf.t === "in" ? "out" : "in" } }),
+      finTypeLabel: st.nf.t === "in" ? "entrada" : "saída",
+      finTypeBd: st.nf.t === "in" ? "rgba(196,166,255,0.55)" : "rgba(255,255,255,0.2)",
+      finTypeBg: st.nf.t === "in" ? "rgba(169,123,255,0.16)" : "rgba(255,255,255,0.05)",
+      finTypeFg: st.nf.t === "in" ? "#e4d5ff" : "#ddd6ec",
+      addTx: () => {
+        const val = parseFloat(String(st.nf.v).replace(",", "."));
+        if (!st.nf.d.trim() || !val) return;
+        this.setState({ txs: [{ d: st.nf.d, v: val, t: st.nf.t, c: st.nf.t === "in" ? "Trabalho" : "Outros" }, ...st.txs], nf: { d: "", v: "", t: st.nf.t } });
+      },
+
+      ideas: st.ideas.map((i, k) => ({
+        title: i.title,
+        meta: i.steps.length ? i.steps.length + " passos" : "sem plano ainda",
+        bd: k === st.ideaSel ? "rgba(196,166,255,0.6)" : "rgba(255,255,255,0.1)",
+        bg: k === st.ideaSel ? "rgba(169,123,255,0.14)" : "rgba(255,255,255,0.035)",
+        onClick: () => this.setState({ ideaSel: k })
+      })),
+      ideaTitle: idea.title,
+      ideaSteps: idea.steps.map((text, k) => ({ n: String(k + 1).padStart(2, "0"), text })),
+      ni: st.ni,
+      ns: st.ns,
+      onIdeaInput: (e) => this.setState({ ni: e.target.value }),
+      onStepInput: (e) => this.setState({ ns: e.target.value }),
+      addIdea: () => {
+        if (!st.ni.trim()) return;
+        this.setState({ ideas: [{ title: st.ni, steps: [] }, ...st.ideas], ni: "", ideaSel: 0 });
+      },
+      addStep: () => {
+        if (!st.ns.trim() || !st.ideas.length) return;
+        this.setState({ ideas: st.ideas.map((i, k) => k === st.ideaSel ? { ...i, steps: [...i.steps, st.ns] } : i), ns: "" });
+      },
+
+      columns: periods.map(([p, name]) => {
+        const items = st.tasks.map((t, k) => ({ t, k })).filter(o => o.t.p === p);
+        const done = items.filter(o => o.t.done).length;
+        return {
+          name,
+          progress: done + "/" + items.length,
+          items: items.map(({ t, k }) => ({
+            text: t.text,
+            mark: t.done ? "✓" : "",
+            deco: t.done ? "line-through" : "none",
+            color: t.done ? "#7a7096" : "#f2eefb",
+            boxBd: t.done ? "rgba(196,166,255,0.85)" : "rgba(255,255,255,0.24)",
+            boxBg: t.done ? "#c4a6ff" : "transparent",
+            onToggle: () => this.setState({ tasks: st.tasks.map((x, i) => i === k ? { ...x, done: !x.done } : x) })
+          })),
+          draft: st.draft[p],
+          onDraft: (e) => this.setState({ draft: { ...st.draft, [p]: e.target.value } }),
+          onAdd: () => {
+            const val = st.draft[p].trim();
+            if (!val) return;
+            this.setState({ tasks: [...st.tasks, { text: val, done: false, p }], draft: { ...st.draft, [p]: "" } });
+          }
+        };
+      }),
+
+      flows: st.flows.map((f, k) => ({
+        name: f.name,
+        desc: f.desc,
+        badge: f.steps.length + " passos",
+        open: st.flowOpen === k,
+        bd: st.flowOpen === k ? "rgba(196,166,255,0.4)" : "rgba(255,255,255,0.1)",
+        bg: st.flowOpen === k ? "rgba(169,123,255,0.08)" : "rgba(255,255,255,0.03)",
+        steps: f.steps.map((text, i) => ({ n: String(i + 1).padStart(2, "0"), text })),
+        onClick: () => this.setState({ flowOpen: st.flowOpen === k ? -1 : k })
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
