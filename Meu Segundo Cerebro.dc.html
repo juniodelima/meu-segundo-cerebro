@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meu Segundo Cérebro</title>
+<meta name="description" content="Segundo cérebro pessoal: notas conectadas, workflows visuais, ideias e finanças.">
+<meta name="theme-color" content="#05030a">
+<meta property="og:title" content="Meu Segundo Cérebro">
+<meta property="og:description" content="Notas conectadas, workflows visuais, ideias e finanças — tudo em um lugar.">
+<meta property="og:type" content="website">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -18,11 +24,18 @@
   a:hover { color: #e4d5ff; }
   input, textarea, button { font-family: inherit; }
   input:focus, textarea:focus { outline: none; }
+  textarea { resize: vertical; }
   ::selection { background: rgba(169,123,255,0.35); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+  ::-webkit-scrollbar-thumb { background: rgba(169,123,255,0.32); border-radius: 999px; border: 2px solid #05030a; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(169,123,255,0.55); }
   @keyframes hubIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
   @keyframes formIn { from { opacity: 0; filter: blur(14px); transform: translateY(16px) scale(0.985); } to { opacity: 1; filter: blur(0); transform: none; } }
   @keyframes breathe { 0%,100% { opacity: 0.45; } 50% { opacity: 0.85; } }
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @keyframes popIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+  @keyframes blink { 0%,100% { opacity: 0.2; } 50% { opacity: 1; } }
 </style>
 </helmet>
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#1b0d36"/><circle cx="50" cy="50" r="11" fill="#c4a6ff"/><ellipse cx="50" cy="50" rx="26" ry="9" fill="none" stroke="#a97bff" stroke-width="1.6"/><ellipse cx="50" cy="50" rx="9" ry="26" fill="none" stroke="#a97bff" stroke-width="1.6"/></svg></template>
@@ -55,7 +68,10 @@
 
       <div onClick="{{openFlows}}" style="position: absolute; left: 16%; top: 32%; transform: translate(-50%,-50%); cursor: pointer; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px; background: rgba(255,255,255,0.045); backdrop-filter: blur(10px); font-size: 15px; font-weight: 500; white-space: nowrap; transition: all 220ms ease;" style-hover="border-color: rgba(196,166,255,0.8); background: rgba(169,123,255,0.18);">Workflows</div>
 
-      <div style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.1em;">clique em uma aba para entrar</div>
+      <div style="position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.1em;">
+        <span>{{ storeLabel }}</span>
+        <span onClick="{{resetData}}" style="cursor: pointer; color: #574d75; border-bottom: 1px dotted #574d75;" style-hover="color: #c4a6ff; border-color: #c4a6ff;">limpar</span>
+      </div>
     </div>
   </sc-if>
 
@@ -81,6 +97,10 @@
         <div onClick="{{openCheck}}" style="cursor: pointer; padding: 16px 22px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); font-size: 16px; font-weight: 500;">Checklist</div>
         <div onClick="{{openFlows}}" style="cursor: pointer; padding: 16px 22px; border: 1px solid rgba(255,255,255,0.14); border-radius: 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); font-size: 16px; font-weight: 500;">Workflows</div>
         <div style="text-align: center; margin-top: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288; letter-spacing: 0.08em; text-wrap: pretty;">{{ hubCount }}</div>
+        <div style="display: flex; justify-content: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #574d75; letter-spacing: 0.06em;">
+          <span>{{ storeLabel }}</span>
+          <span onClick="{{resetData}}" style="cursor: pointer; border-bottom: 1px dotted #574d75;">limpar</span>
+        </div>
       </div>
     </div>
   </sc-if>
@@ -90,20 +110,21 @@
       <div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px;">
 
         <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-          <div onClick="{{back}}" style="cursor: pointer; padding: 9px 16px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #a99ec2; transition: all 200ms ease; white-space: nowrap;" style-hover="color: #f2eefb; border-color: rgba(196,166,255,0.7);">← sair do cérebro</div>
+          <div onClick="{{back}}" style="cursor: pointer; padding: 9px 16px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #a99ec2; transition: all 200ms ease; white-space: nowrap;" style-hover="color: #f2eefb; border-color: rgba(196,166,255,0.7);">{{ backLabel }}</div>
           <div style="height: 1px; flex: 1; min-width: 40px; background: linear-gradient(90deg, rgba(169,123,255,0.5), rgba(255,255,255,0.05));"></div>
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #c4a6ff;">{{ panelKicker }}</div>
         </div>
 
         <h1 style="margin: 0; font-size: clamp(28px, 5vw, 42px); font-weight: 600; letter-spacing: -0.03em;">{{ panelTitle }}</h1>
 
-        <!-- SEGUNDO CÉREBRO -->
+        <!-- ============ SEGUNDO CÉREBRO ============ -->
         <sc-if value="{{isBrainPanel}}" hint-placeholder-val="{{ false }}">
-          <div style="display: flex; flex-direction: column; gap: 24px;">
+          <div style="display: flex; flex-direction: column; gap: 22px;">
+
             <div style="border: 1px solid rgba(169,123,255,0.38); border-radius: 18px; background: rgba(169,123,255,0.07); padding: 6px 6px 6px 18px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
               <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #c4a6ff;">/</span>
               <input value="{{ query }}" onChange="{{onQuery}}" placeholder="pergunte ou pesquise: git, css, contrato, como organizo a semana..." style="flex: 1 1 200px; background: transparent; border: none; color: #f2eefb; font-size: 16px; padding: 15px 0; min-width: 0;" />
-              <div style="padding: 12px 18px; border-radius: 12px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #e4d5ff;">buscar</div>
+              <div onClick="{{newNote}}" style="cursor: pointer; padding: 12px 18px; border-radius: 12px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #e4d5ff; white-space: nowrap;" style-hover="background: rgba(169,123,255,0.34);">+ nota</div>
             </div>
 
             <sc-if value="{{hasQuery}}" hint-placeholder-val="{{ false }}">
@@ -114,51 +135,150 @@
               </div>
             </sc-if>
 
-            <div style="display: flex; flex-wrap: wrap; gap: 9px;">
-              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
-                <div onClick="{{c.onClick}}" style="cursor: pointer; padding: 9px 15px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; transition: all 180ms ease; border: 1px solid {{c.bd}}; background: {{c.bg}}; color: {{c.fg}};">{{ c.label }}</div>
-              </sc-for>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <div style="display: flex; border: 1px solid rgba(255,255,255,0.13); border-radius: 999px; padding: 3px; gap: 3px;">
+                <sc-for list="{{ modes }}" as="md" hint-placeholder-count="2">
+                  <div onClick="{{md.onClick}}" style="cursor: pointer; padding: 8px 16px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; transition: all 180ms ease; background: {{md.bg}}; color: {{md.fg}};">{{ md.label }}</div>
+                </sc-for>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 9px; flex: 1;">
+                <sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+                  <div onClick="{{c.onClick}}" style="cursor: pointer; padding: 9px 15px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; transition: all 180ms ease; border: 1px solid {{c.bd}}; background: {{c.bg}}; color: {{c.fg}};">{{ c.label }}</div>
+                </sc-for>
+              </div>
             </div>
 
-            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7a7096; letter-spacing: 0.1em;">{{ resultLabel }}</div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); gap: 16px;">
-              <sc-for list="{{ results }}" as="n" hint-placeholder-count="4">
-                <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.035); padding: 20px; display: flex; flex-direction: column; gap: 12px; animation: rise 320ms ease-out both; transition: border-color 200ms ease;" style-hover="border-color: rgba(196,166,255,0.5);">
-                  <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
-                    <div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em;">{{ n.t }}</div>
-                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; padding: 4px 8px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.16); color: #a99ec2; white-space: nowrap;">{{ n.type }}</div>
+            <!-- grafo estilo obsidian -->
+            <sc-if value="{{isGraph}}" hint-placeholder-val="{{ false }}">
+              <div style="display: flex; flex-direction: column; gap: 12px; animation: popIn 320ms ease-out both;">
+                <div ref="{{padRef}}" style="position: relative; height: 62vh; min-height: 420px; border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; overflow: hidden; background: radial-gradient(circle at 50% 45%, rgba(124,77,255,0.12), rgba(5,3,10,0) 62%), rgba(255,255,255,0.02); touch-action: none;">
+                  <canvas ref="{{graphRef}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
+                  <div style="position: absolute; left: 16px; top: 14px; display: flex; flex-direction: column; gap: 6px; pointer-events: none;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #c4a6ff;">{{ graphStat }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6c6288;">nota · tag · linha = ligação</div>
                   </div>
-                  <sc-if value="{{n.isImage}}" hint-placeholder-val="{{ false }}">
-                    <div style="height: 116px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.03); background-image: repeating-linear-gradient(135deg, rgba(196,166,255,0.14) 0 8px, rgba(196,166,255,0) 8px 16px); display: flex; align-items: center; justify-content: center;">
-                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8f83ab;">{{ n.slot }}</span>
+                  <div style="position: absolute; right: 14px; bottom: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #574d75; pointer-events: none;">arraste os nós · scroll para dar zoom · clique para abrir</div>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7a7096; letter-spacing: 0.06em; text-wrap: pretty;">{{ graphHint }}</div>
+              </div>
+            </sc-if>
+
+            <!-- grade de notas -->
+            <sc-if value="{{isGrid}}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7a7096; letter-spacing: 0.1em;">{{ resultLabel }}</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); gap: 16px;">
+                  <sc-for list="{{ results }}" as="n" hint-placeholder-count="4">
+                    <div onClick="{{n.onOpen}}" style="cursor: pointer; border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; background: rgba(255,255,255,0.035); padding: 20px; display: flex; flex-direction: column; gap: 12px; animation: rise 320ms ease-out both; transition: border-color 200ms ease, transform 200ms ease;" style-hover="border-color: rgba(196,166,255,0.5); transform: translateY(-2px);">
+                      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                        <div style="font-size: 16px; font-weight: 600; letter-spacing: -0.01em;">{{ n.t }}</div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; padding: 4px 8px; border-radius: 5px; border: 1px solid rgba(255,255,255,0.16); color: #a99ec2; white-space: nowrap;">{{ n.type }}</div>
+                      </div>
+                      <sc-if value="{{n.thumbImage}}" hint-placeholder-val="{{ false }}">
+                        <div ref="{{ n.thumb }}" role="img" aria-label="{{ n.t }}" style="width: 100%; height: 132px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.03);"></div>
+                      </sc-if>
+                      <sc-if value="{{n.thumbSlot}}" hint-placeholder-val="{{ false }}">
+                        <div style="height: 116px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background-color: rgba(255,255,255,0.03); background-image: repeating-linear-gradient(135deg, rgba(196,166,255,0.14) 0 8px, rgba(196,166,255,0) 8px 16px); display: flex; align-items: center; justify-content: center;">
+                          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8f83ab;">{{ n.slot }}</span>
+                        </div>
+                      </sc-if>
+                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #b8aed0; word-break: break-word; white-space: pre-wrap;">{{ n.preview }}</div>
+                      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+                        <sc-for list="{{ n.tags }}" as="tg" hint-placeholder-count="2">
+                          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #c4a6ff; opacity: 0.85;">#{{ tg }}</div>
+                        </sc-for>
+                        <div style="flex: 1;"></div>
+                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: #574d75; white-space: nowrap;">{{ n.badges }}</div>
+                      </div>
                     </div>
-                  </sc-if>
-                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #b8aed0; word-break: break-word;">{{ n.body }}</div>
-                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <sc-for list="{{ n.tags }}" as="tg" hint-placeholder-count="2">
-                      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #c4a6ff; opacity: 0.85;">#{{ tg }}</div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{noResults}}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{newNote}}" style="cursor: pointer; border: 1px dashed rgba(255,255,255,0.18); border-radius: 14px; padding: 40px 24px; text-align: center; display: flex; flex-direction: column; gap: 8px;" style-hover="border-color: rgba(196,166,255,0.55);">
+                    <div style="font-size: 15px; color: #ddd6ec;">Nada aqui ainda.</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7a7096; letter-spacing: 0.1em;">clique para criar a primeira nota</div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <!-- ============ NOTA ABERTA (bloco de notas) ============ -->
+        <sc-if value="{{isNoteView}}" hint-placeholder-val="{{ false }}">
+          <div style="display: flex; flex-direction: column; gap: 22px; animation: popIn 300ms ease-out both;">
+
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+              <sc-for list="{{ typeChips }}" as="tc" hint-placeholder-count="6">
+                <div onClick="{{tc.onClick}}" style="cursor: pointer; padding: 8px 14px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; transition: all 180ms ease; border: 1px solid {{tc.bd}}; background: {{tc.bg}}; color: {{tc.fg}};">{{ tc.label }}</div>
+              </sc-for>
+              <div style="flex: 1;"></div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288; white-space: nowrap;">{{ noteStamp }}</div>
+              <div onClick="{{delNote}}" style="cursor: pointer; padding: 8px 14px; border-radius: 999px; border: 1px solid rgba(255,180,180,0.28); color: #ffb4b4; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;" style-hover="background: rgba(255,120,120,0.14); border-color: rgba(255,180,180,0.6);">apagar</div>
+            </div>
+
+            <input value="{{ nt.t }}" onChange="{{onNoteT}}" placeholder="título da nota" style="width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); color: #f2eefb; font-size: clamp(22px, 4vw, 32px); font-weight: 600; letter-spacing: -0.025em; padding: 6px 0 14px;" />
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 22px; align-items: start;">
+
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a7096;">a nota</div>
+                <textarea value="{{ nt.body }}" onChange="{{onNoteBody}}" placeholder="escreva aqui. o que você aprendeu, o código, o passo a passo, o link, o que quiser lembrar depois." style="width: 100%; min-height: 340px; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 18px; color: #f2eefb; font-size: 14.5px; line-height: 1.75; font-family: 'IBM Plex Mono', monospace;"></textarea>
+                <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288;">{{ noteWords }}</div>
+                  <div style="flex: 1;"></div>
+                  <input value="{{ nt.tags }}" onChange="{{onNoteTags}}" placeholder="tags separadas por espaço" style="flex: 1 1 220px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #c4a6ff; font-size: 13px; font-family: 'IBM Plex Mono', monospace; min-width: 0;" />
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a7096;">imagens, vídeos e prints</div>
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input value="{{ mediaDraft }}" onChange="{{onMediaDraft}}" placeholder="cole o link do youtube, da imagem ou do print" style="flex: 1 1 220px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 13.5px; min-width: 0;" />
+                    <div onClick="{{addMedia}}" style="cursor: pointer; padding: 12px 18px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">anexar</div>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288; line-height: 1.6; text-wrap: pretty;">{{ mediaHint }}</div>
+
+                  <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <sc-for list="{{ media }}" as="mm" hint-placeholder-count="2">
+                      <div style="border: 1px solid rgba(255,255,255,0.11); border-radius: 13px; overflow: hidden; background: rgba(255,255,255,0.03); animation: rise 300ms ease-out both;">
+                        <sc-if value="{{mm.isImage}}" hint-placeholder-val="{{ true }}">
+                          <div ref="{{ mm.img }}" role="img" aria-label="{{ mm.cap }}" style="width: 100%; height: min(320px, 58vw); background-color: rgba(0,0,0,0.35);"></div>
+                        </sc-if>
+                        <sc-if value="{{mm.isPlayer}}" hint-placeholder-val="{{ false }}">
+                          <div ref="{{ mm.player }}" style="width: 100%; display: block; background: #000;"></div>
+                        </sc-if>
+                        <div style="display: flex; align-items: center; gap: 10px; padding: 11px 14px;">
+                          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #c4a6ff; white-space: nowrap;">{{ mm.kindLabel }}</div>
+                          <a href="{{ mm.url }}" target="_blank" rel="noreferrer noopener" style="flex: 1; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8f83ab; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;">{{ mm.short }}</a>
+                          <div onClick="{{mm.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6c6288; padding: 0 4px;" style-hover="color: #ffb4b4;">×</div>
+                        </div>
+                      </div>
                     </sc-for>
                   </div>
                 </div>
-              </sc-for>
-            </div>
 
-            <div style="border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
-              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">guardar algo novo</div>
-              <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                <input value="{{ nn.t }}" onChange="{{onNoteTitle}}" placeholder="título" style="flex: 1 1 200px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px;" />
-                <input value="{{ nn.body }}" onChange="{{onNoteBody}}" placeholder="conteúdo, código, link, nome do arquivo..." style="flex: 2 1 280px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
-                <input value="{{ nn.tags }}" onChange="{{onNoteTags}}" placeholder="tags" style="flex: 1 1 130px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px;" />
-                <div onClick="{{addNote}}" style="cursor: pointer; padding: 12px 20px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">salvar</div>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a7096;">conectada com</div>
+                  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <sc-for list="{{ linkables }}" as="lk" hint-placeholder-count="5">
+                      <div onClick="{{lk.onToggle}}" style="cursor: pointer; padding: 8px 13px; border-radius: 9px; font-size: 12.5px; transition: all 170ms ease; border: 1px solid {{lk.bd}}; background: {{lk.bg}}; color: {{lk.fg}};">{{ lk.t }}</div>
+                    </sc-for>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288; text-wrap: pretty;">essas ligações aparecem como linhas no grafo do cérebro.</div>
+                </div>
+
               </div>
             </div>
           </div>
         </sc-if>
 
-        <!-- FINANÇAS -->
+        <!-- ============ FINANÇAS ============ -->
         <sc-if value="{{isFinPanel}}" hint-placeholder-val="{{ false }}">
           <div style="display: flex; flex-direction: column; gap: 26px;">
+
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 14px;">
               <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
                 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7a7096;">entrou</div>
@@ -175,6 +295,45 @@
               <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; background: rgba(255,255,255,0.035); display: flex; flex-direction: column; gap: 8px;">
                 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7a7096;">a pagar</div>
                 <div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em;">{{ billsTotal }}</div>
+              </div>
+            </div>
+
+            <!-- chat com a assessora -->
+            <div style="border: 1px solid rgba(169,123,255,0.32); border-radius: 18px; background: linear-gradient(180deg, rgba(169,123,255,0.09), rgba(169,123,255,0.02)); display: flex; flex-direction: column; overflow: hidden;">
+              <div style="display: flex; align-items: center; gap: 13px; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+                <div style="width: 38px; height: 38px; border-radius: 999px; flex-shrink: 0; background: linear-gradient(145deg, #c4a6ff, #6d3fd4); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; color: #1a0b33;">A</div>
+                <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;">
+                  <div style="font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em;">Ana · assessora de finanças</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8ee0b0;">{{ anaStatus }}</div>
+                </div>
+                <div onClick="{{clearChat}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #6c6288; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap;" style-hover="color: #c4a6ff; border-color: rgba(196,166,255,0.5);">limpar</div>
+              </div>
+
+              <div ref="{{chatRef}}" style="max-height: 400px; min-height: 220px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+                <sc-for list="{{ chat }}" as="ms" hint-placeholder-count="4">
+                  <div style="display: flex; flex-direction: column; gap: 4px; align-items: {{ms.align}}; animation: rise 260ms ease-out both;">
+                    <div style="max-width: min(84%, 560px); padding: 12px 16px; border-radius: {{ms.radius}}; font-size: 14.5px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; border: 1px solid {{ms.bd}}; background: {{ms.bg}}; color: {{ms.fg}};">{{ ms.text }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: #574d75; padding: 0 4px;">{{ ms.at }}</div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{anaTyping}}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; gap: 5px; padding: 12px 16px; border-radius: 14px 14px 14px 4px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); align-self: flex-start;">
+                    <div style="width: 6px; height: 6px; border-radius: 999px; background: #c4a6ff; animation: blink 1.1s ease-in-out infinite;"></div>
+                    <div style="width: 6px; height: 6px; border-radius: 999px; background: #c4a6ff; animation: blink 1.1s ease-in-out 0.18s infinite;"></div>
+                    <div style="width: 6px; height: 6px; border-radius: 999px; background: #c4a6ff; animation: blink 1.1s ease-in-out 0.36s infinite;"></div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 0 20px 14px;">
+                <sc-for list="{{ chatHints }}" as="ch" hint-placeholder-count="4">
+                  <div onClick="{{ch.onClick}}" style="cursor: pointer; padding: 7px 13px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); font-size: 12px; color: #a99ec2; transition: all 170ms ease; white-space: nowrap;" style-hover="border-color: rgba(196,166,255,0.6); color: #e4d5ff;">{{ ch.label }}</div>
+                </sc-for>
+              </div>
+
+              <div style="display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.16);">
+                <input value="{{ chatDraft }}" onChange="{{onChatDraft}}" onKeyDown="{{onChatKey}}" placeholder="ex: gastei 82 no mercado · entrou 2400 de freela · quanto posso gastar?" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px 16px; color: #f2eefb; font-size: 14.5px; min-width: 0;" />
+                <div onClick="{{sendChat}}" style="cursor: pointer; padding: 14px 22px; border-radius: 12px; background: rgba(169,123,255,0.24); border: 1px solid rgba(169,123,255,0.5); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center;" style-hover="background: rgba(169,123,255,0.4);">enviar</div>
               </div>
             </div>
 
@@ -202,12 +361,13 @@
                 <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">lançamentos</div>
                 <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden;">
                   <sc-for list="{{ txs }}" as="x" hint-placeholder-count="5">
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 18px; border-bottom: 1px solid rgba(255,255,255,0.06);">
-                      <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 18px; border-bottom: 1px solid rgba(255,255,255,0.06);">
+                      <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1;">
                         <div style="font-size: 14.5px; font-weight: 500;">{{ x.d }}</div>
                         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #7a7096; letter-spacing: 0.08em;">{{ x.c }}</div>
                       </div>
                       <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; white-space: nowrap; color: {{x.color}};">{{ x.amount }}</div>
+                      <div onClick="{{x.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
                     </div>
                   </sc-for>
                 </div>
@@ -274,42 +434,55 @@
           </div>
         </sc-if>
 
-        <!-- IDEIAS -->
+        <!-- ============ IDEIAS ============ -->
         <sc-if value="{{isIdeasPanel}}" hint-placeholder-val="{{ false }}">
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; align-items: start;">
+          <div style="display: grid; grid-template-columns: {{ideasGrid}}; gap: 22px; align-items: start;">
             <div style="display: flex; flex-direction: column; gap: 12px;">
               <div style="display: flex; gap: 10px;">
-                <input value="{{ ni }}" onChange="{{onIdeaInput}}" placeholder="nova ideia..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; min-width: 0;" />
+                <input value="{{ ni }}" onChange="{{onIdeaInput}}" onKeyDown="{{onIdeaKey}}" placeholder="nova ideia..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; min-width: 0;" />
                 <div onClick="{{addIdea}}" style="cursor: pointer; padding: 12px 18px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">+</div>
               </div>
               <sc-for list="{{ ideas }}" as="i" hint-placeholder-count="4">
-                <div onClick="{{i.onClick}}" style="cursor: pointer; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 7px; transition: all 200ms ease; border: 1px solid {{i.bd}}; background: {{i.bg}};">
+                <div onClick="{{i.onClick}}" style="cursor: pointer; border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 7px; transition: all 200ms ease; border: 1px solid {{i.bd}}; background: {{i.bg}};">
                   <div style="font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em;">{{ i.title }}</div>
                   <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #7a7096;">{{ i.meta }}</div>
                 </div>
               </sc-for>
+              <sc-if value="{{noIdeas}}" hint-placeholder-val="{{ false }}">
+                <div style="border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 26px 18px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.08em;">escreva a primeira ideia acima</div>
+              </sc-if>
             </div>
 
-            <div style="border: 1px solid rgba(169,123,255,0.3); border-radius: 16px; background: linear-gradient(180deg, rgba(169,123,255,0.1), rgba(169,123,255,0.02)); padding: 24px; display: flex; flex-direction: column; gap: 18px;">
-              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">brainstorm</div>
-              <div style="font-size: 23px; font-weight: 600; letter-spacing: -0.02em; text-wrap: pretty;">{{ ideaTitle }}</div>
-              <div style="display: flex; flex-direction: column; gap: 10px;">
-                <sc-for list="{{ ideaSteps }}" as="s" hint-placeholder-count="3">
-                  <div style="display: flex; gap: 12px; align-items: flex-start; padding: 13px 15px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
-                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #c4a6ff; padding-top: 2px;">{{ s.n }}</div>
-                    <div style="font-size: 14px; line-height: 1.55; color: #ddd6ec;">{{ s.text }}</div>
+            <sc-if value="{{hasIdea}}" hint-placeholder-val="{{ true }}">
+              <div style="display: flex; flex-direction: column; gap: 18px; border: 1px solid rgba(169,123,255,0.3); border-radius: 18px; background: linear-gradient(180deg, rgba(169,123,255,0.1), rgba(169,123,255,0.02)); padding: 24px;">
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">a ideia</div>
+                  <div style="flex: 1;"></div>
+                  <div onClick="{{delIdea}}" style="cursor: pointer; padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(255,180,180,0.26); color: #ffb4b4; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;" style-hover="background: rgba(255,120,120,0.14);">apagar</div>
+                </div>
+
+                <input value="{{ ideaTitle }}" onChange="{{onIdeaTitle}}" placeholder="título da ideia" style="width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); color: #f2eefb; font-size: clamp(20px, 3vw, 27px); font-weight: 600; letter-spacing: -0.02em; padding: 2px 0 12px;" />
+
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a7096;">bloco de notas</div>
+                  <textarea value="{{ ideaNote }}" onChange="{{onIdeaNote}}" placeholder="o que é a ideia, para quem, que problema resolve, como você cobraria, o que te dá medo nela..." style="width: 100%; min-height: 240px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 18px; color: #f2eefb; font-size: 14.5px; line-height: 1.75; font-family: 'IBM Plex Mono', monospace;"></textarea>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #6c6288;">{{ ideaWords }}</div>
+                </div>
+
+                <div onClick="{{openIdeaFlow}}" style="cursor: pointer; border: 1px solid rgba(196,166,255,0.42); border-radius: 14px; background: rgba(169,123,255,0.14); padding: 18px 20px; display: flex; align-items: center; gap: 16px; transition: all 200ms ease;" style-hover="background: rgba(169,123,255,0.26); border-color: rgba(196,166,255,0.8);">
+                  <div style="width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; border: 1px solid rgba(196,166,255,0.5); display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #c4a6ff;">⌗</div>
+                  <div style="display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1;">
+                    <div style="font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em;">Planejar a execução no workflow</div>
+                    <div style="font-size: 13px; color: #a99ec2; text-wrap: pretty;">{{ ideaFlowMeta }}</div>
                   </div>
-                </sc-for>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 18px; color: #c4a6ff;">→</div>
+                </div>
               </div>
-              <div style="display: flex; gap: 10px;">
-                <input value="{{ ns }}" onChange="{{onStepInput}}" placeholder="próximo passo da execução..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 14px; min-width: 0;" />
-                <div onClick="{{addStep}}" style="cursor: pointer; padding: 12px 18px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">add</div>
-              </div>
-            </div>
+            </sc-if>
           </div>
         </sc-if>
 
-        <!-- CHECKLIST -->
+        <!-- ============ CHECKLIST ============ -->
         <sc-if value="{{isCheckPanel}}" hint-placeholder-val="{{ false }}">
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 18px; align-items: start;">
             <sc-for list="{{ columns }}" as="col" hint-placeholder-count="3">
@@ -322,12 +495,13 @@
                   <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="4">
                     <div onClick="{{it.onToggle}}" style="cursor: pointer; display: flex; gap: 12px; align-items: center; padding: 13px 14px; border-radius: 11px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); min-height: 46px;">
                       <div style="width: 18px; height: 18px; border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; border: 1px solid {{it.boxBd}}; background: {{it.boxBg}}; color: #1a0b33;">{{ it.mark }}</div>
-                      <div style="font-size: 14px; line-height: 1.4; text-decoration: {{it.deco}}; color: {{it.color}};">{{ it.text }}</div>
+                      <div style="font-size: 14px; line-height: 1.4; flex: 1; min-width: 0; text-decoration: {{it.deco}}; color: {{it.color}};">{{ it.text }}</div>
+                      <div onClick="{{it.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266;" style-hover="color: #ffb4b4;">×</div>
                     </div>
                   </sc-for>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                  <input value="{{ col.draft }}" onChange="{{col.onDraft}}" placeholder="adicionar..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 11px 12px; color: #f2eefb; font-size: 13px; min-width: 0;" />
+                  <input value="{{ col.draft }}" onChange="{{col.onDraft}}" onKeyDown="{{col.onKey}}" placeholder="adicionar..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 11px 12px; color: #f2eefb; font-size: 13px; min-width: 0;" />
                   <div onClick="{{col.onAdd}}" style="cursor: pointer; padding: 11px 15px; border-radius: 9px; border: 1px solid rgba(169,123,255,0.45); background: rgba(169,123,255,0.18); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 13px;">+</div>
                 </div>
               </div>
@@ -335,86 +509,355 @@
           </div>
         </sc-if>
 
-        <!-- WORKFLOWS -->
+        <!-- ============ WORKFLOWS (lista) ============ -->
         <sc-if value="{{isFlowPanel}}" hint-placeholder-val="{{ false }}">
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <sc-for list="{{ flows }}" as="f" hint-placeholder-count="3">
-              <div style="border-radius: 16px; overflow: hidden; border: 1px solid {{f.bd}}; background: {{f.bg}};">
-                <div onClick="{{f.onClick}}" style="cursor: pointer; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;">
-                  <div style="display: flex; flex-direction: column; gap: 5px; min-width: 0;">
-                    <div style="font-size: 18px; font-weight: 600; letter-spacing: -0.015em;">{{ f.name }}</div>
-                    <div style="font-size: 13.5px; color: #a99ec2;">{{ f.desc }}</div>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <input value="{{ nfl }}" onChange="{{onFlowName}}" onKeyDown="{{onFlowKey}}" placeholder="nome do novo workflow..." style="flex: 1 1 240px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 13px 15px; color: #f2eefb; font-size: 14.5px; min-width: 0;" />
+              <div onClick="{{addFlow}}" style="cursor: pointer; padding: 13px 22px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;">criar</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 16px;">
+              <sc-for list="{{ flows }}" as="f" hint-placeholder-count="3">
+                <div onClick="{{f.onOpen}}" style="cursor: pointer; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px; transition: all 200ms ease; border: 1px solid {{f.bd}}; background: {{f.bg}};" style-hover="border-color: rgba(196,166,255,0.65); transform: translateY(-2px);">
+                  <div style="display: flex; align-items: flex-start; gap: 12px;">
+                    <div style="width: 10px; height: 10px; border-radius: 3px; margin-top: 6px; flex-shrink: 0; background: {{f.dot}};"></div>
+                    <div style="display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1;">
+                      <div style="font-size: 17.5px; font-weight: 600; letter-spacing: -0.015em;">{{ f.name }}</div>
+                      <div style="font-size: 13.5px; color: #a99ec2; line-height: 1.5; text-wrap: pretty;">{{ f.desc }}</div>
+                    </div>
+                    <div onClick="{{f.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
                   </div>
-                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #c4a6ff; white-space: nowrap;">{{ f.badge }}</div>
-                </div>
-                <sc-if value="{{f.open}}" hint-placeholder-val="{{ false }}">
-                  <div style="padding: 0 24px 22px; display: flex; flex-direction: column;">
-                    <sc-for list="{{ f.steps }}" as="st" hint-placeholder-count="4">
-                      <div style="display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-top: 1px solid rgba(255,255,255,0.07);">
-                        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #c4a6ff; width: 26px; flex-shrink: 0; padding-top: 2px;">{{ st.n }}</div>
-                        <div style="font-size: 14.5px; line-height: 1.6; color: #ddd6ec;">{{ st.text }}</div>
-                      </div>
+                  <div style="display: flex; gap: 4px; align-items: flex-end; height: 34px;">
+                    <sc-for list="{{ f.spark }}" as="sp" hint-placeholder-count="6">
+                      <div style="flex: 1; max-width: 22px; border-radius: 3px 3px 0 0; height: {{sp.h}}; background: {{sp.bg}};"></div>
                     </sc-for>
                   </div>
-                </sc-if>
-              </div>
-            </sc-for>
+                  <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #c4a6ff;">{{ f.badge }}</div>
+                    <div style="flex: 1;"></div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #6c6288;">abrir editor →</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
           </div>
         </sc-if>
 
       </div>
     </div>
   </sc-if>
+
+  <!-- ============ EDITOR DE WORKFLOW (blocos conectáveis) ============ -->
+  <sc-if value="{{isEditor}}" hint-placeholder-val="{{ false }}">
+    <div style="height: 100vh; display: flex; flex-direction: column; animation: formIn 480ms cubic-bezier(0.16,1,0.3,1) both; overflow: hidden;">
+
+      <div style="flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid rgba(255,255,255,0.09); background: rgba(10,5,20,0.72); backdrop-filter: blur(14px); flex-wrap: wrap;">
+        <div onClick="{{edBack}}" style="cursor: pointer; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.16); border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #a99ec2; white-space: nowrap;" style-hover="color: #f2eefb; border-color: rgba(196,166,255,0.7);">{{ edBackLabel }}</div>
+
+        <div style="display: flex; align-items: center; gap: 7px; min-width: 0; flex-wrap: wrap;">
+          <sc-for list="{{ crumbs }}" as="cb" hint-placeholder-count="2">
+            <div onClick="{{cb.onClick}}" style="cursor: pointer; font-size: 14px; font-weight: 500; white-space: nowrap; color: {{cb.fg}};" style-hover="color: #f2eefb;">{{ cb.label }}</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4a4266;">{{ cb.sep }}</div>
+          </sc-for>
+        </div>
+
+        <div style="flex: 1; min-width: 20px;"></div>
+
+        <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap;">
+          <div onClick="{{edAdd}}" style="cursor: pointer; padding: 9px 15px; border-radius: 9px; background: rgba(169,123,255,0.22); border: 1px solid rgba(169,123,255,0.5); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;" style-hover="background: rgba(169,123,255,0.38);">+ bloco</div>
+          <div onClick="{{edLayout}}" style="cursor: pointer; padding: 9px 13px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.14); color: #a99ec2; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;" style-hover="color: #f2eefb; border-color: rgba(196,166,255,0.6);">organizar</div>
+          <div style="display: flex; align-items: center; border: 1px solid rgba(255,255,255,0.13); border-radius: 9px; overflow: hidden;">
+            <div onClick="{{edZoomOut}}" style="cursor: pointer; padding: 9px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #a99ec2;" style-hover="background: rgba(255,255,255,0.07); color: #f2eefb;">−</div>
+            <div onClick="{{edFit}}" style="cursor: pointer; padding: 9px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: #8f83ab; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); min-width: 54px; text-align: center;" style-hover="color: #f2eefb;">{{ edZoomLabel }}</div>
+            <div onClick="{{edZoomIn}}" style="cursor: pointer; padding: 9px 12px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #a99ec2;" style-hover="background: rgba(255,255,255,0.07); color: #f2eefb;">+</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="{{ edRowCss }}">
+      <div ref="{{padRef}}" style="flex: 1; position: relative; overflow: hidden; touch-action: none; background: #08050f;">
+        <canvas ref="{{edgeRef}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: {{edCursor}};"></canvas>
+
+        <div style="position: absolute; left: 0; top: 0; width: 1px; height: 1px; transform-origin: 0 0; transform: {{worldCss}};">
+          <sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="4">
+            <div onPointerDown="{{nd.onDown}}" onDoubleClick="{{nd.onDrill}}" style="{{nd.css}}">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 0 14px; height: 100%;">
+                <div style="width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; background: {{nd.dot}};"></div>
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+                  <div style="font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.32; max-height: 33px; overflow: hidden; color: {{nd.fg}};">{{ nd.label }}</div>
+                  <sc-if value="{{nd.hasNote}}" hint-placeholder-val="{{ false }}">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8f83ab; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ nd.noteLine }}</div>
+                  </sc-if>
+                </div>
+                <sc-if value="{{nd.hasSub}}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{nd.onDrill}}" style="cursor: pointer; flex-shrink: 0; padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(196,166,255,0.45); background: rgba(169,123,255,0.18); font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.08em; color: #e4d5ff; white-space: nowrap;">{{ nd.subBadge }}</div>
+                </sc-if>
+              </div>
+              <sc-for list="{{ nd.ports }}" as="pt" hint-placeholder-count="4">
+                <div onPointerDown="{{pt.onDown}}" style="{{pt.css}}"></div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{edEmpty}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%); text-align: center; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 82%;">
+            <div style="font-size: 16px; color: #8f83ab;">Nenhum bloco neste nível.</div>
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #574d75; letter-spacing: 0.08em; text-wrap: pretty;">clique em “+ bloco” para começar</div>
+          </div>
+        </sc-if>
+
+        <div style="position: absolute; left: 16px; bottom: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #4a4266; line-height: 1.7; pointer-events: none; white-space: pre-line; max-width: 62%;">{{ edHint }}</div>
+
+        <sc-if value="{{hasEdgeSel}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 999px; border: 1px solid rgba(196,166,255,0.45); background: rgba(20,10,38,0.94); backdrop-filter: blur(14px); animation: popIn 200ms ease-out both;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #ddd6ec; white-space: nowrap;">{{ edgeSelLabel }}</div>
+            <div onClick="{{edgeDel}}" style="cursor: pointer; padding: 7px 13px; border-radius: 999px; border: 1px solid rgba(255,180,180,0.35); color: #ffb4b4; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;" style-hover="background: rgba(255,120,120,0.16);">apagar conexão</div>
+          </div>
+        </sc-if>
+      </div>
+
+      <sc-if value="{{hasSel}}" hint-placeholder-val="{{ false }}">
+          <div style="{{ inspCss }}">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #c4a6ff;">bloco</div>
+              <div style="flex: 1;"></div>
+              <div onClick="{{edDeselect}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 17px; color: #6c6288; line-height: 1;" style-hover="color: #f2eefb;">×</div>
+            </div>
+
+            <input value="{{ selLabel }}" onChange="{{onSelLabel}}" placeholder="nome do bloco" style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.13); border-radius: 10px; padding: 12px 14px; color: #f2eefb; font-size: 15px; font-weight: 600;" />
+
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #7a7096;">anotação</div>
+              <textarea value="{{ selNote }}" onChange="{{onSelNote}}" placeholder="o que acontece aqui..." style="width: 100%; min-height: 96px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 12px 13px; color: #ddd6ec; font-size: 13px; line-height: 1.6; font-family: 'IBM Plex Mono', monospace;"></textarea>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #7a7096;">cor</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="8">
+                  <div onClick="{{sw.onClick}}" style="{{sw.css}}"></div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 9px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #7a7096;">sub-blocos</div>
+              <div onClick="{{selDrill}}" style="cursor: pointer; border: 1px solid rgba(196,166,255,0.4); border-radius: 10px; background: rgba(169,123,255,0.14); padding: 13px 15px; display: flex; align-items: center; gap: 12px;" style-hover="background: rgba(169,123,255,0.26);">
+                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px;">
+                  <div style="font-size: 13.5px; font-weight: 500;">{{ selSubLabel }}</div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #8f83ab;">{{ selSubHint }}</div>
+                </div>
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: #c4a6ff;">→</div>
+              </div>
+            </div>
+
+            <div style="flex: 1; min-height: 10px;"></div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div onClick="{{selDup}}" style="cursor: pointer; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); color: #a99ec2; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; text-align: center;" style-hover="color: #f2eefb; border-color: rgba(196,166,255,0.6);">duplicar</div>
+              <div onClick="{{selDel}}" style="cursor: pointer; padding: 11px 14px; border-radius: 10px; border: 1px solid rgba(255,180,180,0.3); color: #ffb4b4; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; text-align: center;" style-hover="background: rgba(255,120,120,0.14); border-color: rgba(255,180,180,0.65);">apagar bloco</div>
+            </div>
+          </div>
+      </sc-if>
+
+      </div>
+    </div>
+  </sc-if>
+
 </div>
 </x-dc>
+
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
+const STORE_KEY = "msc.state.v1";
+const PERSIST = ["notes", "ideas", "flows", "txs", "bills", "goals", "months", "tasks", "chat"];
+const NODE_W = 240;
+const NODE_H = 58;
+const NODE_H_NOTE = 78;
+const NOTE_TYPES = ["NOTA", "CÓDIGO", "LINK", "IMAGEM", "VÍDEO", "PDF", "ATALHO"];
+const SIDES = ["t", "r", "b", "l"];
+
+// paleta dos blocos do workflow
+const PAL = [
+  { k: "roxo", dot: "#c4a6ff", bd: "rgba(169,123,255,0.55)", bg: "rgba(124,77,255,0.16)" },
+  { k: "azul", dot: "#7cc4ff", bd: "rgba(124,196,255,0.5)", bg: "rgba(56,140,220,0.15)" },
+  { k: "verde", dot: "#6ee7b7", bd: "rgba(110,231,183,0.45)", bg: "rgba(52,180,140,0.14)" },
+  { k: "amarelo", dot: "#fcd34d", bd: "rgba(252,211,77,0.45)", bg: "rgba(200,160,40,0.14)" },
+  { k: "laranja", dot: "#fdba74", bd: "rgba(253,186,116,0.45)", bg: "rgba(210,130,60,0.14)" },
+  { k: "rosa", dot: "#f9a8d4", bd: "rgba(249,168,212,0.45)", bg: "rgba(210,90,160,0.14)" },
+  { k: "vermelho", dot: "#fca5a5", bd: "rgba(252,165,165,0.45)", bg: "rgba(200,70,70,0.14)" },
+  { k: "cinza", dot: "#c8c2d8", bd: "rgba(255,255,255,0.2)", bg: "rgba(255,255,255,0.055)" }
+];
+
+// categorias reconhecidas pela assessora no chat de finanças
+const CAT_WORDS = {
+  "Alimentação": ["mercado", "supermercado", "feira", "ifood", "restaurante", "lanche", "almoço", "almoco", "janta", "jantar", "padaria", "café", "cafe", "comida", "pizza", "hamburguer", "hambúrguer", "açougue", "acougue", "delivery"],
+  "Moradia": ["aluguel", "condomínio", "condominio", "luz", "energia", "água", "agua", "gás", "gas", "internet", "iptu", "faxina", "diarista", "reforma", "móvel", "movel", "casa"],
+  "Transporte": ["uber", "99", "gasolina", "combustível", "combustivel", "álcool", "etanol", "ônibus", "onibus", "metrô", "metro", "estacionamento", "pedágio", "pedagio", "ipva", "mecânico", "mecanico", "oficina", "pneu", "carro", "moto"],
+  "Saúde": ["academia", "farmácia", "farmacia", "remédio", "remedio", "médico", "medico", "dentista", "exame", "plano de saúde", "plano de saude", "terapia", "psicólogo", "psicologo", "nutricionista"],
+  "Ferramentas": ["assinatura", "hosting", "hospedagem", "domínio", "dominio", "chatgpt", "claude", "figma", "adobe", "notion", "canva", "software", "licença", "licenca", "api", "servidor", "vercel", "supabase"],
+  "Lazer": ["cinema", "netflix", "spotify", "bar", "cerveja", "show", "jogo", "steam", "viagem", "passeio", "presente", "rolê", "role"],
+  "Educação": ["curso", "faculdade", "livro", "mentoria", "workshop", "treinamento", "certificação", "certificacao"],
+  "Impostos": ["imposto", "das", "mei", "inss", "irpf", "darf", "contador", "contabilidade"],
+  "Trabalho": ["salário", "salario", "freela", "freelance", "cliente", "projeto", "comissão", "comissao", "venda", "vendi", "serviço", "servico", "consultoria", "pagamento"]
+};
+
+const IN_WORDS = ["entrou", "entrada", "recebi", "recebido", "receber", "ganhei", "caiu", "salário", "salario", "freela", "vendi", "venda", "rendeu", "rendimento", "lucro", "pix recebido", "faturei", "faturamento"];
+const OUT_WORDS = ["gastei", "gasto", "gastos", "paguei", "pagar", "saiu", "saída", "saida", "comprei", "compra", "torrei", "boleto", "assinei", "assinatura", "conta"];
+const LEAD_STOP = /^(gastei|gasto|paguei|pagar|saiu|saída|saida|comprei|compra|torrei|entrou|entrada|recebi|recebido|ganhei|caiu|faturei|vendi|venda|de|do|da|no|na|em|com|para|pra|pro|por|um|uma|uns|umas|o|a|os|as|hoje|ontem|agora|foi|mais|só|so|acabei|acabou|e)$/i;
+const TRAIL_STOP = /^(de|do|da|no|na|em|com|para|pra|pro|por|o|a|os|as|reais|real|conto|contos|hoje|ontem|agora|e|mais)$/i;
+
 class Component extends DCLogic {
   constructor(props) {
     super(props);
     this.brainRef = React.createRef();
     this.hubRef = React.createRef();
+    this.graphRef = React.createRef();
+    this.edgeRef = React.createRef();
+    this.padRef = React.createRef();
+    this.chatRef = React.createRef();
+
     this.anchorsWide = [[0.5, 0.08], [0.84, 0.32], [0.78, 0.83], [0.22, 0.83], [0.16, 0.32]];
     this.anchorsNarrow = [[0.5, 0.5], [0.5, 0.605], [0.5, 0.815], [0.5, 0.71], [0.5, 0.92]];
+    this._seq = 0;
+
     this.onResize = () => {
       const n = window.innerWidth < 760;
-      if (n !== this.state.narrow) this.setState({ narrow: n });
+      if (n === this.state.narrow) return;
+      this.setState({ narrow: n });
+      // o canvas mudou de tamanho junto: reenquadra para os blocos nao sumirem
+      if (this.state.view === "editor") setTimeout(() => this.edFit(), 60);
     };
-    this.state = {
+    this.onKey = (e) => this.handleKey(e);
+
+    this.state = Object.assign(this.defaults(), this.load());
+  }
+
+  // ---------- ids, datas, dinheiro ----------
+  uid(p) { this._seq += 1; return (p || "x") + Date.now().toString(36) + this._seq.toString(36); }
+  money(v) { return "R$ " + Math.round(v).toLocaleString("pt-BR"); }
+  short(v) { return v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + "k" : String(Math.round(v)); }
+  clock() { const d = new Date(); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  today() {
+    const d = new Date();
+    const dias = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"];
+    const mes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+    return dias[d.getDay()] + ", " + d.getDate() + " de " + mes[d.getMonth()];
+  }
+  stamp(iso) {
+    if (!iso) return "sem data";
+    const d = new Date(iso);
+    if (isNaN(d)) return "sem data";
+    return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + "/" + d.getFullYear();
+  }
+
+  // ---------- monta um grafo em cadeia a partir de uma lista de passos ----------
+  chain(steps, colorKey) {
+    const nodes = [], edges = [];
+    const perRow = 3, gapX = 320, gapY = 165;
+    steps.forEach((text, i) => {
+      const row = Math.floor(i / perRow), idx = i % perRow;
+      // serpentina: linhas pares correm para a direita, impares para a esquerda
+      const col = row % 2 === 0 ? idx : perRow - 1 - idx;
+      const id = this.uid("nd");
+      nodes.push({ id, x: 80 + col * gapX, y: 80 + row * gapY, label: text, note: "", color: colorKey || "roxo", parent: null });
+      if (i > 0) {
+        const sameRow = Math.floor((i - 1) / perRow) === row;
+        const toRight = row % 2 === 0;
+        edges.push({
+          id: this.uid("eg"),
+          a: nodes[i - 1].id, as: sameRow ? (toRight ? "r" : "l") : "b",
+          b: id, bs: sameRow ? (toRight ? "l" : "r") : "t"
+        });
+      }
+    });
+    return { nodes, edges };
+  }
+
+  defaults() {
+    const printSvg = "data:image/svg+xml," + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#140a26"/>' +
+      '<text x="26" y="46" fill="#c4a6ff" font-family="monospace" font-size="15">campanha · setembro</text>' +
+      '<text x="26" y="96" fill="#f2eefb" font-family="monospace" font-size="34">CPA R$ 12,04</text>' +
+      '<rect x="26" y="140" width="180" height="10" rx="5" fill="#7c4dff"/><rect x="26" y="170" width="300" height="10" rx="5" fill="#a97bff"/>' +
+      '<rect x="26" y="200" width="120" height="10" rx="5" fill="#4a3670"/><rect x="26" y="230" width="410" height="10" rx="5" fill="#c4a6ff"/>' +
+      '<text x="26" y="300" fill="#8f83ab" font-family="monospace" font-size="13">1 criativo por dor · orçamento fixo por conjunto</text></svg>'
+    );
+
+    const notes = [
+      { t: "Atalhos do VS Code que eu uso todo dia", type: "ATALHO", tags: ["vscode", "produtividade"], body: "Cmd+P abrir arquivo\nCmd+Shift+F buscar no projeto\nAlt+↑/↓ mover linha\nCmd+D selecionar próxima igual" },
+      { t: "Debounce em JS", type: "CÓDIGO", tags: ["javascript", "snippet"], body: "const debounce = (fn, ms) => {\n  let t;\n  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };\n};" },
+      { t: "git: desfazer o último commit", type: "CÓDIGO", tags: ["git", "snippet"], body: "git reset --soft HEAD~1\n→ mantém as alterações no stage" },
+      { t: "Centralizar qualquer coisa em CSS", type: "CÓDIGO", tags: ["css", "snippet"], body: "display: flex;\nalign-items: center;\njustify-content: center;" },
+      { t: "Contrato modelo — freelance", type: "PDF", tags: ["trabalho", "financeiro"], body: "contrato-freela-v3.pdf · 240 KB · última revisão jan/26" },
+      { t: "Planilha de precificação de projeto", type: "PDF", tags: ["financeiro", "trabalho"], body: "precificacao-2026.xlsx · 88 KB · fórmula de hora/valor na aba 2" },
+      { t: "Curso de tráfego pago — aula 4", type: "LINK", tags: ["marketing", "estudo"], body: "Estrutura de campanha: 1 criativo por dor, orçamento fixo por conjunto." },
+      { t: "Documentação da API que eu sempre esqueço", type: "LINK", tags: ["dev", "referência"], body: "Autenticação por bearer token, limite de 60 req/min." },
+      { t: "Print do painel de anúncios que converteu", type: "IMAGEM", tags: ["marketing", "referência"], body: "CPA de R$ 12 na campanha de setembro — a estrutura vale copiar.", media: [{ kind: "image", url: printSvg, cap: "painel de anúncios" }] },
+      { t: "Referência de layout escuro", type: "IMAGEM", tags: ["design", "referência"], body: "Degradê roxo → preto, cartões com borda de 1px.", slot: "referência visual" },
+      { t: "Como eu organizo a semana", type: "NOTA", tags: ["rotina", "produtividade"], body: "Domingo à noite: revisar o checklist do mês e puxar 3 prioridades para a semana." },
+      { t: "Regra dos 3 blocos de foco", type: "NOTA", tags: ["produtividade", "rotina"], body: "Manhã: criar.\nTarde: reunião e recado.\nNoite: estudar e guardar no cérebro." }
+    ].map((n) => Object.assign({ id: this.uid("nt"), media: [], links: [], at: new Date().toISOString() }, n));
+
+    // liga algumas notas entre si para o grafo já nascer com ligações próprias
+    const byTitle = (frag) => (notes.find((n) => n.t.indexOf(frag) === 0) || {}).id;
+    const link = (a, b) => { const x = byTitle(a), y = byTitle(b); if (x && y) notes.find((n) => n.id === x).links.push(y); };
+    link("Curso de tráfego", "Print do painel");
+    link("Contrato modelo", "Planilha de precificação");
+    link("Como eu organizo", "Regra dos 3 blocos");
+
+    const ideaSeeds = [
+      { title: "Curso curto de automação", note: "Promessa: em 7 dias o aluno automatiza uma tarefa real do trabalho dele.\n\nPreço que eu testaria: R$ 297.\nMedo: gravar e ninguém comprar — resolvo vendendo antes de gravar.", steps: ["Definir o resultado em 7 dias", "Vender para a minha lista", "Gravar 5 aulas de 12 min", "Entregar e colher depoimento"] },
+      { title: "Newsletter semanal de snippets", note: "3 snippets por semana, tirados do próprio segundo cérebro. Custo zero, alimenta a lista.", steps: ["Escolher 3 snippets da semana", "Escrever em 40 minutos", "Enviar toda terça"] },
+      { title: "Template de proposta comercial", note: "", steps: [] }
+    ];
+    const ideas = ideaSeeds.map((s) => ({
+      id: this.uid("id"), title: s.title, note: s.note, at: new Date().toISOString(),
+      graph: this.chain(s.steps, "verde")
+    }));
+
+    const flowSeeds = [
+      { name: "Preparar uma aula", desc: "Do tema em branco até a aula gravada", color: "roxo", steps: ["Escrever a promessa da aula em uma frase", "Listar as 3 dúvidas do aluno", "Montar o roteiro em blocos de 5 min", "Separar exemplos do segundo cérebro", "Gravar sem editar no meio", "Cortar, publicar e anotar melhorias"] },
+      { name: "Fechar o mês financeiro", desc: "Rotina do último dia do mês", color: "azul", steps: ["Lançar o que ficou pendente", "Marcar contas pagas e conferir vencimentos", "Comparar saídas por categoria", "Separar reserva e imposto", "Definir o teto do próximo mês"] },
+      { name: "Tirar uma ideia do papel", desc: "Da ideia solta ao primeiro entregável", color: "laranja", steps: ["Escrever a ideia e o problema que resolve", "Definir a menor versão possível", "Marcar a data de entrega", "Executar em 3 blocos de foco", "Anotar o aprendizado"] }
+    ];
+    const flows = flowSeeds.map((f) => ({
+      id: this.uid("fl"), name: f.name, desc: f.desc, color: f.color,
+      graph: this.chain(f.steps, f.color)
+    }));
+
+    return {
       narrow: typeof window !== "undefined" && window.innerWidth < 760,
       view: "hub",
       query: "",
       chip: "tudo",
-      nn: { t: "", body: "", tags: "" },
-      notes: [
-        { t: "Atalhos do VS Code que eu uso todo dia", type: "ATALHO", tags: ["vscode", "produtividade"], body: "Cmd+P abrir arquivo · Cmd+Shift+F buscar no projeto · Alt+↑/↓ mover linha · Cmd+D selecionar próxima igual" },
-        { t: "Debounce em JS", type: "CÓDIGO", tags: ["javascript", "snippet"], body: "const debounce=(fn,ms)=>{let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}" },
-        { t: "git: desfazer o último commit", type: "CÓDIGO", tags: ["git", "snippet"], body: "git reset --soft HEAD~1   → mantém as alterações no stage" },
-        { t: "Centralizar qualquer coisa em CSS", type: "CÓDIGO", tags: ["css", "snippet"], body: "display:flex; align-items:center; justify-content:center" },
-        { t: "Contrato modelo — freelance", type: "PDF", tags: ["trabalho", "financeiro"], body: "contrato-freela-v3.pdf · 240 KB · última revisão jan/26" },
-        { t: "Planilha de precificação de projeto", type: "PDF", tags: ["financeiro", "trabalho"], body: "precificacao-2026.xlsx · 88 KB · fórmula de hora/valor na aba 2" },
-        { t: "Curso de tráfego pago — aula 4", type: "LINK", tags: ["marketing", "estudo"], body: "Estrutura de campanha: 1 criativo por dor, orçamento fixo por conjunto" },
-        { t: "Documentação da API que eu sempre esqueço", type: "LINK", tags: ["dev", "referência"], body: "Autenticação por bearer token, limite de 60 req/min" },
-        { t: "Print do painel de anúncios que converteu", type: "IMAGEM", tags: ["marketing", "referência"], body: "CPA de R$ 12 na campanha de setembro — estrutura vale copiar", slot: "print do painel" },
-        { t: "Referência de layout escuro", type: "IMAGEM", tags: ["design", "referência"], body: "Degradê roxo → preto, cartões com borda de 1px", slot: "referência visual" },
-        { t: "Como eu organizo a semana", type: "NOTA", tags: ["rotina", "produtividade"], body: "Domingo à noite: revisar o checklist do mês e puxar 3 prioridades para a semana." },
-        { t: "Regra dos 3 blocos de foco", type: "NOTA", tags: ["produtividade", "rotina"], body: "Manhã: criar. Tarde: reunião e recado. Noite: estudar e guardar no cérebro." }
-      ],
+      brainMode: "grid",
+      notes,
+      noteSel: null,
+      mediaDraft: "",
+      ideas,
+      ideaSel: ideas.length ? ideas[0].id : null,
+      ni: "",
+      flows,
+      nfl: "",
+      ed: null,
       nf: { d: "", v: "", t: "out" },
       txs: [
-        { d: "Salário", v: 5200, t: "in", c: "Trabalho" },
-        { d: "Freela — landing page", v: 2400, t: "in", c: "Trabalho" },
-        { d: "Aluguel", v: 1800, t: "out", c: "Moradia" },
-        { d: "Mercado", v: 740, t: "out", c: "Alimentação" },
-        { d: "Assinaturas (IA, hosting)", v: 210, t: "out", c: "Ferramentas" },
-        { d: "Academia", v: 120, t: "out", c: "Saúde" },
-        { d: "Combustível", v: 320, t: "out", c: "Transporte" }
+        { id: this.uid("tx"), d: "Salário", v: 5200, t: "in", c: "Trabalho" },
+        { id: this.uid("tx"), d: "Freela — landing page", v: 2400, t: "in", c: "Trabalho" },
+        { id: this.uid("tx"), d: "Aluguel", v: 1800, t: "out", c: "Moradia" },
+        { id: this.uid("tx"), d: "Mercado", v: 740, t: "out", c: "Alimentação" },
+        { id: this.uid("tx"), d: "Assinaturas (IA, hosting)", v: 210, t: "out", c: "Ferramentas" },
+        { id: this.uid("tx"), d: "Academia", v: 120, t: "out", c: "Saúde" },
+        { id: this.uid("tx"), d: "Combustível", v: 320, t: "out", c: "Transporte" }
       ],
       bills: [
-        { d: "Cartão de crédito", v: 1240, due: 10, paid: false },
-        { d: "Internet", v: 129, due: 5, paid: true },
-        { d: "Energia", v: 186, due: 12, paid: false },
-        { d: "Faculdade", v: 640, due: 20, paid: false },
-        { d: "Plano de saúde", v: 398, due: 25, paid: false }
+        { id: this.uid("bl"), d: "Cartão de crédito", v: 1240, due: 10, paid: false },
+        { id: this.uid("bl"), d: "Internet", v: 129, due: 5, paid: true },
+        { id: this.uid("bl"), d: "Energia", v: 186, due: 12, paid: false },
+        { id: this.uid("bl"), d: "Faculdade", v: 640, due: 20, paid: false },
+        { id: this.uid("bl"), d: "Plano de saúde", v: 398, due: 25, paid: false }
       ],
       months: [
         { label: "abr", in: 6100, out: 4300 },
@@ -425,43 +868,139 @@ class Component extends DCLogic {
         { label: "set", in: 7600, out: 3190 }
       ],
       goals: [
-        { name: "Reserva de emergência", target: 18000, saved: 7400 },
-        { name: "Setup novo (PC + tela)", target: 9000, saved: 5600 },
-        { name: "Viagem em janeiro", target: 6000, saved: 1200 }
+        { id: this.uid("gl"), name: "Reserva de emergência", target: 18000, saved: 7400 },
+        { id: this.uid("gl"), name: "Setup novo (PC + tela)", target: 9000, saved: 5600 },
+        { id: this.uid("gl"), name: "Viagem em janeiro", target: 6000, saved: 1200 }
       ],
-      ideas: [
-        { title: "Curso curto de automação", steps: ["Definir o resultado que o aluno leva em 7 dias", "Gravar 5 aulas de 12 minutos", "Vender primeiro para a minha lista"] },
-        { title: "Newsletter semanal de snippets", steps: ["Escolher 3 snippets por semana do segundo cérebro"] },
-        { title: "Template de proposta comercial", steps: [] }
+      chat: [
+        { w: "ana", t: "Oi! Sou a Ana, sua assessora. Me conta em português o que entrou ou saiu e eu lanço nas métricas.\n\nEx.: “gastei 82 no mercado”, “entrou 2400 de freela”, “conta de luz 186 vence dia 12”.\nTambém respondo: “qual meu saldo?”, “quanto gastei em alimentação?”, “quanto posso gastar?”.", at: "--:--" }
       ],
-      ideaSel: 0,
-      ni: "",
-      ns: "",
+      chatDraft: "",
+      anaTyping: false,
       tasks: [
-        { text: "Responder orçamentos", done: true, p: "dia" },
-        { text: "1h estudando automação", done: false, p: "dia" },
-        { text: "Registrar os gastos de ontem", done: false, p: "dia" },
-        { text: "Gravar 2 aulas", done: false, p: "semana" },
-        { text: "Revisar notas novas do cérebro", done: true, p: "semana" },
-        { text: "Enviar proposta para o cliente novo", done: false, p: "semana" },
-        { text: "Fechar o mês nas finanças", done: false, p: "mes" },
-        { text: "Backup dos arquivos", done: false, p: "mes" },
-        { text: "Guardar R$ 1.200 na reserva", done: false, p: "mes" }
+        { id: this.uid("tk"), text: "Responder orçamentos", done: true, p: "dia" },
+        { id: this.uid("tk"), text: "1h estudando automação", done: false, p: "dia" },
+        { id: this.uid("tk"), text: "Registrar os gastos de ontem", done: false, p: "dia" },
+        { id: this.uid("tk"), text: "Gravar 2 aulas", done: false, p: "semana" },
+        { id: this.uid("tk"), text: "Revisar notas novas do cérebro", done: true, p: "semana" },
+        { id: this.uid("tk"), text: "Enviar proposta para o cliente novo", done: false, p: "semana" },
+        { id: this.uid("tk"), text: "Fechar o mês nas finanças", done: false, p: "mes" },
+        { id: this.uid("tk"), text: "Backup dos arquivos", done: false, p: "mes" },
+        { id: this.uid("tk"), text: "Guardar R$ 1.200 na reserva", done: false, p: "mes" }
       ],
-      draft: { dia: "", semana: "", mes: "" },
-      flows: [
-        { name: "Preparar uma aula", desc: "Do tema em branco até a aula gravada", steps: ["Escrever a promessa da aula em uma frase", "Listar as 3 dúvidas que o aluno tem antes de começar", "Montar o roteiro em blocos de 5 minutos", "Separar exemplos e código pronto do segundo cérebro", "Gravar sem editar no meio", "Cortar, publicar e anotar o que melhorar"] },
-        { name: "Fechar o mês financeiro", desc: "Rotina do último dia do mês", steps: ["Lançar tudo que ficou pendente", "Marcar as contas pagas e conferir vencimentos do mês seguinte", "Comparar saídas por categoria com o mês anterior", "Separar reserva e imposto", "Definir o teto de gasto do próximo mês"] },
-        { name: "Tirar uma ideia do papel", desc: "Da ideia solta ao primeiro entregável", steps: ["Escrever a ideia em uma frase e o problema que resolve", "Definir a menor versão possível", "Marcar uma data de entrega no checklist", "Executar em 3 blocos de foco", "Anotar o aprendizado no segundo cérebro"] }
-      ],
-      flowOpen: 0
+      draft: { dia: "", semana: "", mes: "" }
     };
   }
 
-  componentDidMount() { window.addEventListener("resize", this.onResize); this.startBrain(); }
-  componentDidUpdate() { if (this.state.view === "hub") this.startBrain(); else this.stopBrain(); }
-  componentWillUnmount() { window.removeEventListener("resize", this.onResize); this.stopBrain(); }
+  // ---------- persistência no navegador ----------
+  load() {
+    try {
+      const raw = window.localStorage.getItem(STORE_KEY);
+      if (!raw) return {};
+      const o = JSON.parse(raw);
+      const out = {};
+      PERSIST.forEach((k) => { if (Array.isArray(o[k])) out[k] = o[k]; });
+      if (out.ideas && out.ideas.length) out.ideaSel = out.ideas[0].id;
+      this._loaded = true;
+      return out;
+    } catch (e) { return {}; }
+  }
 
+  persist() {
+    if (this._pt) clearTimeout(this._pt);
+    this._pt = setTimeout(() => {
+      try {
+        const keep = {};
+        PERSIST.forEach((k) => { keep[k] = this.state[k]; });
+        window.localStorage.setItem(STORE_KEY, JSON.stringify(keep));
+        this._saved = true;
+      } catch (e) { this._saveErr = true; }
+    }, 450);
+  }
+
+  resetData() {
+    if (!window.confirm("Apagar tudo que está salvo neste navegador e voltar ao conteúdo de exemplo?")) return;
+    try { window.localStorage.removeItem(STORE_KEY); } catch (e) {}
+    this._seq = 0;
+    this.setState(this.defaults());
+  }
+
+  // ---------- ciclo de vida ----------
+  componentDidMount() {
+    window.addEventListener("resize", this.onResize);
+    window.addEventListener("keydown", this.onKey);
+    this.sync();
+  }
+  componentDidUpdate() { this.sync(); this.persist(); }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.onResize);
+    window.removeEventListener("keydown", this.onKey);
+    this.stopBrain(); this.stopGraph(); this.stopPad();
+    if (this._pt) clearTimeout(this._pt);
+    if (this._anaT) clearTimeout(this._anaT);
+  }
+
+  sync() {
+    const v = this.state.view;
+    if (v === "hub") this.startBrain(); else this.stopBrain();
+    if (v === "brain" && this.state.brainMode === "graph") this.startGraph(); else this.stopGraph();
+    if (v === "editor") this.startPad(); else this.stopPad();
+    if (v === "fin") this.scrollChat();
+  }
+
+  handleKey(e) {
+    const tag = (e.target && e.target.tagName || "").toLowerCase();
+    const typing = tag === "input" || tag === "textarea";
+    if (e.key === "Escape") {
+      if (typing) return;
+      const st = this.state;
+      if (st.view === "editor") {
+        if (st.ed && st.ed.sel) this.setState({ ed: Object.assign({}, st.ed, { sel: null, edgeSel: null }) });
+        else if (st.ed && st.ed.path.length) this.edUp();
+        else this.edBack();
+      } else if (st.view === "note") this.setState({ view: "brain", noteSel: null });
+      else if (st.view !== "hub") this.setState({ view: "hub" });
+      return;
+    }
+    if ((e.key === "Delete" || e.key === "Backspace") && !typing && this.state.view === "editor") {
+      const ed = this.state.ed;
+      if (ed && ed.edgeSel) { e.preventDefault(); this.edgeDel(); }
+      else if (ed && ed.sel) { e.preventDefault(); this.selDel(); }
+    }
+  }
+
+  // ---------- navegação ----------
+  enter(view) {
+    this._diss = performance.now();
+    const n = this.hubRef.current;
+    if (n) {
+      n.querySelectorAll("div").forEach((el) => {
+        if (el.style.position === "absolute" && el.style.cursor === "pointer") el.style.transition = "opacity 320ms ease, transform 520ms ease";
+      });
+      n.style.opacity = "0";
+    }
+    setTimeout(() => this.setState({ view }), 640);
+  }
+
+  openNote(id) { this.setState({ view: "note", noteSel: id, mediaDraft: "" }); }
+
+  openEditor(kind, id) {
+    this.setState({ view: "editor", ed: { kind, id, path: [], pan: { x: 60, y: 40 }, zoom: 1, sel: null, edgeSel: null } });
+    setTimeout(() => this.edFit(), 30);
+  }
+
+  edBack() {
+    const ed = this.state.ed;
+    this.setState({ view: ed && ed.kind === "idea" ? "ideias" : "flows", ed: null });
+  }
+  edUp() {
+    const ed = this.state.ed;
+    if (!ed || !ed.path.length) return;
+    this.setState({ ed: Object.assign({}, ed, { path: ed.path.slice(0, -1), sel: null, edgeSel: null }) });
+    setTimeout(() => this.edFit(), 20);
+  }
+
+  // ================= ANIMAÇÃO DO HUB (cérebro girando) =================
   stopBrain() { if (this._raf) { cancelAnimationFrame(this._raf); this._raf = null; } this._cv = null; this._diss = 0; }
 
   startBrain() {
@@ -474,20 +1013,17 @@ class Component extends DCLogic {
     let s = 20260904;
     const rnd = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296);
 
-    // núcleo: nuvem densa no centro
     const core = [];
     for (let i = 0; i < 90; i++) {
       const u = rnd() * 2 - 1, th = rnd() * Math.PI * 2, r = 0.28 + Math.cbrt(rnd()) * 0.2;
       const sx = Math.sqrt(1 - u * u);
       core.push({ x: r * sx * Math.cos(th), y: r * u, z: r * sx * Math.sin(th), s: 0.7 + rnd() * 1.3, ph: rnd() * 6.28, dx: (rnd() - 0.5), dy: (rnd() - 0.5), dz: (rnd() - 0.5) });
     }
-    // órbitas: 3 anéis inclinados, com nós viajando
     const orbits = [
       { r: 0.78, tilt: 0.28, spin: 0.00035, nodes: 5 },
       { r: 1.04, tilt: -0.62, spin: -0.00024, nodes: 4 },
       { r: 1.3, tilt: 1.05, spin: 0.00017, nodes: 3 }
     ];
-
     const rot = (p, yaw, pitch) => {
       const cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
       let x = p.x * cyw + p.z * syw, z = -p.x * syw + p.z * cyw;
@@ -515,7 +1051,6 @@ class Component extends DCLogic {
       const cx = w / 2, cy = h * (nar ? 0.24 : 0.46), sc = Math.min(w * (nar ? 0.86 : 0.6), h) * (nar ? 0.26 : 0.30);
       const yaw = t * 0.00019, pitch = Math.sin(t * 0.00014) * 0.2;
 
-      // halo do núcleo
       const hg = ctx.createRadialGradient(cx, cy, 0, cx, cy, sc * (0.62 + e * 1.4));
       hg.addColorStop(0, "rgba(196,166,255," + (0.34 * fade).toFixed(3) + ")");
       hg.addColorStop(0.55, "rgba(124,77,255," + (0.14 * fade).toFixed(3) + ")");
@@ -523,7 +1058,6 @@ class Component extends DCLogic {
       ctx.fillStyle = hg;
       ctx.beginPath(); ctx.arc(cx, cy, sc * (0.62 + e * 1.4), 0, 6.2832); ctx.fill();
 
-      // anéis
       orbits.forEach((o, oi) => {
         const ph = t * o.spin;
         const pts = [];
@@ -554,7 +1088,6 @@ class Component extends DCLogic {
         }
       });
 
-      // núcleo
       for (const p of core) {
         const q = rot({ x: p.x + p.dx * blow, y: p.y + p.dy * blow, z: p.z + p.dz * blow }, yaw * 1.6, pitch);
         const k = 3.2 / (3.2 - q.z);
@@ -567,7 +1100,6 @@ class Component extends DCLogic {
         ctx.fill(); ctx.shadowBlur = 0;
       }
 
-      // conexões com as abas
       anchors.forEach((an, n) => {
         const ax = an[0] * w, ay = an[1] * h;
         const a0 = (n / 5) * 6.2832 + t * 0.00019;
@@ -587,59 +1119,1140 @@ class Component extends DCLogic {
     this._raf = requestAnimationFrame(frame);
   }
 
-  enter(view) {
-    this._diss = performance.now();
-    const n = this.hubRef.current;
-    if (n) {
-      n.querySelectorAll("div").forEach(el => {
-        if (el.style.position === "absolute" && el.style.cursor === "pointer") { el.style.transition = "opacity 320ms ease, transform 520ms ease"; }
-      });
-      n.style.opacity = "0";
-    }
-    setTimeout(() => this.setState({ view }), 640);
+  // ================= GRAFO DAS NOTAS (estilo obsidian) =================
+  graphSig() {
+    return this.state.notes.map((n) => n.id + "|" + (n.tags || []).join(",") + "|" + (n.links || []).join(",")).join(";");
   }
 
-  money(v) { return "R$ " + Math.round(v).toLocaleString("pt-BR"); }
-  short(v) { return v >= 1000 ? (v / 1000).toFixed(1).replace(".", ",") + "k" : String(Math.round(v)); }
+  buildGraph() {
+    const notes = this.state.notes;
+    const prev = this._gn || {};
+    const nodes = [];
+    const tagCount = {};
+    notes.forEach((n) => (n.tags || []).forEach((t) => { tagCount[t] = (tagCount[t] || 0) + 1; }));
 
+    notes.forEach((n, i) => {
+      const id = "n:" + n.id, p = prev[id];
+      const size = 6 + Math.min(7, ((n.body || "").length + (n.media || []).length * 120) / 240);
+      nodes.push({
+        id, kind: "note", ref: n.id, label: n.t, r: size,
+        x: p ? p.x : Math.cos(i * 2.4) * (110 + i * 9), y: p ? p.y : Math.sin(i * 2.4) * (90 + i * 7),
+        vx: 0, vy: 0
+      });
+    });
+    Object.keys(tagCount).forEach((t, i) => {
+      if (tagCount[t] < 2) return;
+      const id = "t:" + t, p = prev[id];
+      nodes.push({
+        id, kind: "tag", ref: t, label: "#" + t, r: 4.5 + Math.min(5, tagCount[t] * 1.1),
+        x: p ? p.x : Math.sin(i * 1.9) * 150, y: p ? p.y : Math.cos(i * 1.9) * 130,
+        vx: 0, vy: 0
+      });
+    });
+
+    const byId = {};
+    nodes.forEach((n) => { byId[n.id] = n; });
+    const edges = [];
+    notes.forEach((n) => {
+      (n.tags || []).forEach((t) => { if (byId["t:" + t]) edges.push(["n:" + n.id, "t:" + t, 0.55]); });
+      (n.links || []).forEach((l) => { if (byId["n:" + l]) edges.push(["n:" + n.id, "n:" + l, 1.3]); });
+    });
+
+    this._gn = byId; this._gnodes = nodes; this._gedges = edges;
+    this._gsig = this.graphSig();
+    for (let i = 0; i < 260; i++) this.stepGraph();
+  }
+
+  stepGraph() {
+    const ns = this._gnodes || [];
+    for (let i = 0; i < ns.length; i++) {
+      const a = ns[i];
+      for (let j = i + 1; j < ns.length; j++) {
+        const b = ns[j];
+        let dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy;
+        if (d2 < 0.05) { dx = Math.random() - 0.5; dy = Math.random() - 0.5; d2 = 0.05; }
+        if (d2 > 160000) continue;
+        const d = Math.sqrt(d2), f = 1700 / d2;
+        a.vx -= (dx / d) * f; a.vy -= (dy / d) * f;
+        b.vx += (dx / d) * f; b.vy += (dy / d) * f;
+      }
+    }
+    (this._gedges || []).forEach((e) => {
+      const a = this._gn[e[0]], b = this._gn[e[1]];
+      if (!a || !b) return;
+      const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1;
+      const f = (d - 104) * 0.011 * e[2];
+      a.vx += (dx / d) * f; a.vy += (dy / d) * f;
+      b.vx -= (dx / d) * f; b.vy -= (dy / d) * f;
+    });
+    ns.forEach((n) => {
+      if (n === this._gdrag) { n.vx = 0; n.vy = 0; return; }
+      n.vx += -n.x * 0.0018; n.vy += -n.y * 0.0018;
+      n.vx *= 0.85; n.vy *= 0.85;
+      n.x += n.vx; n.y += n.vy;
+    });
+  }
+
+  stopGraph() {
+    if (this._graf) { cancelAnimationFrame(this._graf); this._graf = null; }
+    if (this._gwheel && this._gpad) this._gpad.removeEventListener("wheel", this._gwheel);
+    if (this._gdown && this._gcv) this._gcv.removeEventListener("pointerdown", this._gdown);
+    if (this._gmove) window.removeEventListener("pointermove", this._gmove);
+    if (this._gup) window.removeEventListener("pointerup", this._gup);
+    this._gcv = null; this._gpad = null; this._gdrag = null; this._gpanning = false;
+  }
+
+  startGraph() {
+    const cv = this.graphRef.current, pad = this.padRef.current;
+    if (!cv || !pad) return;
+    if (cv === this._gcv) {
+      if (this.graphSig() !== this._gsig) this.buildGraph();
+      return;
+    }
+    this.stopGraph();
+    this._gcv = cv; this._gpad = pad;
+    this._gpan = { x: 0, y: 0 }; this._gz = 1;
+    this._ghover = null; this._gdrag = null; this._gpanning = false;
+    this.buildGraph();
+    const ctx = cv.getContext("2d");
+
+    const toWorld = (ev) => {
+      const r = cv.getBoundingClientRect();
+      return {
+        x: (ev.clientX - r.left - r.width / 2 - this._gpan.x) / this._gz,
+        y: (ev.clientY - r.top - r.height / 2 - this._gpan.y) / this._gz
+      };
+    };
+    const hitAt = (p) => {
+      let best = null, bd = 1e9;
+      (this._gnodes || []).forEach((n) => {
+        const d = Math.hypot(n.x - p.x, n.y - p.y);
+        if (d < n.r + 14 && d < bd) { bd = d; best = n; }
+      });
+      return best;
+    };
+
+    this._gwheel = (ev) => {
+      ev.preventDefault();
+      const r = cv.getBoundingClientRect();
+      const mx = ev.clientX - r.left - r.width / 2 - this._gpan.x;
+      const my = ev.clientY - r.top - r.height / 2 - this._gpan.y;
+      const nz = Math.max(0.35, Math.min(2.8, this._gz * Math.exp(-ev.deltaY * 0.0015)));
+      const k = nz / this._gz;
+      this._gpan.x -= mx * (k - 1); this._gpan.y -= my * (k - 1);
+      this._gz = nz;
+    };
+    pad.addEventListener("wheel", this._gwheel, { passive: false });
+
+    this._gdown = (ev) => {
+      const hit = hitAt(toWorld(ev));
+      this._gmoved = false;
+      if (hit) { this._gdrag = hit; cv.style.cursor = "grabbing"; }
+      else { this._gpanning = true; this._gpx = ev.clientX; this._gpy = ev.clientY; cv.style.cursor = "grabbing"; }
+    };
+    this._gmove = (ev) => {
+      if (this._gdrag) {
+        const p = toWorld(ev);
+        this._gdrag.x = p.x; this._gdrag.y = p.y; this._gdrag.vx = 0; this._gdrag.vy = 0;
+        this._gmoved = true; return;
+      }
+      if (this._gpanning) {
+        this._gpan.x += ev.clientX - this._gpx; this._gpan.y += ev.clientY - this._gpy;
+        this._gpx = ev.clientX; this._gpy = ev.clientY; this._gmoved = true; return;
+      }
+      this._ghover = hitAt(toWorld(ev));
+      cv.style.cursor = this._ghover ? "pointer" : "grab";
+    };
+    this._gup = () => {
+      const d = this._gdrag;
+      if (d && !this._gmoved) {
+        if (d.kind === "note") this.openNote(d.ref);
+        else this.setState({ brainMode: "grid", query: d.ref });
+      }
+      this._gdrag = null; this._gpanning = false;
+      cv.style.cursor = this._ghover ? "pointer" : "grab";
+    };
+    cv.addEventListener("pointerdown", this._gdown);
+    window.addEventListener("pointermove", this._gmove);
+    window.addEventListener("pointerup", this._gup);
+
+    const frame = (t) => {
+      this.stepGraph();
+      this.drawGraph(ctx, cv, t);
+      this._graf = requestAnimationFrame(frame);
+    };
+    this._graf = requestAnimationFrame(frame);
+  }
+
+  drawGraph(ctx, cv, t) {
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, r.width), h = Math.max(1, r.height);
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    ctx.save();
+    ctx.translate(w / 2 + this._gpan.x, h / 2 + this._gpan.y);
+    ctx.scale(this._gz, this._gz);
+
+    const hov = this._ghover;
+    const near = {};
+    if (hov) (this._gedges || []).forEach((e) => {
+      if (e[0] === hov.id) near[e[1]] = 1;
+      if (e[1] === hov.id) near[e[0]] = 1;
+    });
+
+    (this._gedges || []).forEach((e) => {
+      const a = this._gn[e[0]], b = this._gn[e[1]];
+      if (!a || !b) return;
+      const on = hov && (e[0] === hov.id || e[1] === hov.id);
+      ctx.strokeStyle = on ? "rgba(224,208,255,0.8)" : (hov ? "rgba(169,123,255,0.08)" : "rgba(169,123,255,0.2)");
+      ctx.lineWidth = (on ? 1.7 : 1) / this._gz;
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+    });
+
+    (this._gnodes || []).forEach((n) => {
+      const isTag = n.kind === "tag";
+      const on = hov && (n === hov || near[n.id]);
+      const dim = hov && !on;
+      const pulse = n === hov ? 1.35 : 1;
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.r * pulse, 0, 6.2832);
+      ctx.fillStyle = isTag
+        ? (dim ? "rgba(124,77,255,0.28)" : "rgba(169,123,255,0.95)")
+        : (dim ? "rgba(243,238,255,0.24)" : "rgba(243,238,255,0.97)");
+      ctx.shadowBlur = on ? 18 : 8;
+      ctx.shadowColor = "rgba(169,123,255,0.85)";
+      ctx.fill(); ctx.shadowBlur = 0;
+
+      if (this._gz > 0.6 || on) {
+        ctx.font = "11px 'IBM Plex Mono', ui-monospace, monospace";
+        ctx.textAlign = "center"; ctx.textBaseline = "top";
+        ctx.fillStyle = dim ? "rgba(140,130,170,0.3)" : (isTag ? "#c4a6ff" : "#ddd6ec");
+        const lbl = n.label.length > 28 ? n.label.slice(0, 26) + "…" : n.label;
+        ctx.lineWidth = 3 / this._gz;
+        ctx.strokeStyle = "rgba(8,5,16,0.92)";
+        ctx.lineJoin = "round";
+        ctx.strokeText(lbl, n.x, n.y + n.r * pulse + 7);
+        ctx.fillText(lbl, n.x, n.y + n.r * pulse + 7);
+      }
+    });
+    ctx.restore();
+  }
+
+  // ================= EDITOR: acesso ao grafo =================
+  edList() { return this.state.ed && this.state.ed.kind === "idea" ? "ideas" : "flows"; }
+  edOwner() {
+    const ed = this.state.ed;
+    if (!ed) return null;
+    return (this.state[this.edList()] || []).find((o) => o.id === ed.id) || null;
+  }
+  edGraph() { const o = this.edOwner(); return (o && o.graph) ? o.graph : { nodes: [], edges: [] }; }
+  edParent() { const ed = this.state.ed; return ed && ed.path.length ? ed.path[ed.path.length - 1] : null; }
+  edNodes() { const p = this.edParent(); return this.edGraph().nodes.filter((n) => (n.parent || null) === p); }
+  edEdges() {
+    const ids = this.edNodes().map((n) => n.id);
+    return this.edGraph().edges.filter((e) => ids.indexOf(e.a) >= 0 && ids.indexOf(e.b) >= 0);
+  }
+  edNode(id) { return this.edGraph().nodes.find((n) => n.id === id) || null; }
+  subCount(id) { return this.edGraph().nodes.filter((n) => n.parent === id).length; }
+  nodeH(n) { return n && n.note ? NODE_H_NOTE : NODE_H; }
+  palOf(k) { return PAL.find((p) => p.k === k) || PAL[0]; }
+
+  setGraph(fn) {
+    const ed = this.state.ed;
+    if (!ed) return;
+    const key = this.edList();
+    this.setState((st) => {
+      const list = (st[key] || []).map((o) => {
+        if (o.id !== ed.id) return o;
+        const g = o.graph || { nodes: [], edges: [] };
+        return Object.assign({}, o, { graph: fn({ nodes: g.nodes.slice(), edges: g.edges.slice() }) });
+      });
+      const patch = {}; patch[key] = list; return patch;
+    });
+  }
+  setEd(patch) {
+    const ed = this.state.ed;
+    if (!ed) return;
+    this.setState({ ed: Object.assign({}, ed, patch) });
+  }
+
+  // ---------- geometria dos blocos e das conexões ----------
+  portPos(n, side) {
+    const h = this.nodeH(n);
+    if (side === "t") return { x: n.x + NODE_W / 2, y: n.y };
+    if (side === "b") return { x: n.x + NODE_W / 2, y: n.y + h };
+    if (side === "l") return { x: n.x, y: n.y + h / 2 };
+    return { x: n.x + NODE_W, y: n.y + h / 2 };
+  }
+  dirOf(s) { return s === "t" ? { x: 0, y: -1 } : s === "b" ? { x: 0, y: 1 } : s === "l" ? { x: -1, y: 0 } : { x: 1, y: 0 }; }
+  opposite(s) { return s === "t" ? "b" : s === "b" ? "t" : s === "l" ? "r" : "l"; }
+  bez(p1, s1, p2, s2) {
+    const d1 = this.dirOf(s1), d2 = this.dirOf(s2);
+    const c = Math.max(50, Math.min(190, Math.hypot(p2.x - p1.x, p2.y - p1.y) * 0.46));
+    return { p1, p2, c1: { x: p1.x + d1.x * c, y: p1.y + d1.y * c }, c2: { x: p2.x + d2.x * c, y: p2.y + d2.y * c } };
+  }
+  bezAt(b, t) {
+    const u = 1 - t, k0 = u * u * u, k1 = 3 * u * u * t, k2 = 3 * u * t * t, k3 = t * t * t;
+    return {
+      x: k0 * b.p1.x + k1 * b.c1.x + k2 * b.c2.x + k3 * b.p2.x,
+      y: k0 * b.p1.y + k1 * b.c1.y + k2 * b.c2.y + k3 * b.p2.y
+    };
+  }
+
+  // ---------- canvas do editor ----------
+  stopPad() {
+    if (this._praf) { cancelAnimationFrame(this._praf); this._praf = null; }
+    if (this._pwheel && this._ppad) this._ppad.removeEventListener("wheel", this._pwheel);
+    if (this._pdown && this._pcv) this._pcv.removeEventListener("pointerdown", this._pdown);
+    this._pcv = null; this._ppad = null; this._link = null;
+  }
+
+  startPad() {
+    const cv = this.edgeRef.current, pad = this.padRef.current;
+    if (!cv || !pad || cv === this._pcv) return;
+    this.stopPad();
+    this._pcv = cv; this._ppad = pad;
+    const ctx = cv.getContext("2d");
+
+    this._pwheel = (ev) => {
+      ev.preventDefault();
+      const ed = this.state.ed;
+      if (!ed) return;
+      const r = cv.getBoundingClientRect();
+      const mx = ev.clientX - r.left, my = ev.clientY - r.top;
+      const nz = Math.max(0.3, Math.min(2.4, ed.zoom * Math.exp(-ev.deltaY * 0.0014)));
+      const k = nz / ed.zoom;
+      this.setEd({ zoom: nz, pan: { x: mx - (mx - ed.pan.x) * k, y: my - (my - ed.pan.y) * k } });
+    };
+    pad.addEventListener("wheel", this._pwheel, { passive: false });
+
+    this._pdown = (ev) => this.padDown(ev);
+    cv.addEventListener("pointerdown", this._pdown);
+
+    const frame = (t) => { this.drawPad(ctx, cv, t); this._praf = requestAnimationFrame(frame); };
+    this._praf = requestAnimationFrame(frame);
+  }
+
+  padWorld(ev) {
+    const ed = this.state.ed, cv = this._pcv;
+    if (!ed || !cv) return { x: 0, y: 0 };
+    const r = cv.getBoundingClientRect();
+    return { x: (ev.clientX - r.left - ed.pan.x) / ed.zoom, y: (ev.clientY - r.top - ed.pan.y) / ed.zoom };
+  }
+
+  padDown(ev) {
+    const ed = this.state.ed;
+    if (!ed) return;
+    const p = this.padWorld(ev);
+    const hit = this.edgeAt(p.x, p.y, 11 / ed.zoom);
+    if (hit) { this.setEd({ edgeSel: hit.id, sel: null }); return; }
+    this.setEd({ sel: null, edgeSel: null });
+
+    const cv = this._pcv, sx = ev.clientX, sy = ev.clientY, p0 = ed.pan;
+    cv.style.cursor = "grabbing";
+    const move = (e2) => this.setEd({ pan: { x: p0.x + (e2.clientX - sx), y: p0.y + (e2.clientY - sy) } });
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      if (cv) cv.style.cursor = "grab";
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  edgeAt(x, y, tol) {
+    const ns = this.edNodes(), byId = {};
+    ns.forEach((n) => { byId[n.id] = n; });
+    const es = this.edEdges();
+    for (let i = es.length - 1; i >= 0; i--) {
+      const e = es[i], a = byId[e.a], b = byId[e.b];
+      if (!a || !b) continue;
+      const bz = this.bez(this.portPos(a, e.as), e.as, this.portPos(b, e.bs), e.bs);
+      for (let k = 0; k <= 22; k++) {
+        const p = this.bezAt(bz, k / 22);
+        if (Math.hypot(p.x - x, p.y - y) < Math.max(tol, 7)) return e;
+      }
+    }
+    return null;
+  }
+
+  nodeDown(ev, id) {
+    ev.stopPropagation();
+    const ed = this.state.ed;
+    if (!ed) return;
+    const n = this.edNode(id);
+    if (!n) return;
+    this.setEd({ sel: id, edgeSel: null });
+    const z = ed.zoom, sx = ev.clientX, sy = ev.clientY, ox = n.x, oy = n.y;
+    let moved = false;
+    const move = (e2) => {
+      const dx = (e2.clientX - sx) / z, dy = (e2.clientY - sy) / z;
+      if (!moved && Math.abs(dx) < 2 && Math.abs(dy) < 2) return;
+      moved = true;
+      const gx = Math.round((ox + dx) / 10) * 10, gy = Math.round((oy + dy) / 10) * 10;
+      this.setGraph((g) => {
+        g.nodes = g.nodes.map((m) => (m.id === id ? Object.assign({}, m, { x: gx, y: gy }) : m));
+        return g;
+      });
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  portDown(ev, id, side) {
+    ev.stopPropagation();
+    const ed = this.state.ed;
+    if (!ed || !this._pcv) return;
+    const n = this.edNode(id);
+    if (!n) return;
+    const start = this.portPos(n, side);
+    this._link = { a: id, as: side, x: start.x, y: start.y, over: null };
+    this.setEd({ sel: id, edgeSel: null });
+
+    const move = (e2) => {
+      if (!this._link) return;
+      const p = this.padWorld(e2);
+      this._link.x = p.x; this._link.y = p.y;
+      const z = (this.state.ed && this.state.ed.zoom) || 1;
+      this._link.over = this.portAt(p.x, p.y, 18 / z, id);
+    };
+    const up = () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+      const lk = this._link;
+      this._link = null;
+      if (!lk) return;
+      if (lk.over) this.addEdge(lk.a, lk.as, lk.over.id, lk.over.side);
+      else if (Math.hypot(lk.x - start.x, lk.y - start.y) > 55) this.addNodeLinked(lk);
+    };
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+  }
+
+  portAt(x, y, tol, skipId) {
+    const ns = this.edNodes();
+    for (const n of ns) {
+      if (n.id === skipId) continue;
+      for (const s of SIDES) {
+        const p = this.portPos(n, s);
+        if (Math.hypot(p.x - x, p.y - y) < tol) return { id: n.id, side: s };
+      }
+    }
+    for (const n of ns) {
+      if (n.id === skipId) continue;
+      const h = this.nodeH(n);
+      if (x >= n.x && x <= n.x + NODE_W && y >= n.y && y <= n.y + h) {
+        const best = SIDES.map((s) => {
+          const p = this.portPos(n, s);
+          return { s, d: Math.hypot(p.x - x, p.y - y) };
+        }).sort((a, b) => a.d - b.d)[0];
+        return { id: n.id, side: best.s };
+      }
+    }
+    return null;
+  }
+
+  addEdge(a, as, b, bs) {
+    if (a === b) return;
+    this.setGraph((g) => {
+      const dup = g.edges.some((e) => (e.a === a && e.b === b) || (e.a === b && e.b === a));
+      if (!dup) g.edges = g.edges.concat([{ id: this.uid("eg"), a, as, b, bs }]);
+      return g;
+    });
+  }
+
+  addNodeLinked(lk) {
+    const from = this.edNode(lk.a);
+    const bs = this.opposite(lk.as);
+    const id = this.uid("nd");
+    const offX = bs === "l" ? 0 : bs === "r" ? NODE_W : NODE_W / 2;
+    const offY = bs === "t" ? 0 : bs === "b" ? NODE_H : NODE_H / 2;
+    const x = Math.round((lk.x - offX) / 10) * 10, y = Math.round((lk.y - offY) / 10) * 10;
+    const parent = this.edParent();
+    this.setGraph((g) => {
+      g.nodes = g.nodes.concat([{ id, x, y, label: "Novo bloco", note: "", color: from ? from.color : "roxo", parent }]);
+      g.edges = g.edges.concat([{ id: this.uid("eg"), a: lk.a, as: lk.as, b: id, bs }]);
+      return g;
+    });
+    this.setEd({ sel: id, edgeSel: null });
+  }
+
+  drawPad(ctx, cv, t) {
+    const ed = this.state.ed;
+    if (!ed) return;
+    const r = cv.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, r.width), h = Math.max(1, r.height);
+    if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) {
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+
+    const gs = 26 * ed.zoom;
+    if (gs > 9) {
+      const ox = ((ed.pan.x % gs) + gs) % gs, oy = ((ed.pan.y % gs) + gs) % gs;
+      ctx.fillStyle = "rgba(196,166,255,0.1)";
+      for (let x = ox; x < w; x += gs) for (let y = oy; y < h; y += gs) ctx.fillRect(x, y, 1.4, 1.4);
+    }
+
+    ctx.save();
+    ctx.translate(ed.pan.x, ed.pan.y);
+    ctx.scale(ed.zoom, ed.zoom);
+
+    const ns = this.edNodes(), byId = {};
+    ns.forEach((n) => { byId[n.id] = n; });
+
+    this.edEdges().forEach((e) => {
+      const a = byId[e.a], b = byId[e.b];
+      if (!a || !b) return;
+      const bz = this.bez(this.portPos(a, e.as), e.as, this.portPos(b, e.bs), e.bs);
+      const on = ed.edgeSel === e.id;
+      const col = this.palOf(a.color).dot;
+      ctx.lineWidth = (on ? 2.8 : 1.8) / ed.zoom;
+      ctx.strokeStyle = on ? "#e4d5ff" : col;
+      ctx.globalAlpha = on ? 1 : 0.52;
+      ctx.beginPath();
+      ctx.moveTo(bz.p1.x, bz.p1.y);
+      ctx.bezierCurveTo(bz.c1.x, bz.c1.y, bz.c2.x, bz.c2.y, bz.p2.x, bz.p2.y);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+
+      const d2 = this.dirOf(e.bs);
+      ctx.save();
+      ctx.translate(bz.p2.x, bz.p2.y);
+      ctx.rotate(Math.atan2(-d2.y, -d2.x));
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-8 / ed.zoom, 3.6 / ed.zoom);
+      ctx.lineTo(-8 / ed.zoom, -3.6 / ed.zoom);
+      ctx.closePath();
+      ctx.fillStyle = on ? "#e4d5ff" : col;
+      ctx.globalAlpha = on ? 1 : 0.8;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.restore();
+
+      const f = ((t * 0.00034) + (e.id.length % 7) / 7) % 1;
+      const p = this.bezAt(bz, f);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3 / ed.zoom, 0, 6.2832);
+      ctx.fillStyle = "#f0e8ff";
+      ctx.shadowBlur = 11; ctx.shadowColor = col;
+      ctx.fill(); ctx.shadowBlur = 0;
+    });
+
+    if (this._link) {
+      const a = byId[this._link.a];
+      if (a) {
+        const p1 = this.portPos(a, this._link.as);
+        const overNode = this._link.over ? byId[this._link.over.id] : null;
+        const tgt = overNode ? this.portPos(overNode, this._link.over.side) : { x: this._link.x, y: this._link.y };
+        const bz = this.bez(p1, this._link.as, tgt, overNode ? this._link.over.side : this.opposite(this._link.as));
+        ctx.setLineDash([7 / ed.zoom, 5 / ed.zoom]);
+        ctx.lineWidth = 1.9 / ed.zoom;
+        ctx.strokeStyle = overNode ? "#8ee0b0" : "#c4a6ff";
+        ctx.beginPath();
+        ctx.moveTo(bz.p1.x, bz.p1.y);
+        ctx.bezierCurveTo(bz.c1.x, bz.c1.y, bz.c2.x, bz.c2.y, bz.p2.x, bz.p2.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.arc(tgt.x, tgt.y, 5.5 / ed.zoom, 0, 6.2832);
+        ctx.fillStyle = overNode ? "#8ee0b0" : "#c4a6ff";
+        ctx.fill();
+      }
+    }
+    ctx.restore();
+  }
+
+  // ---------- ações do editor ----------
+  edZoom(f) {
+    const ed = this.state.ed, cv = this._pcv;
+    if (!ed) return;
+    const r = cv ? cv.getBoundingClientRect() : { width: 900, height: 560 };
+    const mx = r.width / 2, my = r.height / 2;
+    const nz = Math.max(0.3, Math.min(2.4, ed.zoom * f));
+    const k = nz / ed.zoom;
+    this.setEd({ zoom: nz, pan: { x: mx - (mx - ed.pan.x) * k, y: my - (my - ed.pan.y) * k } });
+  }
+
+  edFit() {
+    const ed = this.state.ed, cv = this._pcv || this.edgeRef.current;
+    if (!ed || !cv) return;
+    const r = cv.getBoundingClientRect();
+    const w = r.width || 900, h = r.height || 560;
+    const ns = this.edNodes();
+    if (!ns.length) { this.setEd({ zoom: 1, pan: { x: w / 2 - NODE_W / 2, y: h / 2 - 40 } }); return; }
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    ns.forEach((n) => {
+      x0 = Math.min(x0, n.x); y0 = Math.min(y0, n.y);
+      x1 = Math.max(x1, n.x + NODE_W); y1 = Math.max(y1, n.y + this.nodeH(n));
+    });
+    const gap = 90;
+    const z = Math.max(0.3, Math.min(1.2, Math.min((w - gap * 2) / Math.max(1, x1 - x0), (h - gap * 2) / Math.max(1, y1 - y0))));
+    this.setEd({ zoom: z, pan: { x: (w - (x1 - x0) * z) / 2 - x0 * z, y: (h - (y1 - y0) * z) / 2 - y0 * z } });
+  }
+
+  edAdd() {
+    const ed = this.state.ed;
+    if (!ed) return;
+    const cv = this._pcv;
+    const r = cv ? cv.getBoundingClientRect() : { width: 900, height: 560 };
+    const ns = this.edNodes();
+    let x = Math.round(((r.width / 2 - ed.pan.x) / ed.zoom - NODE_W / 2) / 10) * 10;
+    let y = Math.round(((r.height / 2 - ed.pan.y) / ed.zoom - NODE_H / 2) / 10) * 10;
+    let guard = 0;
+    while (guard++ < 40 && ns.some((n) => Math.abs(n.x - x) < 50 && Math.abs(n.y - y) < 50)) { x += 30; y += 48; }
+    const id = this.uid("nd");
+    const parent = this.edParent();
+    this.setGraph((g) => {
+      g.nodes = g.nodes.concat([{ id, x, y, label: "Novo bloco", note: "", color: "roxo", parent }]);
+      return g;
+    });
+    this.setEd({ sel: id, edgeSel: null });
+  }
+
+  edDrill(id) {
+    const ed = this.state.ed;
+    if (!ed) return;
+    this.setState({ ed: Object.assign({}, ed, { path: ed.path.concat([id]), sel: null, edgeSel: null }) });
+    setTimeout(() => this.edFit(), 20);
+  }
+
+  edCrumbTo(i) {
+    const ed = this.state.ed;
+    if (!ed) return;
+    this.setState({ ed: Object.assign({}, ed, { path: ed.path.slice(0, i), sel: null, edgeSel: null }) });
+    setTimeout(() => this.edFit(), 20);
+  }
+
+  setSel(patch) {
+    const ed = this.state.ed;
+    if (!ed || !ed.sel) return;
+    this.setGraph((g) => {
+      g.nodes = g.nodes.map((n) => (n.id === ed.sel ? Object.assign({}, n, patch) : n));
+      return g;
+    });
+  }
+
+  selDel() {
+    const ed = this.state.ed;
+    if (!ed || !ed.sel) return;
+    const id = ed.sel;
+    this.setGraph((g) => {
+      const kill = [id];
+      let grow = true;
+      while (grow) {
+        grow = false;
+        g.nodes.forEach((n) => {
+          if (n.parent && kill.indexOf(n.parent) >= 0 && kill.indexOf(n.id) < 0) { kill.push(n.id); grow = true; }
+        });
+      }
+      g.nodes = g.nodes.filter((n) => kill.indexOf(n.id) < 0);
+      g.edges = g.edges.filter((e) => kill.indexOf(e.a) < 0 && kill.indexOf(e.b) < 0);
+      return g;
+    });
+    this.setEd({ sel: null, edgeSel: null });
+  }
+
+  selDup() {
+    const ed = this.state.ed;
+    if (!ed || !ed.sel) return;
+    const n = this.edNode(ed.sel);
+    if (!n) return;
+    const id = this.uid("nd");
+    this.setGraph((g) => {
+      g.nodes = g.nodes.concat([Object.assign({}, n, { id, x: n.x + 40, y: n.y + 60 })]);
+      return g;
+    });
+    this.setEd({ sel: id });
+  }
+
+  edgeDel() {
+    const ed = this.state.ed;
+    if (!ed || !ed.edgeSel) return;
+    const id = ed.edgeSel;
+    this.setGraph((g) => { g.edges = g.edges.filter((e) => e.id !== id); return g; });
+    this.setEd({ edgeSel: null });
+  }
+
+  edLayout() {
+    const ns = this.edNodes();
+    if (!ns.length) return;
+    const es = this.edEdges();
+    const indeg = {};
+    ns.forEach((n) => { indeg[n.id] = 0; });
+    es.forEach((e) => { if (indeg[e.b] != null) indeg[e.b] += 1; });
+
+    let layer = ns.filter((n) => !indeg[n.id]);
+    if (!layer.length) layer = [ns[0]];
+    const seen = {}, layers = [];
+    let guard = 0;
+    while (layer.length && guard++ < 60) {
+      layers.push(layer.map((n) => n.id));
+      layer.forEach((n) => { seen[n.id] = 1; });
+      const nextIds = [];
+      layer.forEach((n) => es.forEach((e) => {
+        if (e.a === n.id && !seen[e.b] && nextIds.indexOf(e.b) < 0) nextIds.push(e.b);
+      }));
+      layer = nextIds.map((id) => ns.find((n) => n.id === id)).filter(Boolean);
+    }
+    const placed = {};
+    layers.forEach((c) => c.forEach((id) => { placed[id] = 1; }));
+    const rest = ns.filter((n) => !placed[n.id]).map((n) => n.id);
+    if (rest.length) layers.push(rest);
+
+    const pos = {};
+    layers.forEach((col, ci) => col.forEach((id, ri) => { pos[id] = { x: 80 + ci * 300, y: 80 + ri * 150 }; }));
+    this.setGraph((g) => {
+      g.nodes = g.nodes.map((n) => (pos[n.id] ? Object.assign({}, n, pos[n.id]) : n));
+      return g;
+    });
+    setTimeout(() => this.edFit(), 30);
+  }
+
+  // ================= NOTAS =================
+  noteObj() { return this.state.notes.find((n) => n.id === this.state.noteSel) || null; }
+
+  setNote(patch) {
+    const id = this.state.noteSel;
+    if (!id) return;
+    this.setState((st) => ({
+      notes: st.notes.map((n) => (n.id === id ? Object.assign({}, n, patch, { at: new Date().toISOString() }) : n))
+    }));
+  }
+
+  newNote() {
+    const id = this.uid("nt");
+    this.setState((st) => ({
+      notes: [{ id, t: "", type: "NOTA", tags: [], body: "", media: [], links: [], at: new Date().toISOString() }].concat(st.notes),
+      view: "note", noteSel: id, mediaDraft: "", query: ""
+    }));
+  }
+
+  delNote() {
+    const n = this.noteObj();
+    if (!n) return;
+    if (!window.confirm("Apagar a nota “" + (n.t || "sem título") + "”?")) return;
+    this.setState((st) => ({
+      notes: st.notes.filter((x) => x.id !== n.id).map((x) => Object.assign({}, x, { links: (x.links || []).filter((l) => l !== n.id) })),
+      view: "brain", noteSel: null
+    }));
+  }
+
+  mediaFrom(raw) {
+    const u = (raw || "").trim();
+    if (!u) return null;
+    const yt = u.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/i);
+    if (yt) return { kind: "embed", url: "https://www.youtube.com/embed/" + yt[1], cap: "vídeo do YouTube" };
+    const vm = u.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
+    if (vm) return { kind: "embed", url: "https://player.vimeo.com/video/" + vm[1], cap: "vídeo do Vimeo" };
+    if (/^data:image\//i.test(u) || /\.(png|jpe?g|gif|webp|avif|svg)(\?|#|$)/i.test(u)) return { kind: "image", url: u, cap: "imagem" };
+    if (/^data:video\//i.test(u) || /\.(mp4|webm|ogv|mov|m4v)(\?|#|$)/i.test(u)) return { kind: "video", url: u, cap: "vídeo" };
+    if (/^https?:\/\//i.test(u)) return { kind: "link", url: u, cap: "link" };
+    return null;
+  }
+
+  // Imagem entra por ref, não por atributo, por dois motivos: um src="{{...}}"
+  // no markup faz o navegador buscar o binding literal (o <x-dc> cru só fica
+  // escondido, não sai do DOM), e o runtime quebra um style ligado em ";",
+  // o que cortaria qualquer data URI (data:image/svg+xml;utf8,...).
+  bgRef(url, size) {
+    return (el) => {
+      if (!el) return;
+      const u = String(url || "");
+      if (el.getAttribute("data-bg") === u) return;
+      el.setAttribute("data-bg", u);
+      el.style.backgroundImage = u ? 'url("' + u.replace(/["\\]/g, encodeURIComponent) + '")' : "none";
+      el.style.backgroundSize = size;
+      el.style.backgroundPosition = "center";
+      el.style.backgroundRepeat = "no-repeat";
+    };
+  }
+
+  // Mesma razão: o player é montado por ref, já com a URL resolvida.
+  playerRef(m) {
+    return (el) => {
+      if (!el) return;
+      const want = m.kind + "|" + m.url;
+      if (el.getAttribute("data-mounted") === want) return;
+      el.setAttribute("data-mounted", want);
+      el.textContent = "";
+      if (m.kind === "embed") {
+        const f = document.createElement("iframe");
+        f.src = m.url;
+        f.title = m.cap || "vídeo";
+        f.allowFullscreen = true;
+        f.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture");
+        f.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+        f.style.cssText = "width:100%;aspect-ratio:16/9;display:block;border:none;background:#000;";
+        el.appendChild(f);
+      } else if (m.kind === "video") {
+        const vd = document.createElement("video");
+        vd.src = m.url;
+        vd.controls = true;
+        vd.preload = "metadata";
+        vd.style.cssText = "width:100%;display:block;max-height:320px;background:#000;";
+        el.appendChild(vd);
+      }
+    };
+  }
+
+  addMedia() {
+    const m = this.mediaFrom(this.state.mediaDraft);
+    if (!m) return;
+    const n = this.noteObj();
+    if (!n) return;
+    this.setNote({ media: (n.media || []).concat([m]) });
+    this.setState({ mediaDraft: "" });
+  }
+
+  // ================= ASSESSORA DE FINANÇAS (chat) =================
+  norm(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
+
+  parseAmount(s) {
+    const m = String(s).match(/(?:r\$\s*)?(\d{1,3}(?:\.\d{3})+(?:,\d{1,2})?|\d+(?:[.,]\d{1,2})?)\s*(k\b|mil\b)?/i);
+    if (!m) return null;
+    let raw = m[1];
+    const mult = m[2] ? 1000 : 1;
+    if (raw.indexOf(".") >= 0 && raw.indexOf(",") >= 0) raw = raw.replace(/\./g, "").replace(",", ".");
+    else if (raw.indexOf(",") >= 0) raw = raw.replace(",", ".");
+    else if (raw.indexOf(".") >= 0) {
+      const parts = raw.split(".");
+      if (parts[parts.length - 1].length === 3) raw = parts.join("");
+    }
+    const v = parseFloat(raw) * mult;
+    return isFinite(v) && v > 0 ? { v, raw: m[0] } : null;
+  }
+
+  dirGuess(low) {
+    const t = low.trim();
+    if (t.charAt(0) === "+") return "in";
+    if (t.charAt(0) === "-") return "out";
+    const hits = (arr) => arr.reduce((a, w) => a + (low.indexOf(w) >= 0 ? 1 : 0), 0);
+    const i = hits(IN_WORDS), o = hits(OUT_WORDS);
+    if (i > o) return "in";
+    return "out";
+  }
+
+  catGuess(low, dir) {
+    const n = this.norm(low);
+    let best = null;
+    Object.keys(CAT_WORDS).forEach((c) => {
+      if (best) return;
+      if (CAT_WORDS[c].some((w) => n.indexOf(this.norm(w)) >= 0)) best = c;
+    });
+    if (best) return best;
+    return dir === "in" ? "Trabalho" : "Outros";
+  }
+
+  cleanDesc(text, amountRaw) {
+    let s = String(text);
+    if (amountRaw) s = s.replace(amountRaw, " ");
+    s = s.replace(/r\$/gi, " ").replace(/[+\-]/g, " ");
+    let w = s.split(/\s+/).filter(Boolean);
+    while (w.length && LEAD_STOP.test(w[0])) w.shift();
+    while (w.length && TRAIL_STOP.test(w[w.length - 1])) w.pop();
+    if (!w.length) return "";
+    const out = w.slice(0, 6).join(" ");
+    return out.charAt(0).toUpperCase() + out.slice(1);
+  }
+
+  sums(txs) {
+    const i = txs.filter((t) => t.t === "in").reduce((a, b) => a + b.v, 0);
+    const o = txs.filter((t) => t.t === "out").reduce((a, b) => a + b.v, 0);
+    return { i, o, n: i - o };
+  }
+  catTotals(txs) {
+    const m = {};
+    txs.filter((t) => t.t === "out").forEach((t) => { m[t.c] = (m[t.c] || 0) + t.v; });
+    return m;
+  }
+  openBills() { return this.state.bills.filter((b) => !b.paid); }
+
+  matchCat(s) {
+    const target = this.norm(s).replace(/[?!.]/g, "").trim();
+    if (!target) return null;
+    const live = Object.keys(this.catTotals(this.state.txs));
+    let hit = live.find((c) => this.norm(c) === target);
+    if (hit) return hit;
+    hit = live.find((c) => this.norm(c).indexOf(target) === 0 || target.indexOf(this.norm(c)) === 0);
+    if (hit) return hit;
+    let key = null;
+    Object.keys(CAT_WORDS).forEach((c) => {
+      if (key) return;
+      if (CAT_WORDS[c].some((w) => target.indexOf(this.norm(w)) >= 0)) key = c;
+    });
+    return key;
+  }
+
+  matchBill(low) {
+    const n = this.norm(low);
+    return this.openBills().find((b) => this.norm(b.d).split(/\s+/).some((w) => w.length >= 4 && n.indexOf(w) >= 0)) || null;
+  }
+
+  matchGoal(low) {
+    const n = this.norm(low);
+    return this.state.goals.find((g) => this.norm(g.name).split(/\s+/).some((w) => w.length >= 4 && n.indexOf(w) >= 0)) || null;
+  }
+
+  sendChat() {
+    const txt = String(this.state.chatDraft || "").trim();
+    if (!txt) return;
+    this.setState((st) => ({
+      chat: st.chat.concat([{ w: "me", t: txt, at: this.clock() }]),
+      chatDraft: "", anaTyping: true
+    }));
+    if (this._anaT) clearTimeout(this._anaT);
+    this._anaT = setTimeout(() => {
+      let reply;
+      try { reply = this.anaAnswer(txt); }
+      catch (err) { reply = "Deu um problema aqui do meu lado ao processar isso. Tenta reescrever de forma mais simples, tipo “gastei 50 no mercado”."; }
+      this.setState((st) => ({ chat: st.chat.concat([{ w: "ana", t: reply, at: this.clock() }]), anaTyping: false }));
+    }, 520);
+  }
+
+  askAna(text) {
+    this.setState({ chatDraft: text });
+    setTimeout(() => this.sendChat(), 40);
+  }
+
+  clearChat() {
+    this.setState({ chat: [{ w: "ana", t: "Limpei a conversa. Pode me mandar os lançamentos que eu registro.", at: this.clock() }] });
+  }
+
+  scrollChat() {
+    const el = this.chatRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }
+
+  anaAnswer(raw) {
+    const txt = raw.trim();
+    const low = this.norm(txt);
+    const st = this.state;
+
+    if (/^(desfaz|desfazer|apaga o ultimo|apagar o ultimo|cancela|remove o ultimo|errei)/.test(low)) {
+      const id = this._lastTx;
+      const t = id ? st.txs.find((x) => x.id === id) : null;
+      if (!t) return "Não tenho nenhum lançamento recente meu para desfazer.";
+      this._lastTx = null;
+      const rest = st.txs.filter((x) => x.id !== id);
+      this.setState({ txs: rest });
+      return "Removi “" + t.d + "” de " + this.money(t.v) + ". O saldo do mês voltou para " + this.money(this.sums(rest).n) + ".";
+    }
+
+    if (/^(ajuda|help|como funciona|o que voce faz|o que vc faz)/.test(low)) {
+      return "Eu registro e eu explico. Escreve do jeito que você pensa:\n\n· “gastei 82 no mercado” → lanço como saída em Alimentação\n· “entrou 2400 de freela” → lanço como entrada em Trabalho\n· “paguei a internet” → marco a conta como paga e lanço a saída\n· “conta de luz 186 vence dia 12” → crio a conta a pagar\n· “guardei 500 na reserva” → somo na meta\n\nE respondo: qual meu saldo · quanto gastei em alimentação · quanto posso gastar · quais contas vencem · como está o mês · onde mais gastei.";
+    }
+
+    const q = this.anaQuestion(low);
+    if (q) return q;
+
+    const amt = this.parseAmount(txt);
+
+    // guardar dinheiro em uma meta
+    if (/\b(guardei|separei|poupei|depositei|coloquei)\b/.test(low) && amt) {
+      const g = this.matchGoal(low) || st.goals[0];
+      if (g) {
+        const saved = Math.min(g.target, g.saved + amt.v);
+        this.setState({ goals: st.goals.map((x) => (x.id === g.id ? Object.assign({}, x, { saved }) : x)) });
+        const falta = Math.max(0, g.target - saved);
+        return "Somei " + this.money(amt.v) + " na meta “" + g.name + "”.\nAgora são " + this.money(saved) + " de " + this.money(g.target) + " — " + Math.round((saved / g.target) * 100) + "% feito" + (falta ? ", falta " + this.money(falta) + "." : " e a meta está completa. 🎉");
+      }
+    }
+
+    // nova conta a pagar
+    const dueM = low.match(/vence(?:r)?\s*(?:dia\s*)?(\d{1,2})/);
+    if (dueM) {
+      const stripped = txt.replace(new RegExp(dueM[0], "i"), " ");
+      const a2 = this.parseAmount(stripped);
+      if (a2) {
+        const due = Math.max(1, Math.min(31, parseInt(dueM[1], 10)));
+        const desc = this.cleanDesc(stripped, a2.raw) || "Conta";
+        const bill = { id: this.uid("bl"), d: desc, v: a2.v, due, paid: false };
+        this.setState({ bills: st.bills.concat([bill]) });
+        const open = st.bills.filter((b) => !b.paid).reduce((a, b) => a + b.v, 0) + a2.v;
+        return "Criei a conta “" + desc + "” de " + this.money(a2.v) + " para o dia " + due + ".\nTotal em contas abertas: " + this.money(open) + ".";
+      }
+    }
+
+    if (!amt) {
+      // "paguei a internet" sem valor: usa o valor da conta
+      const b = /\b(paguei|pagar|quitei)\b/.test(low) ? this.matchBill(low) : null;
+      if (b) return this.payBill(b, b.v);
+      return "Não achei um valor nessa frase. Tenta assim: “gastei 82 no mercado”, “entrou 2400 de freela”.\nSe for pergunta, pode mandar “qual meu saldo?” ou “quanto gastei em alimentação?”.";
+    }
+
+    const dir = this.dirGuess(low);
+
+    // pagamento de uma conta que já está na lista
+    if (dir === "out") {
+      const b = this.matchBill(low);
+      if (b && /\b(paguei|pagar|quitei|pago)\b/.test(low)) return this.payBill(b, amt.v);
+    }
+
+    const cat = this.catGuess(low, dir);
+    const desc = this.cleanDesc(txt, amt.raw) || cat;
+    const tx = { id: this.uid("tx"), d: desc, v: amt.v, t: dir, c: cat };
+    this.setState({ txs: [tx].concat(st.txs) });
+    this._lastTx = tx.id;
+    return this.anaConfirm(tx);
+  }
+
+  payBill(b, v) {
+    const st = this.state;
+    const tx = { id: this.uid("tx"), d: b.d, v, t: "out", c: this.catGuess(this.norm(b.d), "out") };
+    this.setState({
+      bills: st.bills.map((x) => (x.id === b.id ? Object.assign({}, x, { paid: true }) : x)),
+      txs: [tx].concat(st.txs)
+    });
+    this._lastTx = tx.id;
+    const open = this.openBills().reduce((a, x) => a + x.v, 0);
+    return "Marquei “" + b.d + "” como paga e lancei " + this.money(v) + " como saída.\n" +
+      (open ? "Ainda faltam " + this.money(open) + " em contas do mês." : "Todas as contas do mês estão pagas. 🎉");
+  }
+
+  anaConfirm(tx) {
+    const s = this.sums(this.state.txs);
+    const out = [];
+    if (tx.t === "in") {
+      out.push("Lancei " + this.money(tx.v) + " como entrada em " + tx.c + " (“" + tx.d + "”).");
+      out.push("Saldo do mês: " + this.money(s.n) + ".");
+      const open = this.openBills().reduce((a, b) => a + b.v, 0);
+      if (open) out.push("Tem " + this.money(open) + " em contas abertas — depois de pagar sobra " + this.money(s.n - open) + ".");
+    } else {
+      const cats = this.catTotals(this.state.txs);
+      const cv = cats[tx.c] || tx.v;
+      const share = s.o ? Math.round((cv / s.o) * 100) : 100;
+      out.push("Anotei " + this.money(tx.v) + " em " + tx.c + " (“" + tx.d + "”).");
+      out.push(tx.c + " já soma " + this.money(cv) + " no mês — " + share + "% de tudo que saiu.");
+      if (s.n < 0) out.push("Cuidado: o mês está negativo em " + this.money(-s.n) + ".");
+      else out.push("Saldo do mês: " + this.money(s.n) + ".");
+    }
+    return out.join("\n");
+  }
+
+  anaQuestion(low) {
+    const st = this.state;
+    const s = this.sums(st.txs);
+    const cats = this.catTotals(st.txs);
+    const open = this.openBills();
+    const openSum = open.reduce((a, b) => a + b.v, 0);
+
+    if (/(quanto|onde).*(posso gastar|sobra pra gastar|da pra gastar)/.test(low) || /posso gastar/.test(low)) {
+      const livre = s.n - openSum;
+      if (livre <= 0) return "Hoje eu não liberaria nada. Entrou " + this.money(s.i) + ", saiu " + this.money(s.o) + " e ainda tem " + this.money(openSum) + " em contas abertas — isso deixa " + this.money(livre) + ".\nO caminho é adiar gasto novo ou entrar com receita.";
+      return "Dá para gastar até " + this.money(livre) + " sem apertar.\nContas: saldo de " + this.money(s.n) + " menos " + this.money(openSum) + " que ainda vai sair em contas abertas.\nSe quiser manter a reserva crescendo, eu ficaria em " + this.money(livre * 0.7) + ".";
+    }
+
+    if (/quanto.*(gastei|gasto|saiu).*(em|com|no|na|de)\s+(.+)/.test(low)) {
+      const m = low.match(/(?:em|com|no|na|de)\s+([a-z0-9\s]{2,})$/);
+      const c = m ? this.matchCat(m[1]) : null;
+      if (c) {
+        const v = cats[c] || 0;
+        if (!v) return "Não tem nada lançado em " + c + " neste mês.";
+        const share = s.o ? Math.round((v / s.o) * 100) : 0;
+        const items = st.txs.filter((t) => t.t === "out" && t.c === c).sort((a, b) => b.v - a.v).slice(0, 3);
+        return c + ": " + this.money(v) + " no mês (" + share + "% das saídas).\nMaiores: " + items.map((t) => t.d + " " + this.money(t.v)).join(" · ") + ".";
+      }
+      return "Não reconheci essa categoria. As que têm lançamento hoje: " + (Object.keys(cats).join(", ") || "nenhuma") + ".";
+    }
+
+    if (/(saldo|quanto (eu )?(tenho|sobrou|sobra)|como (eu )?(to|estou)|fechei)/.test(low)) {
+      const pct = s.i ? Math.round((s.n / s.i) * 100) : 0;
+      return "Saldo do mês: " + this.money(s.n) + ".\nEntrou " + this.money(s.i) + ", saiu " + this.money(s.o) + " — você guardou " + pct + "% do que entrou.\n" + (openSum ? "Ainda tem " + this.money(openSum) + " em contas abertas." : "Nenhuma conta aberta.");
+    }
+
+    if (/(maior gasto|onde mais gast|onde.*dinheiro|maiores gastos)/.test(low)) {
+      const ord = Object.keys(cats).sort((a, b) => cats[b] - cats[a]);
+      if (!ord.length) return "Ainda não tem saída lançada neste mês.";
+      const top = st.txs.filter((t) => t.t === "out").sort((a, b) => b.v - a.v)[0];
+      return "A categoria que mais pesa é " + ord[0] + " com " + this.money(cats[ord[0]]) + ".\nDepois vêm " + ord.slice(1, 3).map((c) => c + " (" + this.money(cats[c]) + ")").join(" e ") + ".\nO maior lançamento único foi “" + top.d + "”, " + this.money(top.v) + ".";
+    }
+
+    if (/(quanto.*(ganhei|recebi|entrou)|entradas|faturei|faturamento)/.test(low)) {
+      const ins = st.txs.filter((t) => t.t === "in").sort((a, b) => b.v - a.v);
+      return "Entrou " + this.money(s.i) + " no mês em " + ins.length + (ins.length === 1 ? " lançamento" : " lançamentos") + ".\nMaiores: " + ins.slice(0, 3).map((t) => t.d + " " + this.money(t.v)).join(" · ") + ".";
+    }
+
+    if (/(quanto.*(gastei|gasto|saiu)|gastos do mes|total de gastos)/.test(low)) {
+      const ord = Object.keys(cats).sort((a, b) => cats[b] - cats[a]).slice(0, 4);
+      return "Saiu " + this.money(s.o) + " no mês.\n" + ord.map((c) => "· " + c + ": " + this.money(cats[c])).join("\n");
+    }
+
+    if (/(conta|contas|vencendo|vence|a pagar|boleto)/.test(low)) {
+      if (!open.length) return "Todas as contas do mês estão marcadas como pagas. 🎉";
+      const ord = open.slice().sort((a, b) => a.due - b.due);
+      return this.money(openSum) + " em " + open.length + (open.length === 1 ? " conta aberta" : " contas abertas") + ":\n" +
+        ord.map((b) => "· dia " + b.due + " — " + b.d + " " + this.money(b.v)).join("\n") +
+        "\nDepois de pagar tudo sobra " + this.money(s.n - openSum) + ".";
+    }
+
+    if (/(meta|metas|reserva|quanto falta)/.test(low)) {
+      return st.goals.map((g) => {
+        const pct = Math.round((g.saved / g.target) * 100);
+        return "· " + g.name + ": " + this.money(g.saved) + " de " + this.money(g.target) + " (" + pct + "%), falta " + this.money(Math.max(0, g.target - g.saved));
+      }).join("\n");
+    }
+
+    if (/(resumo|relatorio|como (foi|esta) o mes|fechamento|balanco)/.test(low)) {
+      const ord = Object.keys(cats).sort((a, b) => cats[b] - cats[a]);
+      const prev = st.months.length > 1 ? st.months[st.months.length - 2] : null;
+      const cmp = prev ? "\nNo mês anterior saíram " + this.money(prev.out) + " — " + (s.o > prev.out ? "você está gastando " + this.money(s.o - prev.out) + " mais." : "você está gastando " + this.money(prev.out - s.o) + " menos.") : "";
+      return "Resumo do mês\nEntrou " + this.money(s.i) + " · saiu " + this.money(s.o) + " · saldo " + this.money(s.n) +
+        "\nMaior categoria: " + (ord[0] || "—") + (ord[0] ? " (" + this.money(cats[ord[0]]) + ")" : "") +
+        "\nContas abertas: " + this.money(openSum) + cmp;
+    }
+
+    return null;
+  }
+
+  // ================= VALORES PARA O TEMPLATE =================
   renderVals() {
     const st = this.state, v = st.view;
     const titles = {
       brain: ["arquivo pessoal", "Segundo Cérebro"],
+      note: ["nota aberta", "Bloco de notas"],
       fin: ["fluxo do mês", "Finanças pessoais"],
       ideias: ["captura e execução", "Ideias"],
       check: ["dia · semana · mês", "Checklist"],
-      flows: ["passo a passo", "Workflows"]
+      flows: ["blocos conectados", "Workflows"]
     };
     const meta = titles[v] || ["", ""];
 
-    const types = ["tudo", "NOTA", "CÓDIGO", "PDF", "LINK", "IMAGEM", "ATALHO"];
+    // ---------- segundo cérebro ----------
     const q = st.query.trim().toLowerCase();
-    const matches = st.notes.filter(n => {
-      if (!q) return false;
-      return (n.t + " " + n.body + " " + n.type + " " + n.tags.join(" ")).toLowerCase().includes(q);
-    });
-    const results = st.notes.filter(n => {
+    const hit = (n) => (n.t + " " + n.body + " " + n.type + " " + (n.tags || []).join(" ")).toLowerCase().indexOf(q) >= 0;
+    const matches = q ? st.notes.filter(hit) : [];
+    const results = st.notes.filter((n) => {
       if (st.chip !== "tudo" && n.type !== st.chip) return false;
-      if (!q) return true;
-      return (n.t + " " + n.body + " " + n.type + " " + n.tags.join(" ")).toLowerCase().includes(q);
+      return q ? hit(n) : true;
     });
 
     let aiAnswer = "", aiSources = "";
     if (q) {
       if (!matches.length) {
-        aiAnswer = "Não encontrei nada sobre \u201c" + st.query.trim() + "\u201d ainda. Guarde a primeira nota sobre isso no campo abaixo e eu passo a responder por ela.";
+        aiAnswer = "Não encontrei nada sobre “" + st.query.trim() + "” ainda. Crie a primeira nota sobre isso em “+ nota” e eu passo a responder por ela.";
         aiSources = "0 fontes";
       } else {
         const top = matches[0];
-        const tagPool = [];
-        matches.forEach(m => m.tags.forEach(t => { if (!tagPool.includes(t)) tagPool.push(t); }));
-        aiAnswer = "Você tem " + matches.length + (matches.length === 1 ? " registro" : " registros") + " sobre \u201c" + st.query.trim() + "\u201d. O mais direto é " + top.t + ": " + top.body + (matches.length > 1 ? " Os outros registros cobrem " + tagPool.slice(0, 4).join(", ") + "." : "");
-        aiSources = "fontes: " + matches.slice(0, 3).map(m => m.t).join(" · ");
+        const pool = [];
+        matches.forEach((m) => (m.tags || []).forEach((t) => { if (pool.indexOf(t) < 0) pool.push(t); }));
+        aiAnswer = "Você tem " + matches.length + (matches.length === 1 ? " registro" : " registros") + " sobre “" + st.query.trim() + "”. O mais direto é " + top.t + ": " + (top.body || "").slice(0, 180) + (matches.length > 1 ? " Os outros cobrem " + pool.slice(0, 4).join(", ") + "." : "");
+        aiSources = "fontes: " + matches.slice(0, 3).map((m) => m.t || "sem título").join(" · ");
       }
     }
 
-    const chips = types.map(label => {
+    const chipTypes = ["tudo"].concat(NOTE_TYPES);
+    const chips = chipTypes.map((label) => {
       const on = st.chip === label;
       return {
         label: label === "tudo" ? "tudo" : label.toLowerCase(),
@@ -650,81 +2263,221 @@ class Component extends DCLogic {
       };
     });
 
-    const inSum = st.txs.filter(t => t.t === "in").reduce((a, b) => a + b.v, 0);
-    const outSum = st.txs.filter(t => t.t === "out").reduce((a, b) => a + b.v, 0);
-    const byCat = {};
-    st.txs.filter(t => t.t === "out").forEach(t => { byCat[t.c] = (byCat[t.c] || 0) + t.v; });
-    const maxCat = Math.max(1, ...Object.values(byCat));
-    const cats = Object.keys(byCat).sort((a, b) => byCat[b] - byCat[a]).map(name => ({
-      name, amount: this.money(byCat[name]), w: Math.round((byCat[name] / maxCat) * 100) + "%"
+    const modes = [["grid", "notas"], ["graph", "grafo"]].map(([k, label]) => {
+      const on = st.brainMode === k;
+      return { label, bg: on ? "rgba(169,123,255,0.28)" : "transparent", fg: on ? "#f2eefb" : "#8f83ab", onClick: () => this.setState({ brainMode: k }) };
+    });
+
+    const tagCount = {};
+    st.notes.forEach((n) => (n.tags || []).forEach((t) => { tagCount[t] = (tagCount[t] || 0) + 1; }));
+    const hubTags = Object.keys(tagCount).filter((t) => tagCount[t] >= 2);
+    const linkCount = st.notes.reduce((a, n) => a + (n.links || []).length, 0);
+
+    // ---------- nota aberta ----------
+    const note = this.noteObj() || { t: "", type: "NOTA", tags: [], body: "", media: [], links: [], at: null };
+    const noteWordCount = (note.body || "").trim() ? (note.body || "").trim().split(/\s+/).length : 0;
+
+    // ---------- finanças ----------
+    const s = this.sums(st.txs);
+    const cats0 = this.catTotals(st.txs);
+    const maxCat = Math.max(1, ...Object.values(cats0), 1);
+    const cats = Object.keys(cats0).sort((a, b) => cats0[b] - cats0[a]).map((name) => ({
+      name, amount: this.money(cats0[name]), w: Math.round((cats0[name] / maxCat) * 100) + "%"
+    }));
+    // o último mês do gráfico espelha os lançamentos reais
+    const monthsLive = st.months.map((m, i) => (i === st.months.length - 1 ? Object.assign({}, m, { in: s.i, out: s.o }) : m));
+    const maxMonth = Math.max(1, ...monthsLive.map((m) => Math.max(m.in, m.out)));
+    const billsOpen = this.openBills().reduce((a, b) => a + b.v, 0);
+    const today = new Date().getDate();
+
+    // ---------- ideias ----------
+    const idea = st.ideas.find((i) => i.id === st.ideaSel) || null;
+    const ideaWordCount = idea && (idea.note || "").trim() ? (idea.note || "").trim().split(/\s+/).length : 0;
+    const ideaNodes = idea && idea.graph ? idea.graph.nodes.length : 0;
+
+    // ---------- editor ----------
+    const ed = st.ed;
+    const edNodes = ed ? this.edNodes() : [];
+    const owner = ed ? this.edOwner() : null;
+    const selNode = ed && ed.sel ? this.edNode(ed.sel) : null;
+    const crumbs = [];
+    if (ed) {
+      crumbs.push({ label: owner ? (owner.name || owner.title || "sem nome") : "sem nome", fg: ed.path.length ? "#8f83ab" : "#f2eefb", sep: ed.path.length ? "›" : "", onClick: () => this.edCrumbTo(0) });
+      ed.path.forEach((id, i) => {
+        const n = this.edNode(id);
+        const last = i === ed.path.length - 1;
+        crumbs.push({ label: n ? n.label : "bloco", fg: last ? "#f2eefb" : "#8f83ab", sep: last ? "" : "›", onClick: () => this.edCrumbTo(i + 1) });
+      });
+    }
+
+    const nodeVals = edNodes.map((n) => {
+      const p = this.palOf(n.color);
+      const on = ed.sel === n.id;
+      const subs = this.subCount(n.id);
+      return {
+        label: n.label || "sem nome",
+        noteLine: (n.note || "").split("\n")[0],
+        hasNote: !!n.note,
+        hasSub: subs > 0,
+        subBadge: subs + " ⌄",
+        dot: p.dot,
+        fg: "#f2eefb",
+        css: "position: absolute; left: " + n.x + "px; top: " + n.y + "px; width: " + NODE_W + "px; height: " + this.nodeH(n) + "px; border-radius: 12px; cursor: grab; user-select: none; border: 1px solid " + (on ? "rgba(228,213,255,0.95)" : p.bd) + "; background: linear-gradient(180deg, " + p.bg + ", rgba(10,6,20,0.94)); box-shadow: " + (on ? "0 0 0 3px rgba(196,166,255,0.22), 0 14px 30px rgba(0,0,0,0.45)" : "0 8px 20px rgba(0,0,0,0.35)") + ";",
+        onDown: (e) => this.nodeDown(e, n.id),
+        onDrill: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.drillInto(n.id); },
+        ports: SIDES.map((side) => {
+          const pos = side === "t" ? "left: 50%; top: 0; transform: translate(-50%,-50%);"
+            : side === "b" ? "left: 50%; bottom: 0; transform: translate(-50%,50%);"
+              : side === "l" ? "left: 0; top: 50%; transform: translate(-50%,-50%);"
+                : "right: 0; top: 50%; transform: translate(50%,-50%);";
+          return {
+            css: "position: absolute; " + pos + " width: 12px; height: 12px; border-radius: 999px; cursor: crosshair; z-index: 3; border: 1.5px solid " + p.dot + "; background: " + (on ? p.dot : "#0d0718") + ";",
+            onDown: (e) => this.portDown(e, n.id, side)
+          };
+        })
+      };
+    });
+
+    const swatches = PAL.map((p) => ({
+      css: "cursor: pointer; width: 26px; height: 26px; border-radius: 8px; background: " + p.dot + "; border: 2px solid " + (selNode && selNode.color === p.k ? "#f2eefb" : "transparent") + "; box-shadow: 0 2px 8px rgba(0,0,0,0.4);",
+      onClick: () => this.setSel({ color: p.k })
     }));
 
-    const today = 4;
-    const billsOpen = st.bills.filter(b => !b.paid).reduce((a, b) => a + b.v, 0);
-    const maxMonth = Math.max(1, ...st.months.map(m => Math.max(m.in, m.out)));
-
-    const idea = st.ideas[st.ideaSel] || { title: "—", steps: [] };
-    const periods = [["dia", "Hoje"], ["semana", "Esta semana"], ["mes", "Este mês"]];
+    const selSubs = selNode ? this.subCount(selNode.id) : 0;
 
     return {
+      // ----- hub -----
       isHub: v === "hub" && !st.narrow,
       isHubMobile: v === "hub" && st.narrow,
-      isPanel: v !== "hub",
-      isBrainPanel: v === "brain",
-      isFinPanel: v === "fin",
-      isIdeasPanel: v === "ideias",
-      isCheckPanel: v === "check",
-      isFlowPanel: v === "flows",
       brainRef: this.brainRef,
       hubRef: this.hubRef,
-      hubStamp: "sexta, 4 de setembro",
-      hubCount: st.notes.length + " registros · " + st.ideas.length + " ideias · " + st.tasks.filter(t => !t.done).length + " afazeres abertos",
-      panelKicker: meta[0],
-      panelTitle: meta[1],
+      hubStamp: this.today(),
+      hubCount: st.notes.length + " notas · " + st.ideas.length + " ideias · " + st.flows.length + " workflows · " + st.tasks.filter((t) => !t.done).length + " afazeres abertos",
+      storeLabel: "salvo neste navegador ·",
+      resetData: () => this.resetData(),
       openBrain: () => this.enter("brain"),
       openFin: () => this.enter("fin"),
       openIdeias: () => this.enter("ideias"),
       openCheck: () => this.enter("check"),
       openFlows: () => this.enter("flows"),
-      back: () => this.setState({ view: "hub" }),
 
+      // ----- moldura do painel -----
+      isPanel: v !== "hub" && v !== "editor",
+      isBrainPanel: v === "brain",
+      isNoteView: v === "note",
+      isFinPanel: v === "fin",
+      isIdeasPanel: v === "ideias",
+      isCheckPanel: v === "check",
+      isFlowPanel: v === "flows",
+      isEditor: v === "editor",
+      panelKicker: meta[0],
+      panelTitle: meta[1],
+      backLabel: v === "note" ? "← voltar ao cérebro" : "← sair do cérebro",
+      back: () => (v === "note" ? this.setState({ view: "brain", noteSel: null }) : this.setState({ view: "hub" })),
+
+      // ----- segundo cérebro -----
       query: st.query,
-      hasQuery: !!q,
-      aiAnswer,
-      aiSources,
       onQuery: (e) => this.setState({ query: e.target.value }),
-      chips,
-      results: results.map(n => ({ ...n, isImage: n.type === "IMAGEM", slot: n.slot || "imagem" })),
-      resultLabel: results.length + (results.length === 1 ? " registro" : " registros") + (q ? " correspondendo à busca" : " guardados"),
-      nn: st.nn,
-      onNoteTitle: (e) => this.setState({ nn: { ...st.nn, t: e.target.value } }),
-      onNoteBody: (e) => this.setState({ nn: { ...st.nn, body: e.target.value } }),
-      onNoteTags: (e) => this.setState({ nn: { ...st.nn, tags: e.target.value } }),
-      addNote: () => {
-        if (!st.nn.t.trim()) return;
-        const tags = st.nn.tags.split(/[,\s]+/).filter(Boolean);
-        this.setState({ notes: [{ t: st.nn.t, type: "NOTA", tags, body: st.nn.body }, ...st.notes], nn: { t: "", body: "", tags: "" } });
-      },
+      hasQuery: !!q,
+      aiAnswer, aiSources, chips, modes,
+      isGrid: st.brainMode === "grid",
+      isGraph: st.brainMode === "graph",
+      graphRef: this.graphRef,
+      graphStat: st.notes.length + " notas · " + hubTags.length + " tags · " + (linkCount + st.notes.reduce((a, n) => a + (n.tags || []).filter((t) => tagCount[t] >= 2).length, 0)) + " ligações",
+      graphHint: "Cada bolinha clara é uma nota, cada bolinha roxa é uma tag que aparece em duas ou mais notas. Passe o mouse para destacar a vizinhança, clique numa nota para abrir e numa tag para filtrar.",
+      newNote: () => this.newNote(),
+      noResults: results.length === 0,
+      resultLabel: results.length + (results.length === 1 ? " nota" : " notas") + (q ? " correspondendo à busca" : " guardadas"),
+      results: results.map((n) => {
+        const img = (n.media || []).find((m) => m.kind === "image");
+        const nMedia = (n.media || []).length;
+        const nLinks = (n.links || []).length;
+        const badge = [];
+        if (nMedia) badge.push(nMedia + (nMedia === 1 ? " anexo" : " anexos"));
+        if (nLinks) badge.push(nLinks + (nLinks === 1 ? " ligação" : " ligações"));
+        return {
+          t: n.t || "sem título",
+          type: n.type,
+          tags: n.tags || [],
+          preview: (n.body || "").slice(0, 168) + ((n.body || "").length > 168 ? "…" : ""),
+          thumbImage: !!img,
+          thumb: this.bgRef(img ? img.url : "", "cover"),
+          thumbSlot: !img && !!n.slot,
+          slot: n.slot || "imagem",
+          badges: badge.join(" · "),
+          onOpen: () => this.openNote(n.id)
+        };
+      }),
 
-      finIn: this.money(inSum),
-      finOut: this.money(outSum),
-      finBalance: this.money(inSum - outSum),
+      // ----- nota aberta -----
+      nt: { t: note.t, body: note.body, tags: (note.tags || []).join(" ") },
+      onNoteT: (e) => this.setNote({ t: e.target.value }),
+      onNoteBody: (e) => this.setNote({ body: e.target.value }),
+      onNoteTags: (e) => this.setNote({ tags: e.target.value.split(/[,\s]+/).filter(Boolean) }),
+      typeChips: NOTE_TYPES.map((label) => {
+        const on = note.type === label;
+        return {
+          label: label.toLowerCase(),
+          bd: on ? "rgba(196,166,255,0.7)" : "rgba(255,255,255,0.13)",
+          bg: on ? "rgba(169,123,255,0.2)" : "rgba(255,255,255,0.04)",
+          fg: on ? "#e4d5ff" : "#a99ec2",
+          onClick: () => this.setNote({ type: label })
+        };
+      }),
+      noteStamp: "editada em " + this.stamp(note.at),
+      noteWords: noteWordCount + (noteWordCount === 1 ? " palavra" : " palavras"),
+      delNote: () => this.delNote(),
+      mediaDraft: st.mediaDraft,
+      onMediaDraft: (e) => this.setState({ mediaDraft: e.target.value }),
+      addMedia: () => this.addMedia(),
+      mediaHint: "Aceita link do YouTube e do Vimeo (vira player), link de imagem (.png .jpg .webp .svg), link de vídeo (.mp4 .webm) e qualquer outro link. Print da tela: cole a imagem em um serviço que gere link, ou cole um data:image direto.",
+      media: (note.media || []).map((m, i) => ({
+        url: m.url,
+        cap: m.cap || "",
+        isImage: m.kind === "image",
+        isPlayer: m.kind === "embed" || m.kind === "video",
+        img: this.bgRef(m.kind === "image" ? m.url : "", "contain"),
+        player: this.playerRef(m),
+        kindLabel: m.kind === "embed" ? "vídeo" : m.kind === "image" ? "imagem" : m.kind === "video" ? "vídeo" : "link",
+        short: m.url.length > 64 ? m.url.slice(0, 62) + "…" : m.url,
+        onRemove: () => this.setNote({ media: (note.media || []).filter((x, k) => k !== i) })
+      })),
+      linkables: st.notes.filter((n) => n.id !== note.id).map((n) => {
+        const on = (note.links || []).indexOf(n.id) >= 0;
+        return {
+          t: n.t || "sem título",
+          bd: on ? "rgba(196,166,255,0.7)" : "rgba(255,255,255,0.11)",
+          bg: on ? "rgba(169,123,255,0.2)" : "rgba(255,255,255,0.035)",
+          fg: on ? "#e4d5ff" : "#8f83ab",
+          onToggle: () => this.setNote({ links: on ? (note.links || []).filter((x) => x !== n.id) : (note.links || []).concat([n.id]) })
+        };
+      }),
+
+      // ----- finanças -----
+      finIn: this.money(s.i),
+      finOut: this.money(s.o),
+      finBalance: this.money(s.n),
       billsTotal: this.money(billsOpen),
-      txs: st.txs.map(x => ({ ...x, amount: (x.t === "in" ? "+" : "−") + this.money(x.v).slice(3), color: x.t === "in" ? "#c4a6ff" : "#f2eefb" })),
       cats,
-      months: st.months.map(m => ({
+      txs: st.txs.map((x) => ({
+        d: x.d, c: x.c,
+        amount: (x.t === "in" ? "+" : "−") + this.money(x.v).slice(3),
+        color: x.t === "in" ? "#c4a6ff" : "#f2eefb",
+        onRemove: () => this.setState({ txs: st.txs.filter((y) => y.id !== x.id) })
+      })),
+      months: monthsLive.map((m) => ({
         label: m.label,
         hIn: Math.round((m.in / maxMonth) * 100) + "%",
         hOut: Math.round((m.out / maxMonth) * 100) + "%",
         net: (m.in - m.out >= 0 ? "+" : "−") + this.short(Math.abs(m.in - m.out)),
         netColor: m.in - m.out >= 0 ? "#c4a6ff" : "#ffb4b4"
       })),
-      goals: st.goals.map(g => ({
+      goals: st.goals.map((g) => ({
         name: g.name,
         label: this.money(g.saved) + " / " + this.money(g.target),
         w: Math.min(100, Math.round((g.saved / g.target) * 100)) + "%"
       })),
-      bills: st.bills.map((b, k) => {
+      bills: st.bills.map((b) => {
         const late = !b.paid && b.due < today;
         return {
           d: b.d,
@@ -736,81 +2489,238 @@ class Component extends DCLogic {
           dueColor: b.paid ? "#7a7096" : (late ? "#ffb4b4" : "#a99ec2"),
           boxBd: b.paid ? "rgba(196,166,255,0.85)" : "rgba(255,255,255,0.24)",
           boxBg: b.paid ? "#c4a6ff" : "transparent",
-          onToggle: () => this.setState({ bills: st.bills.map((x, i) => i === k ? { ...x, paid: !x.paid } : x) })
+          onToggle: () => this.setState({ bills: st.bills.map((x) => (x.id === b.id ? Object.assign({}, x, { paid: !x.paid }) : x)) })
         };
       }),
       nf: st.nf,
-      onFinDesc: (e) => this.setState({ nf: { ...st.nf, d: e.target.value } }),
-      onFinVal: (e) => this.setState({ nf: { ...st.nf, v: e.target.value } }),
-      toggleFinType: () => this.setState({ nf: { ...st.nf, t: st.nf.t === "in" ? "out" : "in" } }),
+      onFinDesc: (e) => this.setState({ nf: Object.assign({}, st.nf, { d: e.target.value }) }),
+      onFinVal: (e) => this.setState({ nf: Object.assign({}, st.nf, { v: e.target.value }) }),
+      toggleFinType: () => this.setState({ nf: Object.assign({}, st.nf, { t: st.nf.t === "in" ? "out" : "in" }) }),
       finTypeLabel: st.nf.t === "in" ? "entrada" : "saída",
       finTypeBd: st.nf.t === "in" ? "rgba(196,166,255,0.55)" : "rgba(255,255,255,0.2)",
       finTypeBg: st.nf.t === "in" ? "rgba(169,123,255,0.16)" : "rgba(255,255,255,0.05)",
       finTypeFg: st.nf.t === "in" ? "#e4d5ff" : "#ddd6ec",
       addTx: () => {
         const val = parseFloat(String(st.nf.v).replace(",", "."));
-        if (!st.nf.d.trim() || !val) return;
-        this.setState({ txs: [{ d: st.nf.d, v: val, t: st.nf.t, c: st.nf.t === "in" ? "Trabalho" : "Outros" }, ...st.txs], nf: { d: "", v: "", t: st.nf.t } });
+        if (!String(st.nf.d).trim() || !val) return;
+        this.setState({
+          txs: [{ id: this.uid("tx"), d: st.nf.d, v: val, t: st.nf.t, c: this.catGuess(this.norm(st.nf.d), st.nf.t) }].concat(st.txs),
+          nf: { d: "", v: "", t: st.nf.t }
+        });
       },
 
-      ideas: st.ideas.map((i, k) => ({
-        title: i.title,
-        meta: i.steps.length ? i.steps.length + " passos" : "sem plano ainda",
-        bd: k === st.ideaSel ? "rgba(196,166,255,0.6)" : "rgba(255,255,255,0.1)",
-        bg: k === st.ideaSel ? "rgba(169,123,255,0.14)" : "rgba(255,255,255,0.035)",
-        onClick: () => this.setState({ ideaSel: k })
-      })),
-      ideaTitle: idea.title,
-      ideaSteps: idea.steps.map((text, k) => ({ n: String(k + 1).padStart(2, "0"), text })),
+      // ----- chat da assessora -----
+      chatRef: this.chatRef,
+      anaStatus: st.anaTyping ? "escrevendo..." : "online · responde na hora",
+      anaTyping: st.anaTyping,
+      chat: st.chat.map((m) => {
+        const me = m.w === "me";
+        return {
+          text: m.t, at: m.at,
+          align: me ? "flex-end" : "flex-start",
+          radius: me ? "14px 14px 4px 14px" : "14px 14px 14px 4px",
+          bd: me ? "rgba(196,166,255,0.4)" : "rgba(255,255,255,0.1)",
+          bg: me ? "rgba(124,77,255,0.24)" : "rgba(255,255,255,0.05)",
+          fg: me ? "#f2eefb" : "#ddd6ec"
+        };
+      }),
+      chatDraft: st.chatDraft,
+      onChatDraft: (e) => this.setState({ chatDraft: e.target.value }),
+      onChatKey: (e) => { if (e.key === "Enter") { e.preventDefault(); this.sendChat(); } },
+      sendChat: () => this.sendChat(),
+      clearChat: () => this.clearChat(),
+      chatHints: [
+        "qual meu saldo?",
+        "quanto posso gastar?",
+        "gastei 82 no mercado",
+        "quais contas vencem?",
+        "como está o mês?"
+      ].map((label) => ({ label, onClick: () => this.askAna(label) })),
+
+      // ----- ideias -----
+      ideas: st.ideas.map((i) => {
+        const on = i.id === st.ideaSel;
+        const nn = i.graph ? i.graph.nodes.length : 0;
+        return {
+          title: i.title || "sem título",
+          meta: (nn ? nn + (nn === 1 ? " bloco" : " blocos") : "sem plano ainda") + ((i.note || "").trim() ? " · com anotação" : ""),
+          bd: on ? "rgba(196,166,255,0.6)" : "rgba(255,255,255,0.1)",
+          bg: on ? "rgba(169,123,255,0.14)" : "rgba(255,255,255,0.035)",
+          onClick: () => this.setState({ ideaSel: i.id })
+        };
+      }),
+      noIdeas: st.ideas.length === 0,
+      hasIdea: !!idea,
+      ideasGrid: st.narrow ? "1fr" : "minmax(280px, 330px) 1fr",
       ni: st.ni,
-      ns: st.ns,
       onIdeaInput: (e) => this.setState({ ni: e.target.value }),
-      onStepInput: (e) => this.setState({ ns: e.target.value }),
-      addIdea: () => {
-        if (!st.ni.trim()) return;
-        this.setState({ ideas: [{ title: st.ni, steps: [] }, ...st.ideas], ni: "", ideaSel: 0 });
-      },
-      addStep: () => {
-        if (!st.ns.trim() || !st.ideas.length) return;
-        this.setState({ ideas: st.ideas.map((i, k) => k === st.ideaSel ? { ...i, steps: [...i.steps, st.ns] } : i), ns: "" });
-      },
+      onIdeaKey: (e) => { if (e.key === "Enter") this.addIdea(); },
+      addIdea: () => this.addIdea(),
+      ideaTitle: idea ? idea.title : "",
+      onIdeaTitle: (e) => this.setIdea({ title: e.target.value }),
+      ideaNote: idea ? (idea.note || "") : "",
+      onIdeaNote: (e) => this.setIdea({ note: e.target.value }),
+      ideaWords: ideaWordCount + (ideaWordCount === 1 ? " palavra" : " palavras"),
+      ideaFlowMeta: ideaNodes ? ideaNodes + (ideaNodes === 1 ? " bloco montado — abrir para editar" : " blocos montados — abrir para editar") : "nenhum bloco ainda — abrir para montar o passo a passo",
+      openIdeaFlow: () => { if (idea) this.openEditor("idea", idea.id); },
+      delIdea: () => this.delIdea(),
 
-      columns: periods.map(([p, name]) => {
-        const items = st.tasks.map((t, k) => ({ t, k })).filter(o => o.t.p === p);
-        const done = items.filter(o => o.t.done).length;
+      // ----- checklist -----
+      columns: [["dia", "Hoje"], ["semana", "Esta semana"], ["mes", "Este mês"]].map(([p, name]) => {
+        const items = st.tasks.filter((t) => t.p === p);
+        const done = items.filter((t) => t.done).length;
         return {
           name,
           progress: done + "/" + items.length,
-          items: items.map(({ t, k }) => ({
+          items: items.map((t) => ({
             text: t.text,
             mark: t.done ? "✓" : "",
             deco: t.done ? "line-through" : "none",
             color: t.done ? "#7a7096" : "#f2eefb",
             boxBd: t.done ? "rgba(196,166,255,0.85)" : "rgba(255,255,255,0.24)",
             boxBg: t.done ? "#c4a6ff" : "transparent",
-            onToggle: () => this.setState({ tasks: st.tasks.map((x, i) => i === k ? { ...x, done: !x.done } : x) })
+            onToggle: () => this.setState({ tasks: st.tasks.map((x) => (x.id === t.id ? Object.assign({}, x, { done: !x.done }) : x)) }),
+            onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState({ tasks: st.tasks.filter((x) => x.id !== t.id) }); }
           })),
           draft: st.draft[p],
-          onDraft: (e) => this.setState({ draft: { ...st.draft, [p]: e.target.value } }),
-          onAdd: () => {
-            const val = st.draft[p].trim();
-            if (!val) return;
-            this.setState({ tasks: [...st.tasks, { text: val, done: false, p }], draft: { ...st.draft, [p]: "" } });
-          }
+          onDraft: (e) => this.setState({ draft: Object.assign({}, st.draft, { [p]: e.target.value }) }),
+          onKey: (e) => { if (e.key === "Enter") this.addTask(p); },
+          onAdd: () => this.addTask(p)
         };
       }),
 
-      flows: st.flows.map((f, k) => ({
-        name: f.name,
-        desc: f.desc,
-        badge: f.steps.length + " passos",
-        open: st.flowOpen === k,
-        bd: st.flowOpen === k ? "rgba(196,166,255,0.4)" : "rgba(255,255,255,0.1)",
-        bg: st.flowOpen === k ? "rgba(169,123,255,0.08)" : "rgba(255,255,255,0.03)",
-        steps: f.steps.map((text, i) => ({ n: String(i + 1).padStart(2, "0"), text })),
-        onClick: () => this.setState({ flowOpen: st.flowOpen === k ? -1 : k })
-      }))
+      // ----- lista de workflows -----
+      flows: st.flows.map((f) => {
+        const nn = f.graph ? f.graph.nodes.length : 0;
+        const ne = f.graph ? f.graph.edges.length : 0;
+        const p = this.palOf(f.color);
+        return {
+          name: f.name,
+          desc: f.desc || "sem descrição",
+          badge: nn + (nn === 1 ? " bloco" : " blocos") + " · " + ne + (ne === 1 ? " conexão" : " conexões"),
+          dot: p.dot,
+          bd: "rgba(255,255,255,0.1)",
+          bg: "rgba(255,255,255,0.03)",
+          spark: (f.graph ? f.graph.nodes : []).slice(0, 7).map((n, i) => ({
+            h: (34 + (i % 3) * 18) + "%",
+            bg: this.palOf(n.color).dot
+          })),
+          onOpen: () => this.openEditor("flow", f.id),
+          onRemove: (e) => {
+            if (e && e.stopPropagation) e.stopPropagation();
+            if (!window.confirm("Apagar o workflow “" + f.name + "”?")) return;
+            this.setState({ flows: st.flows.filter((x) => x.id !== f.id) });
+          }
+        };
+      }),
+      nfl: st.nfl,
+      onFlowName: (e) => this.setState({ nfl: e.target.value }),
+      onFlowKey: (e) => { if (e.key === "Enter") this.addFlow(); },
+      addFlow: () => this.addFlow(),
+
+      // ----- editor -----
+      padRef: this.padRef,
+      edgeRef: this.edgeRef,
+      edCursor: "grab",
+      edHint: st.narrow
+        ? "arraste o bloco para mover\npuxe da bolinha para conectar\ntoque duplo abre os sub-blocos"
+        : "arraste o bloco para mover · puxe de qualquer bolinha para conectar · solte no vazio para criar já ligado\nduplo clique abre os sub-blocos · clique na linha para selecionar · delete apaga",
+      edBack: () => this.edBack(),
+      edBackLabel: ed && ed.kind === "idea" ? "← ideias" : "← workflows",
+      crumbs,
+      worldCss: ed ? "translate(" + ed.pan.x + "px, " + ed.pan.y + "px) scale(" + ed.zoom + ")" : "none",
+      nodes: nodeVals,
+      edEmpty: !!ed && edNodes.length === 0,
+      edAdd: () => this.edAdd(),
+      edLayout: () => this.edLayout(),
+      edZoomIn: () => this.edZoom(1.2),
+      edZoomOut: () => this.edZoom(1 / 1.2),
+      edFit: () => this.edFit(),
+      edZoomLabel: ed ? Math.round(ed.zoom * 100) + "%" : "100%",
+      hasSel: !!selNode,
+      edRowCss: st.narrow
+        ? "flex: 1; display: flex; flex-direction: column; min-height: 0;"
+        : "flex: 1; display: flex; min-height: 0;",
+      inspCss: "background: rgba(12,6,24,0.94); backdrop-filter: blur(16px); padding: 20px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; animation: popIn 240ms ease-out both; flex-shrink: 0; " +
+        (st.narrow
+          ? "width: 100%; max-height: 46%; border-top: 1px solid rgba(255,255,255,0.12);"
+          : "width: 330px; border-left: 1px solid rgba(255,255,255,0.1);"),
+      edDeselect: () => this.setEd({ sel: null }),
+      selLabel: selNode ? selNode.label : "",
+      onSelLabel: (e) => this.setSel({ label: e.target.value }),
+      selNote: selNode ? (selNode.note || "") : "",
+      onSelNote: (e) => this.setSel({ note: e.target.value }),
+      swatches,
+      selSubLabel: selSubs ? "Abrir " + selSubs + (selSubs === 1 ? " sub-bloco" : " sub-blocos") : "Criar sub-bloco",
+      selSubHint: selSubs ? "entra um nível dentro deste bloco" : "quebra este bloco em um fluxo próprio",
+      selDrill: () => { if (selNode) this.drillInto(selNode.id); },
+      selDup: () => this.selDup(),
+      selDel: () => this.selDel(),
+      hasEdgeSel: !!(ed && ed.edgeSel),
+      edgeSelLabel: "conexão selecionada",
+      edgeDel: () => this.edgeDel()
     };
+  }
+
+  // ---------- ações auxiliares ----------
+  drillInto(id) {
+    if (!this.subCount(id)) {
+      const n = this.edNode(id);
+      const kid = this.uid("nd");
+      this.setGraph((g) => {
+        g.nodes = g.nodes.concat([{ id: kid, x: 120, y: 150, label: "Primeiro passo", note: "", color: n ? n.color : "roxo", parent: id }]);
+        return g;
+      });
+    }
+    this.edDrill(id);
+  }
+
+  addIdea() {
+    const t = String(this.state.ni || "").trim();
+    if (!t) return;
+    const id = this.uid("id");
+    this.setState((st) => ({
+      ideas: [{ id, title: t, note: "", at: new Date().toISOString(), graph: { nodes: [], edges: [] } }].concat(st.ideas),
+      ni: "", ideaSel: id
+    }));
+  }
+
+  setIdea(patch) {
+    const id = this.state.ideaSel;
+    if (!id) return;
+    this.setState((st) => ({ ideas: st.ideas.map((i) => (i.id === id ? Object.assign({}, i, patch) : i)) }));
+  }
+
+  delIdea() {
+    const id = this.state.ideaSel;
+    const i = this.state.ideas.find((x) => x.id === id);
+    if (!i) return;
+    if (!window.confirm("Apagar a ideia “" + (i.title || "sem título") + "” e o workflow dela?")) return;
+    this.setState((st) => {
+      const rest = st.ideas.filter((x) => x.id !== id);
+      return { ideas: rest, ideaSel: rest.length ? rest[0].id : null };
+    });
+  }
+
+  addFlow() {
+    const name = String(this.state.nfl || "").trim();
+    if (!name) return;
+    const id = this.uid("fl");
+    const colors = PAL.map((p) => p.k);
+    this.setState((st) => ({
+      flows: st.flows.concat([{ id, name, desc: "", color: colors[st.flows.length % colors.length], graph: { nodes: [], edges: [] } }]),
+      nfl: ""
+    }));
+    this.openEditor("flow", id);
+  }
+
+  addTask(p) {
+    const val = String(this.state.draft[p] || "").trim();
+    if (!val) return;
+    this.setState((st) => ({
+      tasks: st.tasks.concat([{ id: this.uid("tk"), text: val, done: false, p }]),
+      draft: Object.assign({}, st.draft, { [p]: "" })
+    }));
   }
 }
 </script>
