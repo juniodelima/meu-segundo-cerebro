@@ -370,6 +370,9 @@
                       <div onClick="{{x.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
                     </div>
                   </sc-for>
+                  <sc-if value="{{noTxs}}" hint-placeholder-val="{{ false }}">
+                    <div style="padding: 24px 18px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.06em;">nenhum lançamento registrado ainda</div>
+                  </sc-if>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px; border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 16px;">
                   <input value="{{ nf.d }}" onChange="{{onFinDesc}}" placeholder="descrição" style="flex: 2 1 160px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px;" />
@@ -391,8 +394,12 @@
                           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: {{b.dueColor}}; letter-spacing: 0.06em;">{{ b.dueLabel }}</div>
                         </div>
                         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 13.5px; white-space: nowrap; color: {{b.color}};">{{ b.amount }}</div>
+                        <div onClick="{{b.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
                       </div>
                     </sc-for>
+                    <sc-if value="{{noBills}}" hint-placeholder-val="{{ false }}">
+                      <div style="padding: 20px 16px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.06em;">nenhuma conta a pagar cadastrada</div>
+                    </sc-if>
                   </div>
                 </div>
 
@@ -401,15 +408,21 @@
                   <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 18px;">
                     <sc-for list="{{ goals }}" as="g" hint-placeholder-count="3">
                       <div style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13.5px;">
                           <span style="color: #ddd6ec;">{{ g.name }}</span>
-                          <span style="font-family: 'IBM Plex Mono', monospace; color: #a99ec2;">{{ g.label }}</span>
+                          <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-family: 'IBM Plex Mono', monospace; color: #a99ec2;">{{ g.label }}</span>
+                            <div onClick="{{g.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #4a4266; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
+                          </div>
                         </div>
                         <div style="height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08);">
                           <div style="height: 100%; border-radius: 999px; background: linear-gradient(90deg, #7c4dff, #d9c2ff); width: {{g.w}};"></div>
                         </div>
                       </div>
                     </sc-for>
+                    <sc-if value="{{noGoals}}" hint-placeholder-val="{{ false }}">
+                      <div style="padding: 8px 0; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.06em;">nenhuma meta cadastrada</div>
+                    </sc-if>
                   </div>
                 </div>
 
@@ -427,6 +440,9 @@
                         </div>
                       </div>
                     </sc-for>
+                    <sc-if value="{{noCats}}" hint-placeholder-val="{{ false }}">
+                      <div style="padding: 8px 0; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.06em;">nenhuma saída registrada</div>
+                    </sc-if>
                   </div>
                 </div>
               </div>
@@ -499,6 +515,9 @@
                       <div onClick="{{it.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #4a4266;" style-hover="color: #ffb4b4;">×</div>
                     </div>
                   </sc-for>
+                  <sc-if value="{{col.noItems}}" hint-placeholder-val="{{ false }}">
+                    <div style="border: 1px dashed rgba(255,255,255,0.1); border-radius: 11px; padding: 16px 12px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #574d75;">nenhuma tarefa pendente</div>
+                  </sc-if>
                 </div>
                 <div style="display: flex; gap: 8px;">
                   <input value="{{ col.draft }}" onChange="{{col.onDraft}}" onKeyDown="{{col.onKey}}" placeholder="adicionar..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 11px 12px; color: #f2eefb; font-size: 13px; min-width: 0;" />
@@ -541,6 +560,9 @@
                 </div>
               </sc-for>
             </div>
+            <sc-if value="{{noFlows}}" hint-placeholder-val="{{ false }}">
+              <div style="border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 26px 18px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.08em;">escreva o nome do primeiro workflow acima</div>
+            </sc-if>
           </div>
         </sc-if>
 
@@ -670,7 +692,7 @@
 </x-dc>
 
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
-const STORE_KEY = "msc.state.v1";
+const STORE_KEY = "msc.state.v2";
 const PERSIST = ["notes", "ideas", "flows", "txs", "bills", "goals", "months", "tasks", "chat"];
 const NODE_W = 240;
 const NODE_H = 58;
@@ -776,56 +798,13 @@ class Component extends DCLogic {
   }
 
   defaults() {
-    const printSvg = "data:image/svg+xml," + encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="640" height="360" fill="#140a26"/>' +
-      '<text x="26" y="46" fill="#c4a6ff" font-family="monospace" font-size="15">campanha · setembro</text>' +
-      '<text x="26" y="96" fill="#f2eefb" font-family="monospace" font-size="34">CPA R$ 12,04</text>' +
-      '<rect x="26" y="140" width="180" height="10" rx="5" fill="#7c4dff"/><rect x="26" y="170" width="300" height="10" rx="5" fill="#a97bff"/>' +
-      '<rect x="26" y="200" width="120" height="10" rx="5" fill="#4a3670"/><rect x="26" y="230" width="410" height="10" rx="5" fill="#c4a6ff"/>' +
-      '<text x="26" y="300" fill="#8f83ab" font-family="monospace" font-size="13">1 criativo por dor · orçamento fixo por conjunto</text></svg>'
-    );
-
-    const notes = [
-      { t: "Atalhos do VS Code que eu uso todo dia", type: "ATALHO", tags: ["vscode", "produtividade"], body: "Cmd+P abrir arquivo\nCmd+Shift+F buscar no projeto\nAlt+↑/↓ mover linha\nCmd+D selecionar próxima igual" },
-      { t: "Debounce em JS", type: "CÓDIGO", tags: ["javascript", "snippet"], body: "const debounce = (fn, ms) => {\n  let t;\n  return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); };\n};" },
-      { t: "git: desfazer o último commit", type: "CÓDIGO", tags: ["git", "snippet"], body: "git reset --soft HEAD~1\n→ mantém as alterações no stage" },
-      { t: "Centralizar qualquer coisa em CSS", type: "CÓDIGO", tags: ["css", "snippet"], body: "display: flex;\nalign-items: center;\njustify-content: center;" },
-      { t: "Contrato modelo — freelance", type: "PDF", tags: ["trabalho", "financeiro"], body: "contrato-freela-v3.pdf · 240 KB · última revisão jan/26" },
-      { t: "Planilha de precificação de projeto", type: "PDF", tags: ["financeiro", "trabalho"], body: "precificacao-2026.xlsx · 88 KB · fórmula de hora/valor na aba 2" },
-      { t: "Curso de tráfego pago — aula 4", type: "LINK", tags: ["marketing", "estudo"], body: "Estrutura de campanha: 1 criativo por dor, orçamento fixo por conjunto." },
-      { t: "Documentação da API que eu sempre esqueço", type: "LINK", tags: ["dev", "referência"], body: "Autenticação por bearer token, limite de 60 req/min." },
-      { t: "Print do painel de anúncios que converteu", type: "IMAGEM", tags: ["marketing", "referência"], body: "CPA de R$ 12 na campanha de setembro — a estrutura vale copiar.", media: [{ kind: "image", url: printSvg, cap: "painel de anúncios" }] },
-      { t: "Referência de layout escuro", type: "IMAGEM", tags: ["design", "referência"], body: "Degradê roxo → preto, cartões com borda de 1px.", slot: "referência visual" },
-      { t: "Como eu organizo a semana", type: "NOTA", tags: ["rotina", "produtividade"], body: "Domingo à noite: revisar o checklist do mês e puxar 3 prioridades para a semana." },
-      { t: "Regra dos 3 blocos de foco", type: "NOTA", tags: ["produtividade", "rotina"], body: "Manhã: criar.\nTarde: reunião e recado.\nNoite: estudar e guardar no cérebro." }
-    ].map((n) => Object.assign({ id: this.uid("nt"), media: [], links: [], at: new Date().toISOString() }, n));
-
-    // liga algumas notas entre si para o grafo já nascer com ligações próprias
-    const byTitle = (frag) => (notes.find((n) => n.t.indexOf(frag) === 0) || {}).id;
-    const link = (a, b) => { const x = byTitle(a), y = byTitle(b); if (x && y) notes.find((n) => n.id === x).links.push(y); };
-    link("Curso de tráfego", "Print do painel");
-    link("Contrato modelo", "Planilha de precificação");
-    link("Como eu organizo", "Regra dos 3 blocos");
-
-    const ideaSeeds = [
-      { title: "Curso curto de automação", note: "Promessa: em 7 dias o aluno automatiza uma tarefa real do trabalho dele.\n\nPreço que eu testaria: R$ 297.\nMedo: gravar e ninguém comprar — resolvo vendendo antes de gravar.", steps: ["Definir o resultado em 7 dias", "Vender para a minha lista", "Gravar 5 aulas de 12 min", "Entregar e colher depoimento"] },
-      { title: "Newsletter semanal de snippets", note: "3 snippets por semana, tirados do próprio segundo cérebro. Custo zero, alimenta a lista.", steps: ["Escolher 3 snippets da semana", "Escrever em 40 minutos", "Enviar toda terça"] },
-      { title: "Template de proposta comercial", note: "", steps: [] }
-    ];
-    const ideas = ideaSeeds.map((s) => ({
-      id: this.uid("id"), title: s.title, note: s.note, at: new Date().toISOString(),
-      graph: this.chain(s.steps, "verde")
-    }));
-
-    const flowSeeds = [
-      { name: "Preparar uma aula", desc: "Do tema em branco até a aula gravada", color: "roxo", steps: ["Escrever a promessa da aula em uma frase", "Listar as 3 dúvidas do aluno", "Montar o roteiro em blocos de 5 min", "Separar exemplos do segundo cérebro", "Gravar sem editar no meio", "Cortar, publicar e anotar melhorias"] },
-      { name: "Fechar o mês financeiro", desc: "Rotina do último dia do mês", color: "azul", steps: ["Lançar o que ficou pendente", "Marcar contas pagas e conferir vencimentos", "Comparar saídas por categoria", "Separar reserva e imposto", "Definir o teto do próximo mês"] },
-      { name: "Tirar uma ideia do papel", desc: "Da ideia solta ao primeiro entregável", color: "laranja", steps: ["Escrever a ideia e o problema que resolve", "Definir a menor versão possível", "Marcar a data de entrega", "Executar em 3 blocos de foco", "Anotar o aprendizado"] }
-    ];
-    const flows = flowSeeds.map((f) => ({
-      id: this.uid("fl"), name: f.name, desc: f.desc, color: f.color,
-      graph: this.chain(f.steps, f.color)
-    }));
+    const monthNames = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    const now = new Date();
+    const months = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push({ label: monthNames[d.getMonth()], in: 0, out: 0 });
+    }
 
     return {
       narrow: typeof window !== "undefined" && window.innerWidth < 760,
@@ -833,61 +812,26 @@ class Component extends DCLogic {
       query: "",
       chip: "tudo",
       brainMode: "grid",
-      notes,
+      notes: [],
       noteSel: null,
       mediaDraft: "",
-      ideas,
-      ideaSel: ideas.length ? ideas[0].id : null,
+      ideas: [],
+      ideaSel: null,
       ni: "",
-      flows,
+      flows: [],
       nfl: "",
       ed: null,
       nf: { d: "", v: "", t: "out" },
-      txs: [
-        { id: this.uid("tx"), d: "Salário", v: 5200, t: "in", c: "Trabalho" },
-        { id: this.uid("tx"), d: "Freela — landing page", v: 2400, t: "in", c: "Trabalho" },
-        { id: this.uid("tx"), d: "Aluguel", v: 1800, t: "out", c: "Moradia" },
-        { id: this.uid("tx"), d: "Mercado", v: 740, t: "out", c: "Alimentação" },
-        { id: this.uid("tx"), d: "Assinaturas (IA, hosting)", v: 210, t: "out", c: "Ferramentas" },
-        { id: this.uid("tx"), d: "Academia", v: 120, t: "out", c: "Saúde" },
-        { id: this.uid("tx"), d: "Combustível", v: 320, t: "out", c: "Transporte" }
-      ],
-      bills: [
-        { id: this.uid("bl"), d: "Cartão de crédito", v: 1240, due: 10, paid: false },
-        { id: this.uid("bl"), d: "Internet", v: 129, due: 5, paid: true },
-        { id: this.uid("bl"), d: "Energia", v: 186, due: 12, paid: false },
-        { id: this.uid("bl"), d: "Faculdade", v: 640, due: 20, paid: false },
-        { id: this.uid("bl"), d: "Plano de saúde", v: 398, due: 25, paid: false }
-      ],
-      months: [
-        { label: "abr", in: 6100, out: 4300 },
-        { label: "mai", in: 5800, out: 5100 },
-        { label: "jun", in: 7400, out: 4600 },
-        { label: "jul", in: 6900, out: 5900 },
-        { label: "ago", in: 8100, out: 5200 },
-        { label: "set", in: 7600, out: 3190 }
-      ],
-      goals: [
-        { id: this.uid("gl"), name: "Reserva de emergência", target: 18000, saved: 7400 },
-        { id: this.uid("gl"), name: "Setup novo (PC + tela)", target: 9000, saved: 5600 },
-        { id: this.uid("gl"), name: "Viagem em janeiro", target: 6000, saved: 1200 }
-      ],
+      txs: [],
+      bills: [],
+      months,
+      goals: [],
       chat: [
         { w: "ana", t: "Oi! Sou a Ana, sua assessora. Me conta em português o que entrou ou saiu e eu lanço nas métricas.\n\nEx.: “gastei 82 no mercado”, “entrou 2400 de freela”, “conta de luz 186 vence dia 12”.\nTambém respondo: “qual meu saldo?”, “quanto gastei em alimentação?”, “quanto posso gastar?”.", at: "--:--" }
       ],
       chatDraft: "",
       anaTyping: false,
-      tasks: [
-        { id: this.uid("tk"), text: "Responder orçamentos", done: true, p: "dia" },
-        { id: this.uid("tk"), text: "1h estudando automação", done: false, p: "dia" },
-        { id: this.uid("tk"), text: "Registrar os gastos de ontem", done: false, p: "dia" },
-        { id: this.uid("tk"), text: "Gravar 2 aulas", done: false, p: "semana" },
-        { id: this.uid("tk"), text: "Revisar notas novas do cérebro", done: true, p: "semana" },
-        { id: this.uid("tk"), text: "Enviar proposta para o cliente novo", done: false, p: "semana" },
-        { id: this.uid("tk"), text: "Fechar o mês nas finanças", done: false, p: "mes" },
-        { id: this.uid("tk"), text: "Backup dos arquivos", done: false, p: "mes" },
-        { id: this.uid("tk"), text: "Guardar R$ 1.200 na reserva", done: false, p: "mes" }
-      ],
+      tasks: [],
       draft: { dia: "", semana: "", mes: "" }
     };
   }
@@ -919,7 +863,7 @@ class Component extends DCLogic {
   }
 
   resetData() {
-    if (!window.confirm("Apagar tudo que está salvo neste navegador e voltar ao conteúdo de exemplo?")) return;
+    if (!window.confirm("Apagar tudo que está salvo neste navegador e zerar todos os dados?")) return;
     try { window.localStorage.removeItem(STORE_KEY); } catch (e) {}
     this._seq = 0;
     this.setState(this.defaults());
@@ -2067,6 +2011,16 @@ class Component extends DCLogic {
         const falta = Math.max(0, g.target - saved);
         return "Somei " + this.money(amt.v) + " na meta “" + g.name + "”.\nAgora são " + this.money(saved) + " de " + this.money(g.target) + " — " + Math.round((saved / g.target) * 100) + "% feito" + (falta ? ", falta " + this.money(falta) + "." : " e a meta está completa. 🎉");
       }
+      return "Você ainda não tem uma meta cadastrada para guardar esse valor. Pode criar dizendo: “criar meta Reserva 10000”.";
+    }
+
+    // nova meta de economia
+    if (/\b(criar meta|nova meta|meta de)\b/.test(low) && amt) {
+      let name = txt.replace(/\b(criar meta|nova meta|meta de|meta|de|para|pra|pro|r\$)\b/gi, " ").trim();
+      name = this.cleanDesc(name, amt.raw) || "Nova meta";
+      const goal = { id: this.uid("gl"), name, target: amt.v, saved: 0 };
+      this.setState({ goals: st.goals.concat([goal]) });
+      return "Criei a meta “" + name + "” com alvo de " + this.money(amt.v) + ".\nQuando poupar, é só me dizer: “guardei 500 na " + name.toLowerCase() + "”.";
     }
 
     // nova conta a pagar
@@ -2197,6 +2151,7 @@ class Component extends DCLogic {
     }
 
     if (/(meta|metas|reserva|quanto falta)/.test(low)) {
+      if (!st.goals.length) return "Você ainda não tem nenhuma meta de economia cadastrada. Pode criar dizendo: “criar meta Reserva 10000”.";
       return st.goals.map((g) => {
         const pct = Math.round((g.saved / g.target) * 100);
         return "· " + g.name + ": " + this.money(g.saved) + " de " + this.money(g.target) + " (" + pct + "%), falta " + this.money(Math.max(0, g.target - g.saved));
@@ -2459,6 +2414,10 @@ class Component extends DCLogic {
       finBalance: this.money(s.n),
       billsTotal: this.money(billsOpen),
       cats,
+      noCats: cats.length === 0,
+      noTxs: st.txs.length === 0,
+      noBills: st.bills.length === 0,
+      noGoals: st.goals.length === 0,
       txs: st.txs.map((x) => ({
         d: x.d, c: x.c,
         amount: (x.t === "in" ? "+" : "−") + this.money(x.v).slice(3),
@@ -2475,7 +2434,11 @@ class Component extends DCLogic {
       goals: st.goals.map((g) => ({
         name: g.name,
         label: this.money(g.saved) + " / " + this.money(g.target),
-        w: Math.min(100, Math.round((g.saved / g.target) * 100)) + "%"
+        w: Math.min(100, Math.round((g.saved / g.target) * 100)) + "%",
+        onRemove: (e) => {
+          if (e && e.stopPropagation) e.stopPropagation();
+          this.setState({ goals: st.goals.filter((x) => x.id !== g.id) });
+        }
       })),
       bills: st.bills.map((b) => {
         const late = !b.paid && b.due < today;
@@ -2489,7 +2452,11 @@ class Component extends DCLogic {
           dueColor: b.paid ? "#7a7096" : (late ? "#ffb4b4" : "#a99ec2"),
           boxBd: b.paid ? "rgba(196,166,255,0.85)" : "rgba(255,255,255,0.24)",
           boxBg: b.paid ? "#c4a6ff" : "transparent",
-          onToggle: () => this.setState({ bills: st.bills.map((x) => (x.id === b.id ? Object.assign({}, x, { paid: !x.paid }) : x)) })
+          onToggle: () => this.setState({ bills: st.bills.map((x) => (x.id === b.id ? Object.assign({}, x, { paid: !x.paid }) : x)) }),
+          onRemove: (e) => {
+            if (e && e.stopPropagation) e.stopPropagation();
+            this.setState({ bills: st.bills.filter((x) => x.id !== b.id) });
+          }
         };
       }),
       nf: st.nf,
@@ -2572,6 +2539,7 @@ class Component extends DCLogic {
         return {
           name,
           progress: done + "/" + items.length,
+          noItems: items.length === 0,
           items: items.map((t) => ({
             text: t.text,
             mark: t.done ? "✓" : "",
@@ -2590,6 +2558,7 @@ class Component extends DCLogic {
       }),
 
       // ----- lista de workflows -----
+      noFlows: st.flows.length === 0,
       flows: st.flows.map((f) => {
         const nn = f.graph ? f.graph.nodes.length : 0;
         const ne = f.graph ? f.graph.edges.length : 0;

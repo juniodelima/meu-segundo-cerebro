@@ -31,6 +31,7 @@ jeito que se pensa e ela lança nas métricas:
 | `paguei a energia` | marca a conta como paga e lança a saída |
 | `conta de luz 186 vence dia 12` | cria a conta a pagar |
 | `guardei 500 na reserva` | soma na meta |
+| `criar meta Reserva 10000` | cria nova meta de economia |
 | `desfaz` | remove o último lançamento dela |
 
 E responde: `qual meu saldo`, `quanto gastei em alimentação`, `quanto posso
@@ -47,7 +48,7 @@ gastar`, `quais contas vencem`, `onde mais gastei`, `como está o mês`.
 Tudo é salvo no **localStorage do navegador** — sem servidor e sem conta. Isso
 significa que os dados são só daquele navegador e não sincronizam entre
 aparelhos. O rodapé do hub mostra `salvo neste navegador · limpar`, e `limpar`
-volta ao conteúdo de exemplo.
+zera todos os dados salvos.
 
 ## Estrutura
 
