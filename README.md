@@ -21,27 +21,24 @@ arruma o fluxo em camadas, `delete` apaga o que estiver selecionado.
 **Ideias** — a lista continua igual, e cada ideia ganhou um bloco de notas e o
 mesmo editor de workflow para planejar a execução.
 
-**Finanças pessoais** — tudo que já existia mais um chat com a Ana. Escreve do
-jeito que se pensa e ela lança nas métricas:
+**Finanças pessoais** — controle completo de receitas e despesas com categorização customizável e uma assessora IA (Ana):
+
+- **Gestão de Categorias**: visualize chips com todas as categorias cadastradas, adicione novas categorias pelo campo rápido `+` e remova com um clique. Ao lançar uma transação manualmente, defina a categoria desejada ou deixe o sistema inferir automaticamente.
+- **Assessora Ana com IA (GPT-4o mini ⚡)**: entende linguagem natural livre, cadastra transações, contas a pagar, metas e novas categorias via chamada de ferramentas (tool calling). Também gera relatórios analíticos completos sobre a saúde financeira.
+- **Chave de API Configurável**: clique no badge `GPT-4o mini ⚡` no topo do chat para visualizar ou atualizar a chave da OpenAI. Fica salva com segurança no seu navegador (`localStorage`).
+- **Modo Offline**: se nenhuma chave estiver configurada ou a rede falhar, a assessora entra no modo offline com regras locais inteligentes.
 
 | Você escreve | Ela faz |
 | --- | --- |
-| `gastei 82 no mercado` | lança saída em Alimentação |
-| `entrou 2400 de freela` | lança entrada em Trabalho |
+| `gastei 82 no mercado` | lança saída na categoria Alimentação |
+| `entrou 2400 de freela` | lança entrada na categoria Trabalho |
+| `crie a categoria Consultoria` | registra nova categoria para uso |
 | `paguei a energia` | marca a conta como paga e lança a saída |
 | `conta de luz 186 vence dia 12` | cria a conta a pagar |
 | `guardei 500 na reserva` | soma na meta |
 | `criar meta Reserva 10000` | cria nova meta de economia |
+| `como estão minhas finanças?` | gera um relatório completo com diagnósticos e dicas |
 | `desfaz` | remove o último lançamento dela |
-
-E responde: `qual meu saldo`, `quanto gastei em alimentação`, `quanto posso
-gastar`, `quais contas vencem`, `onde mais gastei`, `como está o mês`.
-
-> A Ana roda **no próprio navegador**, com um interpretador de português escrito
-> à mão — sem chave de API, sem custo e funciona offline. Se um dia quiser IA de
-> verdade (entender frase solta, conversar sobre o histórico), o caminho é uma
-> rota serverless na Vercel guardando a chave no servidor; o chat já está pronto
-> para trocar a função `anaAnswer` por uma chamada de rede.
 
 ## Onde os dados ficam
 

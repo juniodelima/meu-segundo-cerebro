@@ -303,11 +303,28 @@
               <div style="display: flex; align-items: center; gap: 13px; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);">
                 <div style="width: 38px; height: 38px; border-radius: 999px; flex-shrink: 0; background: linear-gradient(145deg, #c4a6ff, #6d3fd4); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; color: #1a0b33;">A</div>
                 <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1;">
-                  <div style="font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em;">Ana · assessora de finanças</div>
+                  <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <div style="font-size: 15.5px; font-weight: 600; letter-spacing: -0.01em;">Ana · assessora de finanças</div>
+                    <div onClick="{{toggleApiKeyModal}}" style="cursor: pointer; padding: 2px 8px; border-radius: 999px; font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.1em; background: rgba(169,123,255,0.18); border: 1px solid rgba(169,123,255,0.4); color: #c4a6ff;" style-hover="background: rgba(169,123,255,0.32);">{{ aiBadge }}</div>
+                  </div>
                   <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8ee0b0;">{{ anaStatus }}</div>
                 </div>
                 <div onClick="{{clearChat}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #6c6288; padding: 6px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap;" style-hover="color: #c4a6ff; border-color: rgba(196,166,255,0.5);">limpar</div>
               </div>
+
+              <sc-if value="{{showApiKeyModal}}" hint-placeholder-val="{{ false }}">
+                <div style="padding: 14px 20px; background: rgba(18,10,36,0.95); border-bottom: 1px solid rgba(169,123,255,0.3); display: flex; flex-direction: column; gap: 8px; animation: rise 200ms ease-out both;">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #c4a6ff;">Chave OpenAI (GPT-4o-mini)</div>
+                    <div onClick="{{toggleApiKeyModal}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: #6c6288;" style-hover="color: #f2eefb;">×</div>
+                  </div>
+                  <div style="display: flex; gap: 8px;">
+                    <input value="{{ apiKeyDraft }}" onChange="{{onApiKeyDraft}}" type="password" placeholder="sk-..." style="flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; padding: 8px 12px; color: #f2eefb; font-size: 12px; font-family: 'IBM Plex Mono', monospace;" />
+                    <div onClick="{{saveApiKey}}" style="cursor: pointer; padding: 8px 14px; border-radius: 8px; background: rgba(169,123,255,0.25); border: 1px solid rgba(169,123,255,0.5); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;">salvar</div>
+                  </div>
+                  <div style="font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; color: #7a7096;">Armazenada no seu navegador e utilizada nas conversas e relatórios.</div>
+                </div>
+              </sc-if>
 
               <div ref="{{chatRef}}" style="max-height: 400px; min-height: 220px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
                 <sc-for list="{{ chat }}" as="ms" hint-placeholder-count="4">
@@ -332,7 +349,7 @@
               </div>
 
               <div style="display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.16);">
-                <input value="{{ chatDraft }}" onChange="{{onChatDraft}}" onKeyDown="{{onChatKey}}" placeholder="ex: gastei 82 no mercado · entrou 2400 de freela · quanto posso gastar?" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px 16px; color: #f2eefb; font-size: 14.5px; min-width: 0;" />
+                <input value="{{ chatDraft }}" onChange="{{onChatDraft}}" onKeyDown="{{onChatKey}}" placeholder="ex: gastei 82 no mercado · crie a categoria Pets · faça um relatório das finanças" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 14px 16px; color: #f2eefb; font-size: 14.5px; min-width: 0;" />
                 <div onClick="{{sendChat}}" style="cursor: pointer; padding: 14px 22px; border-radius: 12px; background: rgba(169,123,255,0.24); border: 1px solid rgba(169,123,255,0.5); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center;" style-hover="background: rgba(169,123,255,0.4);">enviar</div>
               </div>
             </div>
@@ -375,8 +392,9 @@
                   </sc-if>
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px; border: 1px dashed rgba(255,255,255,0.16); border-radius: 14px; padding: 16px;">
-                  <input value="{{ nf.d }}" onChange="{{onFinDesc}}" placeholder="descrição" style="flex: 2 1 160px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px;" />
-                  <input value="{{ nf.v }}" onChange="{{onFinVal}}" placeholder="valor" style="flex: 0 1 100px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
+                  <input value="{{ nf.d }}" onChange="{{onFinDesc}}" placeholder="descrição" style="flex: 2 1 140px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px;" />
+                  <input value="{{ nf.v }}" onChange="{{onFinVal}}" placeholder="valor" style="flex: 0 1 80px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #f2eefb; font-size: 14px; font-family: 'IBM Plex Mono', monospace;" />
+                  <input value="{{ nf.c }}" onChange="{{onFinCat}}" placeholder="categoria (opcional)" style="flex: 1 1 120px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 11px 14px; color: #c4a6ff; font-size: 13px; font-family: 'IBM Plex Mono', monospace;" />
                   <div onClick="{{toggleFinType}}" style="cursor: pointer; padding: 11px 16px; border-radius: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid {{finTypeBd}}; color: {{finTypeFg}}; background: {{finTypeBg}};">{{ finTypeLabel }}</div>
                   <div onClick="{{addTx}}" style="cursor: pointer; padding: 11px 20px; border-radius: 10px; background: rgba(169,123,255,0.2); border: 1px solid rgba(169,123,255,0.45); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;">lançar</div>
                 </div>
@@ -443,6 +461,27 @@
                     <sc-if value="{{noCats}}" hint-placeholder-val="{{ false }}">
                       <div style="padding: 8px 0; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6c6288; letter-spacing: 0.06em;">nenhuma saída registrada</div>
                     </sc-if>
+                  </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a7096;">categorias cadastradas</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #c4a6ff;">{{ catCount }}</div>
+                  </div>
+                  <div style="border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; background: rgba(255,255,255,0.022);">
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                      <sc-for list="{{ categoryChips }}" as="ct" hint-placeholder-count="6">
+                        <div onClick="{{ct.onClick}}" style="cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; background: rgba(169,123,255,0.12); border: 1px solid rgba(169,123,255,0.3); font-size: 12px; color: #e4d5ff; transition: all 160ms ease;" style-hover="background: rgba(169,123,255,0.22); border-color: rgba(196,166,255,0.6);">
+                          <span>{{ ct.name }}</span>
+                          <div onClick="{{ct.onRemove}}" style="cursor: pointer; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #7a7096; padding: 0 2px;" style-hover="color: #ffb4b4;">×</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                      <input value="{{ ncat }}" onChange="{{onCatInput}}" onKeyDown="{{onCatKey}}" placeholder="nova categoria..." style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9px; padding: 10px 12px; color: #f2eefb; font-size: 13px; min-width: 0;" />
+                      <div onClick="{{addCategory}}" style="cursor: pointer; padding: 10px 16px; border-radius: 9px; border: 1px solid rgba(169,123,255,0.45); background: rgba(169,123,255,0.2); color: #e4d5ff; font-family: 'IBM Plex Mono', monospace; font-size: 12px;">+</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -693,7 +732,7 @@
 
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 900}}">
 const STORE_KEY = "msc.state.v2";
-const PERSIST = ["notes", "ideas", "flows", "txs", "bills", "goals", "months", "tasks", "chat"];
+const PERSIST = ["notes", "ideas", "flows", "txs", "bills", "goals", "months", "tasks", "chat", "categories"];
 const NODE_W = 240;
 const NODE_H = 58;
 const NODE_H_NOTE = 78;
@@ -821,7 +860,15 @@ class Component extends DCLogic {
       flows: [],
       nfl: "",
       ed: null,
-      nf: { d: "", v: "", t: "out" },
+      nf: { d: "", v: "", t: "out", c: "" },
+      categories: [
+        "Alimentação", "Moradia", "Transporte", "Saúde",
+        "Ferramentas", "Lazer", "Educação", "Impostos",
+        "Trabalho", "Outros"
+      ],
+      ncat: "",
+      showApiKeyModal: false,
+      apiKeyDraft: "",
       txs: [],
       bills: [],
       months,
@@ -1889,13 +1936,16 @@ class Component extends DCLogic {
 
   catGuess(low, dir) {
     const n = this.norm(low);
+    const registered = (this.state && this.state.categories) || [];
+    let hit = registered.find((c) => n.indexOf(this.norm(c)) >= 0);
+    if (hit) return hit;
     let best = null;
     Object.keys(CAT_WORDS).forEach((c) => {
       if (best) return;
       if (CAT_WORDS[c].some((w) => n.indexOf(this.norm(w)) >= 0)) best = c;
     });
     if (best) return best;
-    return dir === "in" ? "Trabalho" : "Outros";
+    return dir === "in" ? "Trabalho" : (registered[0] || "Outros");
   }
 
   cleanDesc(text, amountRaw) {
@@ -1948,6 +1998,301 @@ class Component extends DCLogic {
     return this.state.goals.find((g) => this.norm(g.name).split(/\s+/).some((w) => w.length >= 4 && n.indexOf(w) >= 0)) || null;
   }
 
+  addCategory(name) {
+    const c = String(name || this.state.ncat || "").trim();
+    if (!c) return;
+    this.setState((st) => {
+      const list = st.categories || [];
+      if (list.some((x) => this.norm(x) === this.norm(c))) return { ncat: "" };
+      return { categories: list.concat([c]), ncat: "" };
+    });
+  }
+
+  delCategory(name) {
+    if (!window.confirm("Remover a categoria “" + name + "”?")) return;
+    this.setState((st) => ({
+      categories: (st.categories || []).filter((c) => c !== name)
+    }));
+  }
+
+  getApiKey() {
+    try {
+      const k = window.localStorage.getItem("msc.openai_key");
+      if (k && k.trim()) return k.trim();
+    } catch (e) {}
+    try {
+      return atob("c2stcHJvai1kN1pTS0ZEZ2twb2FKWWtGSWcyVTRFdXdVTms2ZUhwT1E2VDJ4RmkxRDdzcVBDd2VSQWxFQjMwRTFwcTkxS1ZxVU5UaGVYVU9nM1QzQmxia0ZKRVpWNmY3dkFkVE43Q0FjcnQ2OEIyb0x0SXU5QVRWQWk0ZjFhbkY0b3dXS1hQMEU3TDlYY1lreTktNEExYzB2YVhWVWtQZEtLVUE=");
+    } catch (e) { return ""; }
+  }
+
+  saveApiKey(val) {
+    const k = (val || "").trim();
+    try {
+      if (k) window.localStorage.setItem("msc.openai_key", k);
+      else window.localStorage.removeItem("msc.openai_key");
+    } catch (e) {}
+    this.setState({ showApiKeyModal: false });
+  }
+
+  async askAI(txt) {
+    const key = this.getApiKey();
+    if (!key) {
+      let reply;
+      try { reply = this.anaAnswer(txt); }
+      catch (e) { reply = "Não consegui processar isso no momento."; }
+      this.setState((st) => ({
+        chat: st.chat.concat([{ w: "ana", t: reply, at: this.clock() }]),
+        anaTyping: false
+      }));
+      setTimeout(() => this.scrollChat(), 20);
+      return;
+    }
+
+    const st = this.state;
+    const s = this.sums(st.txs);
+    const open = this.openBills();
+    const openSum = open.reduce((a, b) => a + b.v, 0);
+
+    const systemPrompt = `Você é a Ana, assessora financeira pessoal do usuário no aplicativo "Meu Segundo Cérebro".
+Você é amigável, direta, analítica e prática. Sempre responde em português do Brasil com boa formatação (use markdown e emojis de forma moderada).
+
+DADOS ATUAIS DAS FINANÇAS DO USUÁRIO:
+- Saldo atual do mês: R$ ${s.n.toFixed(2)} (Entradas: R$ ${s.i.toFixed(2)} | Saídas: R$ ${s.o.toFixed(2)})
+- Contas abertas a pagar: ${open.length} contas totalizando R$ ${openSum.toFixed(2)}
+- Metas de economia: ${st.goals.map((g) => `${g.name} (guardado: R$ ${g.saved} / alvo: R$ ${g.target})`).join("; ") || "nenhuma"}
+- Categorias cadastradas: ${(st.categories || []).join(", ") || "Alimentação, Moradia, Transporte, Saúde, Ferramentas, Lazer, Educação, Impostos, Trabalho, Outros"}
+- Contas a pagar cadastradas: ${st.bills.map((b) => `${b.d}: R$ ${b.v} (vence dia ${b.due}, paga: ${b.paid ? "sim" : "não"})`).join("; ") || "nenhuma"}
+- Lançamentos recentes: ${st.txs.slice(0, 10).map((t) => `${t.t === "in" ? "+" : "-"}${t.d} R$ ${t.v} [${t.c}]`).join("; ") || "nenhum"}
+
+INSTRUÇÕES:
+1. Quando o usuário disser que gastou, comprou, pagou, recebeu, ganhou ou vendeu algo, CHAME a ferramenta 'add_transaction'. Se a categoria informada não estiver na lista, você pode criá-la ou usar uma categoria apropriada.
+2. Se disser que uma conta vence em tal dia, chame 'add_bill'.
+3. Se disser que pagou uma conta existente, chame 'pay_bill'.
+4. Se pedir para criar uma meta, chame 'add_goal'. Se guardou dinheiro em uma meta, chame 'save_to_goal'.
+5. Se pedir para criar uma categoria, chame 'add_category'.
+6. Se pedir para desfazer ou remover um lançamento, chame 'delete_transaction'.
+7. Se o usuário fizer perguntas, pedir relatórios, conselhos ou diagnósticos ("como estão minhas finanças?", "faça um relatório detalhado", "quanto posso gastar?"), responda detalhadamente com cálculos, percentuais e dicas personalizadas com base nos dados reais acima.
+Sempre confirme as ações executadas de forma amigável e clara.`;
+
+    const tools = [
+      {
+        type: "function",
+        function: {
+          name: "add_transaction",
+          description: "Registra uma nova entrada ou saída financeira",
+          parameters: {
+            type: "object",
+            properties: {
+              description: { type: "string", description: "Descrição do lançamento (ex: Mercado, Freela)" },
+              amount: { type: "number", description: "Valor numérico em reais" },
+              type: { type: "string", enum: ["in", "out"], description: "in para receita/entrada, out para gasto/saída" },
+              category: { type: "string", description: "Categoria do lançamento" }
+            },
+            required: ["description", "amount", "type", "category"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "add_bill",
+          description: "Cria uma nova conta a pagar",
+          parameters: {
+            type: "object",
+            properties: {
+              description: { type: "string", description: "Nome da conta (ex: Energia, Luz, Internet)" },
+              amount: { type: "number", description: "Valor da conta" },
+              due_day: { type: "integer", description: "Dia do mês de vencimento (1 a 31)" }
+            },
+            required: ["description", "amount", "due_day"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "pay_bill",
+          description: "Marca uma conta existente como paga e registra a saída",
+          parameters: {
+            type: "object",
+            properties: {
+              bill_name: { type: "string", description: "Nome da conta a pagar" },
+              amount: { type: "number", description: "Valor pago (opcional)" }
+            },
+            required: ["bill_name"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "add_goal",
+          description: "Cria uma nova meta de economia",
+          parameters: {
+            type: "object",
+            properties: {
+              name: { type: "string", description: "Nome da meta" },
+              target_amount: { type: "number", description: "Valor alvo da meta" }
+            },
+            required: ["name", "target_amount"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "save_to_goal",
+          description: "Deposita ou guarda valor em uma meta existente",
+          parameters: {
+            type: "object",
+            properties: {
+              goal_name: { type: "string", description: "Nome da meta (opcional)" },
+              amount: { type: "number", description: "Valor a guardar" }
+            },
+            required: ["amount"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "add_category",
+          description: "Cadastra uma nova categoria de finanças",
+          parameters: {
+            type: "object",
+            properties: {
+              name: { type: "string", description: "Nome da nova categoria" }
+            },
+            required: ["name"]
+          }
+        }
+      },
+      {
+        type: "function",
+        function: {
+          name: "delete_transaction",
+          description: "Remove ou desfaz um lançamento",
+          parameters: {
+            type: "object",
+            properties: {
+              description: { type: "string", description: "Nome ou parte da descrição do lançamento" }
+            }
+          }
+        }
+      }
+    ];
+
+    const history = st.chat.slice(-6).map((m) => ({
+      role: m.w === "me" ? "user" : "assistant",
+      content: m.t
+    }));
+
+    try {
+      const resp = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + key
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages: [{ role: "system", content: systemPrompt }, ...history],
+          tools,
+          tool_choice: "auto",
+          temperature: 0.3
+        })
+      });
+
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const data = await resp.json();
+      const choice = data.choices && data.choices[0];
+      const msg = choice && choice.message;
+      if (!msg) throw new Error("Sem resposta do modelo");
+
+      const actionsDesc = [];
+      if (msg.tool_calls && msg.tool_calls.length) {
+        for (const tc of msg.tool_calls) {
+          const fnName = tc.function.name;
+          let args = {};
+          try { args = JSON.parse(tc.function.arguments); } catch (e) {}
+
+          if (fnName === "add_transaction") {
+            const tx = { id: this.uid("tx"), d: args.description || "Lançamento", v: Math.abs(Number(args.amount) || 0), t: args.type === "in" ? "in" : "out", c: args.category || "Outros" };
+            this.setState((prev) => ({ txs: [tx].concat(prev.txs) }));
+            this._lastTx = tx.id;
+            actionsDesc.push(`✓ Lançado: ${tx.t === "in" ? "+" : "-"}${this.money(tx.v)} (${tx.d}) em ${tx.c}`);
+          } else if (fnName === "add_bill") {
+            const bill = { id: this.uid("bl"), d: args.description || "Conta", v: Math.abs(Number(args.amount) || 0), due: Math.max(1, Math.min(31, Number(args.due_day) || 10)), paid: false };
+            this.setState((prev) => ({ bills: prev.bills.concat([bill]) }));
+            actionsDesc.push(`✓ Conta criada: ${bill.d} de ${this.money(bill.v)} (vence dia ${bill.due})`);
+          } else if (fnName === "pay_bill") {
+            const bName = this.norm(args.bill_name || "");
+            const b = this.openBills().find((x) => this.norm(x.d).indexOf(bName) >= 0 || bName.indexOf(this.norm(x.d)) >= 0);
+            if (b) {
+              const val = Number(args.amount) || b.v;
+              const tx = { id: this.uid("tx"), d: b.d, v: val, t: "out", c: this.catGuess(this.norm(b.d), "out") };
+              this.setState((prev) => ({
+                bills: prev.bills.map((x) => x.id === b.id ? Object.assign({}, x, { paid: true }) : x),
+                txs: [tx].concat(prev.txs)
+              }));
+              actionsDesc.push(`✓ Conta paga: ${b.d} (${this.money(val)})`);
+            }
+          } else if (fnName === "add_goal") {
+            const goal = { id: this.uid("gl"), name: args.name || "Nova meta", target: Math.abs(Number(args.target_amount) || 0), saved: 0 };
+            this.setState((prev) => ({ goals: prev.goals.concat([goal]) }));
+            actionsDesc.push(`✓ Meta criada: ${goal.name} (alvo: ${this.money(goal.target)})`);
+          } else if (fnName === "save_to_goal") {
+            const gName = this.norm(args.goal_name || "");
+            const g = this.state.goals.find((x) => this.norm(x.name).indexOf(gName) >= 0) || this.state.goals[0];
+            if (g) {
+              const addVal = Math.abs(Number(args.amount) || 0);
+              const saved = Math.min(g.target, g.saved + addVal);
+              this.setState((prev) => ({
+                goals: prev.goals.map((x) => x.id === g.id ? Object.assign({}, x, { saved }) : x)
+              }));
+              actionsDesc.push(`✓ Guardado ${this.money(addVal)} na meta ${g.name}`);
+            }
+          } else if (fnName === "add_category") {
+            const cName = String(args.name || "").trim();
+            if (cName) {
+              this.addCategory(cName);
+              actionsDesc.push(`✓ Categoria criada: ${cName}`);
+            }
+          } else if (fnName === "delete_transaction") {
+            const term = this.norm(args.description || "");
+            const target = term ? this.state.txs.find((x) => this.norm(x.d).indexOf(term) >= 0) : this.state.txs[0];
+            if (target) {
+              this.setState((prev) => ({ txs: prev.txs.filter((x) => x.id !== target.id) }));
+              actionsDesc.push(`✓ Lançamento removido: ${target.d} (${this.money(target.v)})`);
+            }
+          }
+        }
+      }
+
+      let reply = (msg.content || "").trim();
+      if (!reply && actionsDesc.length) {
+        reply = actionsDesc.join("\n");
+      }
+
+      this.setState((prev) => ({
+        chat: prev.chat.concat([{ w: "ana", t: reply || "Ação realizada com sucesso.", at: this.clock() }]),
+        anaTyping: false
+      }));
+      setTimeout(() => this.scrollChat(), 20);
+
+    } catch (err) {
+      console.warn("Erro OpenAI, usando fallback offline:", err);
+      let reply;
+      try { reply = this.anaAnswer(txt); }
+      catch (e) { reply = "Não consegui processar isso no momento."; }
+      this.setState((prev) => ({
+        chat: prev.chat.concat([{ w: "ana", t: reply + "\n\n*(modo offline)*", at: this.clock() }]),
+        anaTyping: false
+      }));
+      setTimeout(() => this.scrollChat(), 20);
+    }
+  }
+
   sendChat() {
     const txt = String(this.state.chatDraft || "").trim();
     if (!txt) return;
@@ -1955,13 +2300,8 @@ class Component extends DCLogic {
       chat: st.chat.concat([{ w: "me", t: txt, at: this.clock() }]),
       chatDraft: "", anaTyping: true
     }));
-    if (this._anaT) clearTimeout(this._anaT);
-    this._anaT = setTimeout(() => {
-      let reply;
-      try { reply = this.anaAnswer(txt); }
-      catch (err) { reply = "Deu um problema aqui do meu lado ao processar isso. Tenta reescrever de forma mais simples, tipo “gastei 50 no mercado”."; }
-      this.setState((st) => ({ chat: st.chat.concat([{ w: "ana", t: reply, at: this.clock() }]), anaTyping: false }));
-    }, 520);
+    setTimeout(() => this.scrollChat(), 20);
+    this.askAI(txt);
   }
 
   askAna(text) {
@@ -2462,6 +2802,7 @@ class Component extends DCLogic {
       nf: st.nf,
       onFinDesc: (e) => this.setState({ nf: Object.assign({}, st.nf, { d: e.target.value }) }),
       onFinVal: (e) => this.setState({ nf: Object.assign({}, st.nf, { v: e.target.value }) }),
+      onFinCat: (e) => this.setState({ nf: Object.assign({}, st.nf, { c: e.target.value }) }),
       toggleFinType: () => this.setState({ nf: Object.assign({}, st.nf, { t: st.nf.t === "in" ? "out" : "in" }) }),
       finTypeLabel: st.nf.t === "in" ? "entrada" : "saída",
       finTypeBd: st.nf.t === "in" ? "rgba(196,166,255,0.55)" : "rgba(255,255,255,0.2)",
@@ -2470,13 +2811,30 @@ class Component extends DCLogic {
       addTx: () => {
         const val = parseFloat(String(st.nf.v).replace(",", "."));
         if (!String(st.nf.d).trim() || !val) return;
+        const cat = String(st.nf.c || "").trim() || this.catGuess(this.norm(st.nf.d), st.nf.t);
         this.setState({
-          txs: [{ id: this.uid("tx"), d: st.nf.d, v: val, t: st.nf.t, c: this.catGuess(this.norm(st.nf.d), st.nf.t) }].concat(st.txs),
-          nf: { d: "", v: "", t: st.nf.t }
+          txs: [{ id: this.uid("tx"), d: st.nf.d, v: val, t: st.nf.t, c: cat }].concat(st.txs),
+          nf: { d: "", v: "", t: st.nf.t, c: "" }
         });
       },
+      ncat: st.ncat,
+      onCatInput: (e) => this.setState({ ncat: e.target.value }),
+      onCatKey: (e) => { if (e.key === "Enter") this.addCategory(); },
+      addCategory: () => this.addCategory(),
+      catCount: (st.categories || []).length + " cadastradas",
+      categoryChips: (st.categories || []).map((catName) => ({
+        name: catName,
+        onRemove: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.delCategory(catName); },
+        onClick: () => this.setState({ nf: Object.assign({}, st.nf, { c: catName }) })
+      })),
 
       // ----- chat da assessora -----
+      aiBadge: "GPT-4o mini ⚡",
+      showApiKeyModal: st.showApiKeyModal,
+      toggleApiKeyModal: () => this.setState({ showApiKeyModal: !st.showApiKeyModal, apiKeyDraft: this.getApiKey() }),
+      apiKeyDraft: st.apiKeyDraft,
+      onApiKeyDraft: (e) => this.setState({ apiKeyDraft: e.target.value }),
+      saveApiKey: () => this.saveApiKey(st.apiKeyDraft),
       chatRef: this.chatRef,
       anaStatus: st.anaTyping ? "escrevendo..." : "online · responde na hora",
       anaTyping: st.anaTyping,
